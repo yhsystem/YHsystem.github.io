@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotaeys | Control System Architect</title>
+    <title>Hotaeys | 제어 기술의 정석</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Noto+Sans+KR:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0c;          /* 딥 블랙 */
-            --card-bg: #141417;     /* 미묘하게 밝은 블랙 */
-            --text: #ececec;        /* 가독성 높은 그레이 */
-            --sub-text: #949499;    /* 보조 텍스트 */
-            --point: #007aff;       /* 시스템 블루 */
-            --border: #252529;      /* 정교한 구분선 */
-            --accent: #3fb950;      /* 상태 표시 그린 */
+            --bg: #0a0a0c;
+            --card-bg: #141417;
+            --text: #ececec;
+            --sub-text: #949499;
+            --point: #007aff;
+            --border: #252529;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,7 +21,7 @@
             font-family: 'Inter', 'Noto Sans KR', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.7;
+            line-height: 1.8;
             letter-spacing: -0.4px;
             word-break: keep-all;
         }
@@ -33,7 +32,6 @@
             padding: 140px 24px;
         }
 
-        /* 헤더: 압도적인 몰입감의 텍스트 배치 */
         header {
             text-align: center;
             margin-bottom: 160px;
@@ -45,18 +43,15 @@
             color: #ffffff;
             letter-spacing: -2.5px;
             margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
         }
 
         header p {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--sub-text);
             font-weight: 300;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        /* 섹션 타이틀: 극도의 절제미 */
         section { margin-bottom: 140px; }
         
         h2 {
@@ -69,7 +64,6 @@
             font-weight: 700;
         }
 
-        /* 기술 스택 그리드 */
         .spec-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -81,13 +75,12 @@
             padding: 40px;
             border-radius: 12px;
             border: 1px solid var(--border);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: all 0.4s ease;
         }
 
         .spec-item:hover {
             transform: translateY(-8px);
             border-color: var(--point);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
         .spec-item strong {
@@ -95,36 +88,29 @@
             font-size: 1.2rem;
             color: #ffffff;
             margin-bottom: 12px;
-            font-weight: 600;
         }
 
         .spec-item span {
             font-size: 0.95rem;
             color: var(--sub-text);
-            font-weight: 300;
         }
 
-        /* [고급 표현] 솔루션 박스 */
         .solution-item {
             margin-bottom: 30px;
             background-color: var(--card-bg);
             padding: 40px;
             border-radius: 12px;
             border: 1px solid var(--border);
-            transition: border-color 0.3s;
         }
 
-        .solution-item:hover { border-color: rgba(255, 255, 255, 0.15); }
         .solution-item h3 {
             font-size: 1.4rem;
-            font-weight: 600;
             color: #ffffff;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
         }
         
-        /* 포인트 도트 효과 */
         .solution-item h3::before {
             content: '';
             width: 8px; height: 8px;
@@ -136,11 +122,8 @@
         .solution-item p {
             font-size: 1.05rem;
             color: var(--sub-text);
-            font-weight: 300;
-            line-height: 1.8;
         }
 
-        /* 미디어 아카이브 */
         .media-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -159,21 +142,16 @@
             height: 300px;
             object-fit: cover;
             display: block;
-            opacity: 0.8;
-            transition: opacity 0.4s;
+            opacity: 0.9;
         }
-
-        .media-item:hover img, .media-item:hover video { opacity: 1; }
 
         .media-item .caption {
             padding: 24px;
             font-size: 0.95rem;
             color: var(--sub-text);
-            font-weight: 300;
             border-top: 1px solid var(--border);
         }
 
-        /* 연락처 및 오피스: 하단 정보 배치 */
         .contact-office {
             display: grid;
             grid-template-columns: 1.2fr 0.8fr;
@@ -181,14 +159,6 @@
             padding-top: 100px;
             border-top: 1px solid var(--border);
             margin-top: 100px;
-        }
-
-        .contact-info h3, .office-address h3 {
-            font-size: 0.8rem;
-            color: var(--point);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 25px;
         }
 
         .contact-info a {
@@ -199,26 +169,17 @@
             background: linear-gradient(to right, var(--point), #60a5fa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: inline-block;
-            margin-bottom: 10px;
         }
-
-        .office-address p { font-size: 1.1rem; color: #fff; margin-bottom: 10px; font-weight: 400; }
-        .office-address em { font-style: normal; font-size: 0.95rem; color: var(--sub-text); font-weight: 300; }
 
         footer {
             margin-top: 120px;
             font-size: 0.8rem;
             color: #444;
             text-align: center;
-            letter-spacing: 1px;
         }
 
-        /* 모바일 최적화 */
         @media (max-width: 768px) {
-            .container { padding: 100px 20px; }
-            .spec-grid, .contact-office, .media-grid { grid-template-columns: 1fr; gap: 40px; }
-            header h1 { font-size: 2.5rem; }
+            .contact-office { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -227,27 +188,27 @@
     <div class="container">
         <header>
             <h1>HOTAEYS</h1>
-            <p>Industrial Control System Architect</p>
+            <p>Mastering the Flow of Automation</p>
         </header>
 
         <section>
             <h2>Technical Inventory</h2>
             <div class="spec-grid">
                 <div class="spec-item">
-                    <strong>PLC Architecture</strong>
-                    <span>LS Electric (XG5000), Mitsubishi (GX Works 2/3), Sequence Design</span>
+                    <strong>PLC Programming</strong>
+                    <span>LS Electric, Mitsubishi를 기반으로 한 안정적이고 명확한 시퀀스 설계</span>
                 </div>
                 <div class="spec-item">
-                    <strong>HMI & SCADA UX</strong>
-                    <span>Pro-face, XP-Builder, Dashboard Data Visualization</span>
+                    <strong>User Interface</strong>
+                    <span>현장 작업자가 직관적으로 설비를 이해할 수 있는 최적의 모니터링 화면 구성</span>
                 </div>
                 <div class="spec-item">
                     <strong>Industrial Network</strong>
-                    <span>EtherNet/IP, Modbus TCP/RTU, EtherCAT, PROFINET</span>
+                    <span>장비와 장비 사이의 끊김 없는 데이터 흐름을 위한 전용 통신망 구축</span>
                 </div>
                 <div class="spec-item">
-                    <strong>Embedded & SBC</strong>
-                    <span>SBC-based Edge Gateway, Python Data Processing, Custom Protocol</span>
+                    <strong>Embedded Control</strong>
+                    <span>싱글보드 컴퓨터(SBC)와 파이썬을 결합한 지능형 데이터 처리 및 연동 기술</span>
                 </div>
             </div>
         </section>
@@ -256,18 +217,18 @@
             <h2>Strategic Solutions</h2>
             
             <div class="solution-item">
-                <h3>Edge Computing & Mobile Integration</h3>
-                <p>산업용 <strong>SBC(Single Board Computer)</strong>를 활용한 데이터 게이트웨이를 설계합니다. PLC와 모바일 디바이스 간의 전용 통신 스택을 구축하여 실시간 공정 데이터 모니터링 및 원격 제어 환경을 완벽하게 구현합니다.</p>
+                <h3>내 손안의 제어 센터, 모바일 연동</h3>
+                <p>사무실이나 외부에서도 스마트폰 하나로 공장의 현황을 실시간으로 파악하고 제어합니다. 전용 제어기(SBC)를 통해 PLC의 신호를 데이터화하여 가장 안전하고 편리한 원격 관리 환경을 만듭니다.</p>
             </div>
 
             <div class="solution-item">
-                <h3>Embedded Visual Feedback System</h3>
-                <p>설비에 최적화된 임베디드 제어 기술을 통해 <strong>어드레서블(Addressable) LED 스트립</strong>을 시스템과 유기적으로 통합합니다. 공정의 사이클 타임, 상태 변화, 위치별 에러 상황을 픽셀 단위로 시각화하여 현장의 직관성을 극대화합니다.</p>
+                <h3>눈으로 읽는 공정, 스마트 LED 가이드</h3>
+                <p>단순한 경고등을 넘어, 설비의 구석구석을 밝히는 LED 스트립이 공정의 속도와 에러 위치를 실시간으로 보여줍니다. 텍스트보다 빠른 시각적 피드백으로 현장의 트러블슈팅 시간을 획기적으로 단축합니다.</p>
             </div>
 
             <div class="solution-item">
-                <h3>Complex Logic & Protocol Design</h3>
-                <p>단순 제어를 넘어 이기종 장비 간의 프로토콜 컨버전 및 대용량 데이터 전송 로직을 설계합니다. 시스템의 안정성을 보장하면서도 확장 가능한 소프트웨어 아키텍처를 지향합니다.</p>
+                <h3>유연하고 확장성 있는 시스템 설계</h3>
+                <p>단순히 작동하는 것을 넘어, 나중에 설비가 늘어나거나 바뀌어도 쉽게 대응할 수 있는 '결이 고운 코드'를 지향합니다. 복잡한 문제를 가장 단순하고 명료한 논리로 해결하는 것이 저의 핵심 역량입니다.</p>
             </div>
         </section>
 
@@ -276,34 +237,33 @@
             <div class="media-grid">
                 <div class="media-item">
                     <img src="plc-panel.jpg" alt="PLC 제어반 사진">
-                    <div class="caption">시스템 설계 및 배선 시운전 - High-Stability Control Panel</div>
+                    <div class="caption">안정적인 가동을 최우선으로 설계된 정밀 제어 시스템</div>
                 </div>
-
                 <div class="media-item">
                     <video controls>
                         <source src="mobile-demo.mp4" type="video/mp4">
                     </video>
-                    <div class="caption">SBC 기반 원격 제어 시연 - Remote Interface Deployment</div>
+                    <div class="caption">SBC 기반의 모바일 데이터 링크 및 원격 제어 시연</div>
                 </div>
             </div>
         </section>
 
         <div class="contact-office">
             <div class="contact-info">
-                <h3>Consulting</h3>
-                <p style="margin-bottom: 15px; color: var(--sub-text); font-weight: 300;">공정 고도화 및 시스템 아키텍처 상담</p>
+                <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:20px;">CONSULTING</h3>
+                <p style="margin-bottom: 15px; color: var(--sub-text); font-weight: 300;">현장의 자동화, 그 이상의 가치를 고민합니다.</p>
                 <a href="mailto:hotaeys@email.com">SEND INQUIRY</a>
             </div>
 
             <div class="office-address">
-                <h3>Office</h3>
+                <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:20px;">OFFICE</h3>
                 <p>경상남도 창원시 성산구 중앙대로 105</p>
-                <em>(우) 51500 / 창원시청 인근 아카이브</em>
+                <em>(우) 51500 / 창원시청 부근 아카이브</em>
             </div>
         </div>
 
         <footer>
-            &copy; 2026 Hotaeys. Crafting Precision in Automation.
+            &copy; 2026 Hotaeys. Engineering for Reliability.
         </footer>
     </div>
 
