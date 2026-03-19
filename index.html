@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yonghwa Systems | Integrated Control Solution</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Noto+Sans+KR:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0a0a0c;
@@ -37,12 +37,25 @@
             margin-bottom: 140px;
         }
 
+        /* 💡 타이틀 디자인 수정 섹션 */
         header h1 {
+            font-family: 'Noto Sans KR', sans-serif; /* 이쁜 한글 서체 적용 */
             font-size: clamp(2.5rem, 8vw, 3.8rem);
             font-weight: 700;
             color: #ffffff;
-            letter-spacing: -2.5px;
+            letter-spacing: -1px;
             margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: baseline; /* 글자 하단 라인을 맞춤 */
+            gap: 2px;
+        }
+
+        header h1 .small-text {
+            font-size: 0.5em; /* '용', '템'의 절반 크기 */
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0 4px;
         }
 
         header p {
@@ -179,9 +192,8 @@
 
         .office-address p { margin: 0; color: var(--text); font-size: 1rem; }
         
-        /* 💡 수정: 주소 하단 기울기 제거 및 스타일 조정 */
         .office-address em { 
-            font-style: normal; /* 기울기 해제 */
+            font-style: normal;
             color: var(--sub-text); 
             font-size: 0.9rem; 
             display: block; 
@@ -197,6 +209,7 @@
 
         @media (max-width: 768px) {
             .contact-office { grid-template-columns: 1fr; }
+            header h1 { letter-spacing: -2px; }
         }
     </style>
 </head>
@@ -204,7 +217,7 @@
 
     <div class="container">
         <header>
-            <h1>용화시스템</h1>
+            <h1>용<span class="small-text">화시스템</span>템</h1>
             <p>ADVANCED CONTROL ARCHITECT</p>
         </header>
 
