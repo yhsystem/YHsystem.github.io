@@ -24,12 +24,38 @@
             line-height: 1.8;
             letter-spacing: -0.4px;
             word-break: keep-all;
+            /* 스크롤 효과를 위한 필수 설정 */
+            overflow-x: hidden;
+            perspective: 10px; /* 입체감 부여 */
+        }
+
+        /* 스크롤 시 배경 Blur & Zoom 효과를 위한 가상 요소 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 20% 35%, rgba(0, 122, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 75% 65%, rgba(20, 20, 23, 0.8) 0%, transparent 50%);
+            z-index: -1;
+            transform: translateZ(0); /* 기본 상태 */
+            transition: transform 0.1s linear, filter 0.1s linear; /* 부드러운 변환 */
+            will-change: transform, filter; /* 성능 최적화 */
+        }
+
+        /* 스크롤 이벤트 발생 시 자바스크립트로 제어할 클래스 */
+        body.scrolled::before {
+            transform: translateZ(2px) scale(1.1); /* 앞으로 다가오며 확대되는 효과 */
+            filter: blur(8px); /* 흐려지는 효과 */
         }
 
         .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 120px 24px;
+            position: relative; /* 배경보다 위에 위치 */
+            z-index: 1;
         }
 
         header {
@@ -209,8 +235,8 @@
                     <span>Intuitive UX 디자인을 적용한 모니터링 시스템</span>
                 </div>
                 <div class="spec-item">
-                    <strong>Smart Network</strong>
-                    <span>Industrial Ethernet 기반의 안정적인 장비 간 Protocol 통합 및 데이터 링크</span>
+                    <strong>Motion & Network</strong>
+                    <span>Industrial Ethernet 기반의 안정적인 장비 간 Protocol 통합 및 Robot Interface</span>
                 </div>
                 <div class="spec-item">
                     <strong>Embedded & SBC</strong>
@@ -238,6 +264,12 @@
                 <span class="eng-tag">SYSTEM SCALABILITY</span>
                 <h3>지속 가능한 설비 아키텍처</h3>
                 <p>추가 확장성까지 고려한 유연한 로직을 설계합니다. 복잡한 시스템을 가장 명료한 구조로 풀어내어, 향후 설비 증설 시에도 최소한의 리소스로 대응할 수 있는 <strong>Clean Code</strong> 기반의 환경을 제공합니다.</p>
+            </div>
+
+            <div class="solution-item">
+                <span class="eng-tag">HARDWARE INTEGRATION</span>
+                <h3>제어반(판넬) 제작 및 설치</h3>
+                <p>설계된 제어 로직이 최상의 성능을 발휘할 수 있도록, <strong>규격화되고 정돈된 고품질 제어반</strong>을 직접 제작하고 현장에 완벽하게 설치합니다. 하드웨어와 소프트웨어의 빈틈없는 통합을 보장합니다.</p>
             </div>
         </section>
 
@@ -275,6 +307,25 @@
             &copy; 2026 YH-SYSTEM. Crafting Precision in Automation.
         </footer>
     </div>
+
+    <script>
+        const body = document.body;
+        const scrollThreshold = 100; // 효과가 시작될 스크롤 위치 (px)
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > scrollThreshold) {
+                // 스크롤을 내리면 '.scrolled' 클래스 추가 -> CSS 효과 적용
+                if (!body.classList.contains('scrolled')) {
+                    body.classList.add('scrolled');
+                }
+            } else {
+                // 스크롤이 맨 위로 올라가면 클래스 제거
+                if (body.classList.contains('scrolled')) {
+                    body.classList.remove('scrolled');
+                }
+            }
+        });
+    </script>
 
 </body>
 </html>
