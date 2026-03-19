@@ -2,34 +2,241 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Hotaeys의 홈페이지</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotaeys | PLC & Factory Automation Specialist</title>
     <style>
-        /* 화면 전체의 기본 설정을 합니다. */
-        body { 
-            font-family: 'Malgun Gothic', sans-serif; 
-            text-align: center; 
-            padding: 50px; 
-            background-color: #f0f0f0; /* 배경색: 밝은 회색 */
+        /* 기본 스타일 정의 */
+        :root {
+            --bg-color: #0a0e17; /* 짙은 네이비/블랙 (신뢰감) */
+            --text-color: #e0e6ed; /* 밝은 회색 (눈 편안함) */
+            --point-color: #00f2fe; /* 네온 블루 (자동화, 미래) */
+            --sub-point-color: #4facfe; /* 서브 블루 */
+            --card-bg: #161b22; /* 카드 배경색 */
         }
-        /* 메인 컨텐츠 박스 스타일입니다. */
-        .main-box { 
-            background: white; 
-            padding: 40px; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
-            display: inline-block; 
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            line-height: 1.6;
         }
-        h1 { color: #2c3e50; } /* 제목 색상: 짙은 남색 계열 */
-        p { color: #555; font-size: 1.2rem; } /* 본문 글자 크기와 색상 */
+
+        /* 중앙 정렬 컨테이너 */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        /* 헤더 (이름 & 타이틀) */
+        header {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            background: linear-gradient(135deg, var(--point-color), var(--sub-point-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            font-size: 1.5rem;
+            color: #8b9bb4;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        /* 섹션 공통 스타일 */
+        section {
+            margin-bottom: 80px;
+        }
+
+        section h2 {
+            font-size: 2rem;
+            border-bottom: 2px solid var(--point-color);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        /* 핵심 역량 (About) */
+        .about-text {
+            font-size: 1.2rem;
+            color: #b1bccd;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            text-align: center;
+        }
+
+        /* 기술 스택 카드 grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #21262d;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.1);
+            border-color: var(--point-color);
+        }
+
+        .skill-card h3 {
+            font-size: 1.4rem;
+            color: var(--point-color);
+            margin-top: 0;
+        }
+
+        .skill-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .skill-card li {
+            margin-bottom: 10px;
+            color: #b1bccd;
+        }
+
+        .skill-card li strong {
+            color: white;
+        }
+
+        /* 문의 섹션 (Contact) */
+        .contact {
+            text-align: center;
+        }
+
+        .contact p {
+            font-size: 1.2rem;
+            color: #b1bccd;
+            margin-bottom: 30px;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--point-color), var(--sub-point-color));
+            color: #0a0e17;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* 푸터 */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6e7681;
+            font-size: 0.9rem;
+            border-top: 1px solid #21262d;
+        }
+
+        /* 모바일 반응형 처리 */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            header p { font-size: 1.2rem; }
+            .container { padding: 50px 20px; }
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="main-box">
-        <h1>Hotaeys의 홈페이지에 오신 걸 환영합니다!</h1>
-        <hr> <p>이곳은 제가 직접 만든 첫 번째 무료 홈페이지입니다.</p>
-        <p>앞으로 멋진 내용들로 채워나갈 예정입니다.</p>
+    <div class="container">
+        <header>
+            <h1>Hotaeys</h1>
+            <p>PLC Programmer & Factory Automation Specialist</p>
+        </header>
+
+        <section class="about">
+            <h2>About Me</h2>
+            <div class="about-text">
+                <p>안녕하세요. 저는 공장자동화(FA) 현장의 핵심인 <strong>자동제어 시스템의 모든 것</strong>을 담당하는 PLC 프로그래머입니다.</p>
+                <p>단순한 코딩을 넘어, 최적의 공정 효율성과 절대적인 시스템 안정성을 보장하는 지능형 제어 솔루션을 설계하고 구축합니다. 현장의 목소리를 반영하여 가장 확실한 자동화를 실현합니다.</p>
+            </div>
+        </section>
+
+        <section class="skills">
+            <h2>Core Competencies</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>PLC Programming</h3>
+                    <ul>
+                        <li><strong>Siemens</strong> (TIA Portal, Step7)</li>
+                        <li><strong>Mitsubishi</strong> (GX Works2/3)</li>
+                        <li><strong>LS Electric</strong> (XG5000)</li>
+                        <li><strong>Allen-Bradley</strong> (Studio 5000)</li>
+                        <li><em>Structure Text, Ladder Logic, SFC</em></li>
+                    </ul>
+                </div>
+
+                <div class="skill-card">
+                    <h3>HMI & SCADA</h3>
+                    <ul>
+                        <li><strong>Pro-face</strong> (GP-Pro EX)</li>
+                        <li><strong>Siemens WinCC</strong></li>
+                        <li><strong>LS Electric eXP</strong></li>
+                        <li><strong>Industrial PC (IPC) 기반 HMI 설계</strong></li>
+                        <li><em>데이터 수집 및 모니터링 시스템 구축</em></li>
+                    </ul>
+                </div>
+
+                <div class="skill-card">
+                    <h3>Motion & Network</h3>
+                    <ul>
+                        <li><strong>Servo Drive & Inverter 제어</strong></li>
+                        <li><strong>로봇 제어 인터페이스</strong> (다관절, 스카라)</li>
+                        <li><strong>EtherNet/IP, PROFINET, Modbus</strong></li>
+                        <li><strong>CC-Link, EtherCAT 시스템 구축</strong></li>
+                        <li><em>고속 정밀 모션 제어 솔루션</em></li>
+                    </ul>
+                </div>
+
+                <div class="skill-card">
+                    <h3>Field Engineering</h3>
+                    <ul>
+                        <li><strong>자동화 라인 시운전 및 트러블슈팅</strong></li>
+                        <li><strong>제어반 설계 및 하드웨어 구성</strong></li>
+                        <li><strong>생산관리시스템(MES) 연동</strong></li>
+                        <li><strong>기존 설비 레트로핏(Retrofit)</strong></li>
+                        <li><em>안전 표준(Safety) 기반 제어 설계</em></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact">
+            <h2>Get In Touch</h2>
+            <p>신규 프로젝트 문의, 기술 상담, 또는 협업 제안을 환영합니다.<br>현장에 가장 최적화된 자동화 솔루션을 제공해 드리겠습니다.</p>
+            <a href="mailto:your-email@address.com" class="contact-btn">이메일로 문의하기</a>
+        </section>
     </div>
+
+    <footer>
+        <p>&copy; 2026 Hotaeys. All Rights Reserved.</p>
+        <p>Powered by GitHub Pages</p>
+    </footer>
 
 </body>
 </html>
