@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hotaeys | Integrated Control Solution</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
@@ -15,93 +15,96 @@
             --border: #252529;
         }
 
+        /* 초기화 및 기본 설정 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Malgun Gothic', sans-serif;
+        html, body {
+            width: 100%;
+            overflow-x: hidden; /* 가로 스크롤 방지 */
             background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.8;
-            letter-spacing: -0.4px;
-            word-break: keep-all;
-            /* 스크롤 효과를 위한 필수 설정 */
-            overflow-x: hidden;
-            perspective: 10px; /* 입체감 부여 */
         }
 
-        /* 스크롤 시 배경 Blur & Zoom 효과를 위한 가상 요소 */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Malgun Gothic', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            letter-spacing: -0.4px;
+            word-break: keep-all;
+        }
+
+        /* 배경 효과 레이어 (검은 화면 문제 해결) */
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg);
-            background-image: 
-                radial-gradient(circle at 20% 35%, rgba(0, 122, 255, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 75% 65%, rgba(20, 20, 23, 0.8) 0%, transparent 50%);
-            z-index: -1;
-            transform: translateZ(0); /* 기본 상태 */
-            transition: transform 0.1s linear, filter 0.1s linear; /* 부드러운 변환 */
-            will-change: transform, filter; /* 성능 최적화 */
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 35%, rgba(0, 122, 255, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 75% 65%, rgba(20, 20, 23, 0.5) 0%, transparent 50%);
+            z-index: -1; /* 콘텐츠 뒤로 배치 */
+            transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1), filter 0.6s ease;
+            will-change: transform, filter;
         }
 
-        /* 스크롤 이벤트 발생 시 자바스크립트로 제어할 클래스 */
+        /* 스크롤 시 배경 흐림 및 확대 효과 */
         body.scrolled::before {
-            transform: translateZ(2px) scale(1.1); /* 앞으로 다가오며 확대되는 효과 */
-            filter: blur(8px); /* 흐려지는 효과 */
+            transform: scale(1.15);
+            filter: blur(10px);
         }
 
+        /* 반응형 컨테이너 */
         .container {
+            width: 90%;
             max-width: 1000px;
             margin: 0 auto;
-            padding: 120px 24px;
-            position: relative; /* 배경보다 위에 위치 */
-            z-index: 1;
+            padding: 80px 0; /* 상하 여백 조정 */
         }
 
         header {
             text-align: center;
-            margin-bottom: 140px;
+            margin-bottom: 100px;
+            padding: 0 10px;
         }
 
         header h1 {
-            font-size: clamp(2.5rem, 8vw, 3.8rem);
+            font-size: clamp(2rem, 10vw, 3.8rem); /* 화면 크기에 따라 글자 크기 가변 */
             font-weight: 700;
             color: #ffffff;
-            letter-spacing: -2.5px;
+            letter-spacing: -2px;
             margin-bottom: 15px;
         }
 
         header p {
-            font-size: 1rem;
+            font-size: clamp(0.7rem, 3vw, 1rem);
             color: var(--point);
             font-weight: 500;
             letter-spacing: 4px;
             text-transform: uppercase;
         }
 
-        section { margin-bottom: 120px; }
+        section { margin-bottom: 100px; }
         
         h2 {
             font-size: 0.8rem;
             color: var(--point);
             text-transform: uppercase;
             letter-spacing: 5px;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             text-align: center;
         }
 
+        /* 그리드 반응형 설정 */
         .spec-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
         }
 
         .spec-item {
             background-color: var(--card-bg);
-            padding: 35px;
+            padding: 30px;
             border-radius: 12px;
             border: 1px solid var(--border);
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
         }
 
         .spec-item:hover {
@@ -111,28 +114,28 @@
 
         .spec-item strong {
             display: block;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #ffffff;
             margin-bottom: 10px;
         }
 
         .spec-item span {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--sub-text);
         }
 
         .solution-item {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             background-color: var(--card-bg);
-            padding: 40px;
+            padding: 30px;
             border-radius: 12px;
             border: 1px solid var(--border);
         }
 
         .solution-item h3 {
-            font-size: 1.45rem;
+            font-size: 1.3rem;
             color: #ffffff;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
         }
@@ -142,27 +145,33 @@
             width: 6px; height: 6px;
             background-color: var(--point);
             border-radius: 50%;
-            margin-right: 15px;
+            margin-right: 12px;
+            flex-shrink: 0;
         }
 
         .solution-item .eng-tag {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--point);
             font-weight: 700;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             display: block;
         }
 
         .solution-item p {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             color: var(--sub-text);
         }
 
+        /* 미디어 그리드 반응형 (모바일에서 일그러짐 방지) */
         .media-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .media-grid { grid-template-columns: 1fr 1fr; }
         }
 
         .media-item {
@@ -173,45 +182,50 @@
         }
 
         .media-item img, .media-item video {
-            width: 100%; height: 320px;
-            object-fit: cover; display: block;
+            width: 100%; 
+            height: auto;
+            aspect-ratio: 16 / 9; /* 비율 유지 */
+            object-fit: cover; 
+            display: block;
         }
 
         .media-item .caption {
-            padding: 20px;
-            font-size: 0.95rem;
+            padding: 15px;
+            font-size: 0.85rem;
             color: var(--sub-text);
             border-top: 1px solid var(--border);
         }
 
+        /* 하단 컨택트 영역 반응형 */
         .contact-office {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 60px;
-            padding-top: 80px;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            padding-top: 60px;
             border-top: 1px solid var(--border);
-            margin-top: 80px;
+            margin-top: 60px;
+        }
+
+        @media (min-width: 768px) {
+            .contact-office { grid-template-columns: 1.2fr 0.8fr; }
         }
 
         .contact-info a {
             color: #ffffff;
             text-decoration: none;
             font-weight: 700;
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 5vw, 1.8rem);
             background: linear-gradient(to right, #fff, var(--point));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         footer {
-            margin-top: 100px;
-            font-size: 0.8rem;
+            margin-top: 80px;
+            padding-bottom: 40px;
+            font-size: 0.75rem;
             color: #444;
             text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            .contact-office { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -277,7 +291,7 @@
             <h2>PROJECT ARCHIVES</h2>
             <div class="media-grid">
                 <div class="media-item">
-                    <img src="plc-panel.jpg" alt="사진">
+                    <img src="plc-panel.jpg" alt="PLC 패널 사진">
                     <div class="caption">안정적인 시스템 설계 - High-Reliability Deployment</div>
                 </div>
                 <div class="media-item">
@@ -291,15 +305,15 @@
 
         <div class="contact-office">
             <div class="contact-info">
-                <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:20px;">CONSULTING</h3>
-                <p style="margin-bottom: 15px; color: var(--sub-text); font-weight: 300;">자동화 시스템의 고도화와 현장 혁신을 제안합니다.</p>
+                <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:15px;">CONSULTING</h3>
+                <p style="margin-bottom: 15px; color: var(--sub-text); font-weight: 300; font-size: 0.9rem;">자동화 시스템의 고도화와 현장 혁신을 제안합니다.</p>
                 <a href="mailto:hotaeys@email.com">SEND INQUIRY</a>
             </div>
 
             <div class="office-address">
-                <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:20px;">LOCATION</h3>
-                <p>경상남도 창원시 성산구 여기가 어딘지 나도 모르게 </p>
-                <p>(우) 삼겹</p>
+                <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:15px;">LOCATION</h3>
+                <p style="font-size: 0.9rem;">경상남도 창원시 성산구 여기가 어딘지 나도 모르게 </p>
+                <p style="font-size: 0.9rem;">(우) 삼겹</p>
             </div>
         </div>
 
@@ -309,20 +323,12 @@
     </div>
 
     <script>
-        const body = document.body;
-        const scrollThreshold = 100; // 효과가 시작될 스크롤 위치 (px)
-
+        // 스크롤 감지하여 배경 효과 클래스 토글
         window.addEventListener('scroll', () => {
-            if (window.scrollY > scrollThreshold) {
-                // 스크롤을 내리면 '.scrolled' 클래스 추가 -> CSS 효과 적용
-                if (!body.classList.contains('scrolled')) {
-                    body.classList.add('scrolled');
-                }
+            if (window.scrollY > 50) {
+                document.body.classList.add('scrolled');
             } else {
-                // 스크롤이 맨 위로 올라가면 클래스 제거
-                if (body.classList.contains('scrolled')) {
-                    body.classList.remove('scrolled');
-                }
+                document.body.classList.remove('scrolled');
             }
         });
     </script>
