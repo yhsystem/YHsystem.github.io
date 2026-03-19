@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotaeys | Integrated Control Solution</title>
+    <title>Yonghwa Systems | Integrated Control Solution</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -18,7 +18,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            /* 기존의 깔끔한 시스템 폰트 조합으로 복구 */
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Malgun Gothic', sans-serif;
             background-color: var(--bg);
             color: var(--text);
@@ -178,6 +177,17 @@
             -webkit-text-fill-color: transparent;
         }
 
+        .office-address p { margin: 0; color: var(--text); font-size: 1rem; }
+        
+        /* 💡 수정: 주소 하단 기울기 제거 및 스타일 조정 */
+        .office-address em { 
+            font-style: normal; /* 기울기 해제 */
+            color: var(--sub-text); 
+            font-size: 0.9rem; 
+            display: block; 
+            margin-top: 5px;
+        }
+
         footer {
             margin-top: 100px;
             font-size: 0.8rem;
@@ -194,7 +204,7 @@
 
     <div class="container">
         <header>
-            <h1>HOTAEYS</h1>
+            <h1>용화시스템</h1>
             <p>ADVANCED CONTROL ARCHITECT</p>
         </header>
 
@@ -203,7 +213,11 @@
             <div class="spec-grid">
                 <div class="spec-item">
                     <strong>PLC Architecture</strong>
-                    <span>LS Electric / Mitsubishi 기반의 고신뢰성 시퀀스 및 정밀 제어 로직 설계</span>
+                    <span>LS / Mitsubishi 기반의 고신뢰성 시퀀스 및 정밀 제어 로직 설계</span>
+                </div>
+                <div class="spec-item">
+                    <strong>Panel Fabrication</strong>
+                    <span>시스템 환경을 고려한 최적의 하드웨어 배치 및 제어반(Panel) 직접 제작</span>
                 </div>
                 <div class="spec-item">
                     <strong>Advanced HMI</strong>
@@ -253,7 +267,7 @@
                     <video controls>
                         <source src="mobile-demo.mp4" type="video/mp4">
                     </video>
-                    <div class="caption">무선 원격 제어 및 데이터 모니터링 시연 - Mobile Interface Operation</div>
+                    <div class="caption">원격 제어 및 데이터 모니터링 시연 - Mobile Interface Operation</div>
                 </div>
             </div>
         </section>
@@ -267,13 +281,13 @@
 
             <div class="office-address">
                 <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:20px;">LOCATION</h3>
-                <p>경상남도 창원시 성산구 중앙대로 105</p>
-                <em>(우) 51500 / 창원시청 부근 아카이브</em>
+                <p>경상남도 창원시 어딘지 모르게</p>
+                <em>(우) 51500 / </em>
             </div>
         </div>
 
         <footer>
-            &copy; 2026 Hotaeys. Crafting Precision in Automation.
+            &copy; 2026 Yonghwa Systems. Crafting Precision in Automation.
         </footer>
     </div>
 
