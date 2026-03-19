@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hotaeys | Integrated Control Solution</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Black+Han+Sans&display=swap" rel="stylesheet">
     <style>
         :root {
             /* 배경색을 단순 검정에서 짙은 네이비 톤이 섞인 다크 그레이로 조정 */
@@ -69,11 +69,13 @@
             padding: 0 10px;
         }
 
+        /* [수정] 타이틀 폰트를 이미지와 유사한 스타일로 변경 */
         header h1 {
-            font-size: clamp(2rem, 10vw, 3.8rem);
-            font-weight: 700;
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: clamp(2.5rem, 12vw, 4.5rem); /* 이미지처럼 굵고 강조되도록 크기 조정 */
+            font-weight: 400; /* Black Han Sans는 기본적으로 굵은 폰트입니다 */
             color: #ffffff;
-            letter-spacing: -2px;
+            letter-spacing: 2px; /* 이미지의 적절한 자간 반영 */
             margin-bottom: 15px;
             text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
