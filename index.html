@@ -20,13 +20,13 @@
             margin: 0; padding: 0;
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Malgun Gothic', sans-serif;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
             line-height: 1.6;
             word-break: keep-all;
         }
 
         .wrapper {
-            max-width: 850px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 80px 24px;
         }
@@ -69,13 +69,14 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
+            margin-bottom: 30px;
         }
 
         .spec-item {
             background: var(--box-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 20px;
+            padding: 20pxSpec;
             transition: border-color 0.3s;
         }
 
@@ -83,13 +84,13 @@
         .spec-item strong { display: block; color: #fff; margin-bottom: 5px; font-size: 1.1rem; }
         .spec-item span { color: var(--sub-text); font-size: 0.95rem; }
 
-        /* 신규 추가: 솔루션 하이라이트 */
+        /* 솔루션 하이라이트 */
         .solution-box {
             background: linear-gradient(145deg, #1c2128, #161b22);
             border: 1px solid var(--border);
             border-left: 4px solid var(--accent);
             padding: 25px;
-            margin-top: 15px;
+            margin-bottom: 15px;
             border-radius: 0 8px 8px 0;
         }
 
@@ -101,20 +102,66 @@
 
         .solution-box p { margin: 5px 0; font-size: 0.95rem; color: var(--text); }
 
-        /* 연락처 및 푸터 */
-        .contact { margin-top: 100px; padding-top: 40px; border-top: 1px solid var(--border); }
-        .contact a {
+        /* [신규] 미디어 그리드 (사진/동영상) */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .media-item {
+            background: var(--box-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden; /* 이미지가 박스를 넘치지 않게 */
+            transition: transform 0.3s;
+        }
+
+        .media-item:hover { transform: scale(1.02); border-color: var(--point); }
+
+        .media-item img, .media-item video {
+            width: 100%;
+            height: 200px; /* 고정 높이 */
+            object-fit: cover; /* 이미지가 비율 깨지지 않게 꽉 채움 */
+            display: block;
+        }
+
+        .media-item .caption {
+            padding: 15px;
+            font-size: 0.9rem;
+            color: var(--sub-text);
+            border-top: 1px solid var(--border);
+        }
+
+        /* 연락처 및 오피스 주소 */
+        .contact-office {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid var(--border);
+        }
+
+        .contact-office h2 { border: none; padding: 0; margin-bottom: 15px; }
+
+        .contact-info a {
             color: var(--point);
             text-decoration: none;
             font-weight: bold;
             font-size: 1.2rem;
         }
 
-        footer { margin-top: 30px; font-size: 0.85rem; color: var(--sub-text); }
+        .office-address p { margin: 0; color: var(--text); font-size: 1rem; }
+        .office-address em { font-style: normal; color: var(--sub-text); font-size: 0.9rem; display: block; margin-top: 5px;}
+
+        footer { margin-top: 50px; padding-top: 20px; font-size: 0.85rem; color: var(--sub-text); text-align: center; border-top: 1px solid #161b22; }
 
         /* 모바일 대응 */
         @media (max-width: 650px) {
-            .spec-grid { grid-template-columns: 1fr; }
+            .spec-grid, .contact-office { grid-template-columns: 1fr; gap: 20px; }
+            .wrapper { padding: 50px 20px; }
         }
     </style>
 </head>
@@ -123,14 +170,14 @@
     <div class="wrapper">
         <header>
             <h1>HOTAEYS</h1>
-            <p>Industrial Automation & Control Engineer</p>
+            <p>FA Control & Embedded Integration Specialist</p>
         </header>
 
         <section>
-            <h2>Core Control Skills</h2>
+            <h2>Technical Skills</h2>
             <div class="spec-grid">
                 <div class="spec-item">
-                    <strong>Mainstream PLC</strong>
+                    <strong>Main PLC Programming</strong>
                     <span>LS Electric (XG5000), Mitsubishi (GX Works)</span>
                 </div>
                 <div class="spec-item">
@@ -153,20 +200,53 @@
             
             <div class="solution-box">
                 <h3>Mobile-to-PLC Integration</h3>
-                <p>전용 게이트웨이와 사용자 정의 스크립트를 활용하여 스마트폰 기반의 실시간 PLC 제어 인터페이스를 구축합니다. 현장 외부에서도 장비 상태 확인 및 긴급 제어가 가능한 원격 솔루션을 제공합니다.</p>
+                <p>전용 게이트웨이를 활용하여 스마트폰 기반의 실시간 PLC 제어 인터페이스를 구축합니다. 현장 외부 원격 제어 솔루션을 제공합니다.</p>
             </div>
 
             <div class="solution-box" style="border-left-color: #f2c94c;">
                 <h3>Smart Status Signaling (LED Scan)</h3>
-                <p>개별 도트 제어가 가능한 고휘도 LED 시스템을 설비에 통합하여 공정의 진행률, 대기 시간, 에러 발생 위치를 시각화합니다. 단순 경고등(Tower Lamp)을 넘어 직관적인 공정 상태 가이드 시스템을 구현합니다.</p>
+                <p>고휘도 LED 시스템을 설비에 통합하여 공정의 진행률, 대기 시간, 에러 위치를 시각화합니다. 직관적인 공정 가이드 시스템을 구현합니다.</p>
             </div>
         </section>
 
-        <section class="contact">
-            <h2>Technical Support</h2>
-            <p>공정 자동화 및 시스템 고도화 문의</p>
-            <a href="mailto:your-email@address.com">SEND INQUIRY</a>
+        <section>
+            <h2>Field Archives (Photos & Videos)</h2>
+            <p style="color: var(--sub-text); margin-bottom: 20px;">실제 현장 구축 사례 및 시연 영상입니다.</p>
+            
+            <div class="media-grid">
+                <div class="media-item">
+                    <img src="placeholder-project1.jpg" alt="PLC 제어반 사진">
+                    <div class="caption">Hataeys가 직접 설계 및 시운전한 PLC 제어반 내부</div>
+                </div>
+
+                <div class="media-item">
+                    <img src="placeholder-led-status.jpg" alt="LED 상태 표시 사진">
+                    <div class="caption">LED 스트립을 활용한 공정 상태 시각화 구현 사례</div>
+                </div>
+
+                <div class="media-item">
+                    <video controls>
+                        <source src="placeholder-demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </div>
+                    <div class="caption">모바일 원격 PLC 제어 시연 영상 (클릭 시 재생)</div>
+                </div>
+            </div>
         </section>
+
+        <div class="contact-office">
+            <div class="contact-info">
+                <h2>Technical Support</h2>
+                <p style="margin: 0 0 15px 0;">공정 자동화 및 시스템 고도화 문의</p>
+                <a href="mailto:your-email@address.com">SEND INQUIRY</a>
+            </div>
+
+            <div class="office-address">
+                <h2>Office</h2>
+                <p>경상남도 창원시 성산구 중앙대로 105</p>
+                <em>(우) 51500 / 창원시청 부근</em>
+            </div>
+        </div>
 
         <footer>
             &copy; 2026 Hotaeys. Engineering for Reliability.
