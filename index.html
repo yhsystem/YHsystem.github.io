@@ -3,194 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotaeys | FA Control Specialist</title>
+    <title>Hotaeys | FA Architect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Noto+Sans+KR:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        /* 시스템 변수 정의 (절제된 다크 톤) */
         :root {
-            --bg: #ffffff;          /* 순백색 배경 (깨끗함) */
-            --text: #1a1a1a;        /* 짙은 그레이 (가독성) */
-            --sub-text: #666666;    /* 보조 텍스트 (차분함) */
-            --point: #0047ab;       /* 절제된 코발트 블루 (신뢰) */
-            --border: #e1e1e1;       /* 아주 연한 구분선 */
-            --box-bg: #f9f9f9;      /* 옅은 그레이 박스 */
+            --bg: #0a0a0c;          /* 깊은 블랙 (고급스러움) */
+            --card-bg: #141417;    /* 약간 밝은 블랙 (깊이감) */
+            --text: #eaeaea;        /* 밝은 그레이 (눈 편안함) */
+            --sub-text: #a0a0a5;    /* 중간 그레이 (차분함) */
+            --point: #007aff;       /* 정교한 일렉트릭 블루 (기술력) */
+            --border: #252529;       /* 아주 옅은 구분선 */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, 'Malgun Gothic', sans-serif;
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
             background-color: var(--bg);
             color: var(--text);
             line-height: 1.6;
-            letter-spacing: -0.2px; /* 약간 좁은 자간으로 세련미 강조 */
+            letter-spacing: -0.3px; /* 세련된 자간 */
             word-break: keep-all;
+            overflow-x: hidden;
         }
 
+        /* 중앙 정렬 컨테이너 (여백의 미 활용) */
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 100px 24px; /* 여유로운 상하 여백 */
+            padding: 120px 24px; /* 여유로운 상하 여백 */
         }
 
-        /* 헤더: 이름과 타이틀을 심플하게 중앙 배치 */
+        /* 헤더: 이름과 타이틀을 심플하고 묵직하게 배치 */
         header {
             text-align: center;
-            margin-bottom: 120px;
+            margin-bottom: 140px;
         }
 
         header h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 700;
-            color: var(--text);
-            letter-spacing: -1.5px;
-            margin-bottom: 10px;
+            color: #ffffff;
+            letter-spacing: -2px;
+            margin-bottom: 15px;
+            /* 은은한 네온 효과 */
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
         header p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--sub-text);
-            font-weight: 400;
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
-        /* 섹션 공통 스타일: 여백의 미 활용 */
+        /* 섹션 공통 스타일: 전문적인 타이틀 배치 */
         section {
-            margin-bottom: 100px;
+            margin-bottom: 120px;
         }
 
         h2 {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--point);
-            text-transform: uppercase; /* 대문자 변환 */
-            letter-spacing: 3px;       /* 넓은 자간으로 세련미 */
-            margin-bottom: 40px;
+            text-transform: uppercase; /* 대문자 */
+            letter-spacing: 4px;       /* 넓은 자간 */
+            margin-bottom: 50px;
             text-align: center;
+            font-weight: 700;
         }
 
-        /* 기술 스택: 심플한 그리드 */
+        /* 기술 스택: 정교한 그리드 카드 */
         .spec-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .spec-item {
-            background-color: var(--box-bg);
-            padding: 30px;
-            border-radius: 4px; /* 아주 약간 둥근 모서리 */
+            background-color: var(--card-bg);
+            padding: 35px;
+            border-radius: 8px; /* 약간 둥근 모서리 */
             border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* 부드러운 모션 */
+        }
+
+        .spec-item:hover {
+            transform: translateY(-5px); /* 살짝 떠오름 */
+            border-color: var(--point);
+            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.1); /* 은은한 블루 그림자 */
         }
 
         .spec-item strong {
             display: block;
-            font-size: 1.1rem;
-            color: var(--text);
-            margin-bottom: 10px;
+            font-size: 1.15rem;
+            color: #ffffff;
+            margin-bottom: 12px;
+            font-weight: 500;
         }
 
         .spec-item span {
             font-size: 0.95rem;
             color: var(--sub-text);
+            font-weight: 300;
         }
 
-        /* 솔루션 하이라이트: 담백한 텍스트 배치 */
+        /* 솔루션 하이라이트: 담백하고 무게감 있는 배치 */
         .solution-item {
-            margin-bottom: 30px;
-            max-width: 700px;
+            margin-bottom: 40px;
+            max-width: 750px;
             margin-left: auto;
             margin-right: auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
         }
 
         .solution-item h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 10px;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 12px;
         }
 
         .solution-item p {
             font-size: 1rem;
             color: var(--sub-text);
+            font-weight: 300;
         }
 
-        /* 미디어 그리드 (사진/동영상): 차분한 카드 */
+        /* 미디어 그리드 (사진/동영상): 차분한 프레임 */
         .media-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* 더 넓은 카드 */
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); /* 더 넓은 카드 */
             gap: 20px;
         }
 
         .media-item {
-            background-color: var(--bg);
+            background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 4px;
+            border-radius: 8px;
             overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .media-item:hover {
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .media-item img, .media-item video {
             width: 100%;
-            height: 250px; /* 고정 높이 */
+            height: 280px; /* 고정 높이 */
             object-fit: cover; /* 비율 유지 */
             display: block;
+            filter: grayscale(20%); /* 약간의 그레이스케일로 차분함 유지 */
+            transition: filter 0.3s;
+        }
+
+        .media-item:hover img, .media-item:hover video {
+            filter: grayscale(0%); /* 마우스 올리면 컬러 복원 */
         }
 
         .media-item .caption {
             padding: 20px;
             font-size: 0.9rem;
             color: var(--sub-text);
-            background-color: var(--box-bg);
+            background-color: var(--card-bg);
             border-top: 1px solid var(--border);
+            font-weight: 300;
         }
 
-        /* 연락처 및 오피스 주소: 심플한 2단 배치 */
+        /* 연락처 및 오피스 주소: 심플하고 무게감 있는 2단 배치 */
         .contact-office {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            padding-top: 60px;
+            gap: 50px;
+            padding-top: 80px;
             border-top: 1px solid var(--border);
-            margin-top: 120px;
+            margin-top: 140px;
         }
 
         .contact-info h3, .office-address h3 {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--point);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
         }
 
         .contact-info a {
-            color: var(--text);
+            color: #ffffff;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 1.3rem;
+            font-weight: 500;
+            font-size: 1.4rem;
             border-bottom: 2px solid var(--point); /* 강조 언더라인 */
-            padding-bottom: 2px;
+            padding-bottom: 3px;
+            transition: color 0.2s;
+        }
+
+        .contact-info a:hover {
+            color: var(--point);
         }
 
         .office-address p {
             font-size: 1rem;
             color: var(--text);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: 300;
         }
 
         .office-address em {
             font-style: normal;
             font-size: 0.9rem;
             color: var(--sub-text);
+            font-weight: 300;
         }
 
         footer {
-            margin-top: 60px;
+            margin-top: 80px;
             font-size: 0.8rem;
-            color: #b0b0b0;
+            color: #555559;
             text-align: center;
+            font-weight: 300;
         }
 
         /* 모바일 대응 */
         @media (max-width: 768px) {
-            header h1 { font-size: 2rem; }
-            .container { padding: 60px 20px; }
-            section { margin-bottom: 80px; }
+            header h1 { font-size: 2.5rem; }
+            .container { padding: 80px 20px; }
+            section { margin-bottom: 100px; }
             .spec-grid, .contact-office, .media-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -263,7 +305,7 @@
         <div class="contact-office">
             <div class="contact-info">
                 <h3>Technical Support</h3>
-                <p style="margin-bottom: 10px; color: var(--sub-text);">공정 자동화 및 시스템 고도화 문의</p>
+                <p style="margin-bottom: 12px; color: var(--sub-text); font-weight: 300;">공정 자동화 및 시스템 고도화 문의</p>
                 <a href="mailto:hotaeys@email.com">SEND INQUIRY</a> </div>
 
             <div class="office-address">
