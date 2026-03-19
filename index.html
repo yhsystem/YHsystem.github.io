@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hotaeys | Integrated Control Solution</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* 배경색을 단순 검정에서 짙은 네이비 톤이 섞인 다크 그레이로 조정 */
-            --bg: #0d0d10; 
-            --card-bg: rgba(25, 25, 30, 0.6); /* 투명도를 주어 그라데이션이 비치게 설정 */
-            --text: #ececec;
-            --sub-text: #949499;
+            --bg: #08080a; 
+            --card-bg: rgba(20, 20, 25, 0.7); /* 배경이 비치는 반투명 블랙 */
+            --text: #ffffff;
+            --sub-text: #a0a0a5;
             --point: #007aff;
-            --border: #252529;
+            --border: rgba(255, 255, 255, 0.08);
         }
 
-        /* 초기화 및 기본 설정 */
+        /* 초기화 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         html, body {
@@ -26,156 +25,151 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Malgun Gothic', sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             color: var(--text);
-            line-height: 1.6;
-            letter-spacing: -0.4px;
-            word-break: keep-all;
+            line-height: 1.7;
+            letter-spacing: -0.02em;
         }
 
-        /* 배경 효과 레이어: 세련된 다크 그라데이션 추가 */
+        /* [수정] 배경 그라데이션 레이어 - 더욱 선명하게 적용 */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            /* 여러 층의 그라데이션을 겹쳐 깊이감 형성 */
             background: 
-                radial-gradient(circle at 10% 20%, rgba(0, 122, 255, 0.12) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(88, 86, 214, 0.1) 0%, transparent 40%),
-                linear-gradient(135deg, #0d0d10 0%, #1a1a20 100%);
+                radial-gradient(circle at 15% 15%, rgba(0, 122, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 85% 85%, rgba(100, 50, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(160deg, #08080a 0%, #121218 100%);
             z-index: -1;
-            transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1), filter 0.8s ease;
-            will-change: transform, filter;
+            transition: transform 1s ease, filter 1s ease;
         }
 
-        /* 스크롤 시 배경 흐림 및 확대 효과 */
         body.scrolled::before {
             transform: scale(1.1);
-            filter: blur(15px);
+            filter: blur(20px);
         }
 
-        /* 반응형 컨테이너 */
         .container {
             width: 90%;
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 80px 0;
+            padding: 100px 0;
         }
 
+        /* [수정] 타이틀 세련되게 변경 - 미니멀 아키텍트 스타일 */
         header {
             text-align: center;
-            margin-bottom: 100px;
-            padding: 0 10px;
+            margin-bottom: 120px;
         }
 
         header h1 {
-            font-size: clamp(2rem, 10vw, 3.8rem);
-            font-weight: 700;
+            font-size: clamp(2.2rem, 8vw, 4rem);
+            font-weight: 200; /* 얇은 폰트로 세련미 강조 */
+            letter-spacing: 12px; /* 자간을 넓혀 고급스럽게 */
+            text-indent: 12px;
             color: #ffffff;
-            letter-spacing: -2px;
-            margin-bottom: 15px;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        header h1 span {
+            font-weight: 700; /* 강조 부분만 두껍게 */
+            letter-spacing: -1px;
+            color: var(--point);
+            margin-right: -8px;
         }
 
         header p {
-            font-size: clamp(0.7rem, 3vw, 1rem);
-            color: var(--point);
+            font-size: 0.75rem;
+            color: var(--sub-text);
             font-weight: 500;
-            letter-spacing: 4px;
-            text-transform: uppercase;
+            letter-spacing: 5px;
+            opacity: 0.6;
         }
 
-        section { margin-bottom: 100px; }
+        section { margin-bottom: 120px; }
         
         h2 {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--point);
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin-bottom: 40px;
+            letter-spacing: 4px;
+            margin-bottom: 50px;
             text-align: center;
+            opacity: 0.8;
         }
 
-        /* 그리드 반응형 설정 */
+        /* 그리드 시스템 */
         .spec-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 15px;
+            gap: 20px;
         }
 
         .spec-item {
-            background-color: var(--card-bg);
-            backdrop-filter: blur(10px); /* 카드 뒤 배경 살짝 흐리게 */
-            padding: 30px;
-            border-radius: 12px;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            padding: 40px 30px;
+            border-radius: 16px;
             border: 1px solid var(--border);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .spec-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--point);
-            background-color: rgba(30, 30, 35, 0.8);
+            transform: translateY(-8px);
+            border-color: rgba(0, 122, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         .spec-item strong {
             display: block;
-            font-size: 1.1rem;
-            color: #ffffff;
-            margin-bottom: 10px;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            color: #fff;
         }
 
         .spec-item span {
             font-size: 0.9rem;
             color: var(--sub-text);
+            font-weight: 300;
         }
 
+        /* 솔루션 아이템 */
         .solution-item {
-            margin-bottom: 20px;
-            background-color: var(--card-bg);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 12px;
+            margin-bottom: 25px;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 16px;
             border: 1px solid var(--border);
         }
 
-        .solution-item h3 {
-            font-size: 1.3rem;
-            color: #ffffff;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .solution-item h3::before {
-            content: '';
-            width: 6px; height: 6px;
-            background-color: var(--point);
-            border-radius: 50%;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-
         .solution-item .eng-tag {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--point);
             font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
             display: block;
+        }
+
+        .solution-item h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 500;
         }
 
         .solution-item p {
             font-size: 0.95rem;
             color: var(--sub-text);
+            font-weight: 300;
         }
 
-        /* 미디어 그리드 */
+        /* 미디어 아카이브 */
         .media-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
-            gap: 20px;
+            gap: 25px;
         }
 
         @media (min-width: 768px) {
@@ -183,35 +177,34 @@
         }
 
         .media-item {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            background: var(--card-bg);
+            border-radius: 16px;
             overflow: hidden;
+            border: 1px solid var(--border);
         }
 
         .media-item img, .media-item video {
-            width: 100%; 
-            height: auto;
+            width: 100%;
             aspect-ratio: 16 / 9;
-            object-fit: cover; 
+            object-fit: cover;
             display: block;
+            filter: grayscale(20%); /* 차분한 느낌을 위해 채도 약간 감소 */
         }
 
         .media-item .caption {
-            padding: 15px;
-            font-size: 0.85rem;
+            padding: 20px;
+            font-size: 0.8rem;
             color: var(--sub-text);
-            border-top: 1px solid var(--border);
+            text-align: center;
         }
 
-        /* 하단 컨택트 영역 */
+        /* 컨택트 섹션 */
         .contact-office {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 40px;
-            padding-top: 60px;
+            gap: 50px;
+            padding: 80px 0;
             border-top: 1px solid var(--border);
-            margin-top: 60px;
         }
 
         @media (min-width: 768px) {
@@ -219,21 +212,29 @@
         }
 
         .contact-info a {
-            color: #ffffff;
+            color: #fff;
             text-decoration: none;
-            font-weight: 700;
-            font-size: clamp(1.2rem, 5vw, 1.8rem);
-            background: linear-gradient(to right, #fff, var(--point));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: 200;
+            letter-spacing: -1px;
+            transition: color 0.3s;
+        }
+
+        .contact-info a:hover { color: var(--point); }
+
+        .office-address p {
+            font-size: 0.9rem;
+            color: var(--sub-text);
+            margin-bottom: 5px;
+            font-weight: 300;
         }
 
         footer {
-            margin-top: 80px;
-            padding-bottom: 40px;
-            font-size: 0.75rem;
-            color: #555;
+            padding: 50px 0;
+            font-size: 0.7rem;
+            color: #444;
             text-align: center;
+            letter-spacing: 2px;
         }
     </style>
 </head>
@@ -241,8 +242,8 @@
 
     <div class="container">
         <header>
-            <h1>용화 시스템</h1>
-            <p>ADVANCED CONTROL ARCHITECT</p>
+            <h1><span>YH</span> SYSTEM</h1>
+            <p>INTEGRATED CONTROL ARCHITECT</p>
         </header>
 
         <section>
@@ -258,11 +259,11 @@
                 </div>
                 <div class="spec-item">
                     <strong>Motion & Network</strong>
-                    <span>Industrial Ethernet 기반의 안정적인 장비 간 Protocol 통합 및 Robot Interface</span>
+                    <span>Industrial Ethernet 기반의 장비 간 Protocol 통합 및 Robot Interface</span>
                 </div>
                 <div class="spec-item">
                     <strong>Embedded & SBC</strong>
-                    <span>SBC Gateway와 Python을 활용한 지능형 데이터 프로세싱 및 스마트 제어 솔루션</span>
+                    <span>SBC Gateway와 Python을 활용한 지능형 데이터 프로세싱 솔루션</span>
                 </div>
             </div>
         </section>
@@ -307,26 +308,26 @@
 
         <div class="contact-office">
             <div class="contact-info">
-                <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:15px;">CONSULTING</h3>
-                <p style="margin-bottom: 15px; color: var(--sub-text); font-weight: 300; font-size: 0.9rem;">자동화 시스템의 고도화와 현장 혁신을 제안합니다.</p>
-                <a href="mailto:hotaeys@email.com">SEND INQUIRY</a>
+                <h3 style="font-size:0.7rem; color:var(--point); letter-spacing:3px; margin-bottom:20px; opacity:0.6;">CONSULTING</h3>
+                <a href="mailto:hotaeys@email.com">GET IN TOUCH</a>
             </div>
 
             <div class="office-address">
-                <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:15px;">LOCATION</h3>
-                <p style="font-size: 0.9rem;">경상남도 창원시 성산구 여기가 어딘지 나도 모르게 </p>
-                <p style="font-size: 0.9rem;">(우) 삼겹</p>
+                <h3 style="font-size:0.7rem; color:var(--point); letter-spacing:3px; margin-bottom:20px; opacity:0.6;">LOCATION</h3>
+                <p>경상남도 창원시 성산구</p>
+                <p>YH SYSTEM HQ</p>
             </div>
         </div>
 
         <footer>
-            &copy; 2026 YH-SYSTEM. Crafting Precision in Automation.
+            &copy; 2026 YH-SYSTEM. ALL RIGHTS RESERVED.
         </footer>
     </div>
 
     <script>
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
+            // 스크롤 양에 따라 배경 효과 제어
+            if (window.scrollY > 100) {
                 document.body.classList.add('scrolled');
             } else {
                 document.body.classList.remove('scrolled');
