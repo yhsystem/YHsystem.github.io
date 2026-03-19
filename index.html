@@ -7,8 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0c;
-            --card-bg: #141417;
+            /* 배경색을 단순 검정에서 짙은 네이비 톤이 섞인 다크 그레이로 조정 */
+            --bg: #0d0d10; 
+            --card-bg: rgba(25, 25, 30, 0.6); /* 투명도를 주어 그라데이션이 비치게 설정 */
             --text: #ececec;
             --sub-text: #949499;
             --point: #007aff;
@@ -20,7 +21,7 @@
         
         html, body {
             width: 100%;
-            overflow-x: hidden; /* 가로 스크롤 방지 */
+            overflow-x: hidden;
             background-color: var(--bg);
         }
 
@@ -32,23 +33,26 @@
             word-break: keep-all;
         }
 
-        /* 배경 효과 레이어 (검은 화면 문제 해결) */
+        /* 배경 효과 레이어: 세련된 다크 그라데이션 추가 */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 35%, rgba(0, 122, 255, 0.08) 0%, transparent 40%),
-                        radial-gradient(circle at 75% 65%, rgba(20, 20, 23, 0.5) 0%, transparent 50%);
-            z-index: -1; /* 콘텐츠 뒤로 배치 */
-            transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1), filter 0.6s ease;
+            /* 여러 층의 그라데이션을 겹쳐 깊이감 형성 */
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 122, 255, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(88, 86, 214, 0.1) 0%, transparent 40%),
+                linear-gradient(135deg, #0d0d10 0%, #1a1a20 100%);
+            z-index: -1;
+            transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1), filter 0.8s ease;
             will-change: transform, filter;
         }
 
         /* 스크롤 시 배경 흐림 및 확대 효과 */
         body.scrolled::before {
-            transform: scale(1.15);
-            filter: blur(10px);
+            transform: scale(1.1);
+            filter: blur(15px);
         }
 
         /* 반응형 컨테이너 */
@@ -56,7 +60,7 @@
             width: 90%;
             max-width: 1000px;
             margin: 0 auto;
-            padding: 80px 0; /* 상하 여백 조정 */
+            padding: 80px 0;
         }
 
         header {
@@ -66,11 +70,12 @@
         }
 
         header h1 {
-            font-size: clamp(2rem, 10vw, 3.8rem); /* 화면 크기에 따라 글자 크기 가변 */
+            font-size: clamp(2rem, 10vw, 3.8rem);
             font-weight: 700;
             color: #ffffff;
             letter-spacing: -2px;
             margin-bottom: 15px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         header p {
@@ -101,6 +106,7 @@
 
         .spec-item {
             background-color: var(--card-bg);
+            backdrop-filter: blur(10px); /* 카드 뒤 배경 살짝 흐리게 */
             padding: 30px;
             border-radius: 12px;
             border: 1px solid var(--border);
@@ -110,6 +116,7 @@
         .spec-item:hover {
             transform: translateY(-5px);
             border-color: var(--point);
+            background-color: rgba(30, 30, 35, 0.8);
         }
 
         .spec-item strong {
@@ -127,6 +134,7 @@
         .solution-item {
             margin-bottom: 20px;
             background-color: var(--card-bg);
+            backdrop-filter: blur(10px);
             padding: 30px;
             border-radius: 12px;
             border: 1px solid var(--border);
@@ -163,7 +171,7 @@
             color: var(--sub-text);
         }
 
-        /* 미디어 그리드 반응형 (모바일에서 일그러짐 방지) */
+        /* 미디어 그리드 */
         .media-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
@@ -184,7 +192,7 @@
         .media-item img, .media-item video {
             width: 100%; 
             height: auto;
-            aspect-ratio: 16 / 9; /* 비율 유지 */
+            aspect-ratio: 16 / 9;
             object-fit: cover; 
             display: block;
         }
@@ -196,7 +204,7 @@
             border-top: 1px solid var(--border);
         }
 
-        /* 하단 컨택트 영역 반응형 */
+        /* 하단 컨택트 영역 */
         .contact-office {
             display: grid;
             grid-template-columns: 1fr;
@@ -224,7 +232,7 @@
             margin-top: 80px;
             padding-bottom: 40px;
             font-size: 0.75rem;
-            color: #444;
+            color: #555;
             text-align: center;
         }
     </style>
@@ -279,12 +287,6 @@
                 <h3>지속 가능한 설비 아키텍처</h3>
                 <p>추가 확장성까지 고려한 유연한 로직을 설계합니다. 복잡한 시스템을 가장 명료한 구조로 풀어내어, 향후 설비 증설 시에도 최소한의 리소스로 대응할 수 있는 <strong>Clean Code</strong> 기반의 환경을 제공합니다.</p>
             </div>
-
-            <div class="solution-item">
-                <span class="eng-tag">HARDWARE INTEGRATION</span>
-                <h3>제어반(판넬) 제작 및 설치</h3>
-                <p>설계된 제어 로직이 최상의 성능을 발휘할 수 있도록, <strong>규격화되고 정돈된 고품질 제어반</strong>을 직접 제작하고 현장에 완벽하게 설치합니다. 하드웨어와 소프트웨어의 빈틈없는 통합을 보장합니다.</p>
-            </div>
         </section>
 
         <section>
@@ -323,7 +325,6 @@
     </div>
 
     <script>
-        // 스크롤 감지하여 배경 효과 클래스 토글
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
                 document.body.classList.add('scrolled');
