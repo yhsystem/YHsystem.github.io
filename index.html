@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FA Engineer Portfolio — System Design</title>
+  <title>FA Systems & Control Engineering</title>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ===== 1. 디자인 커스터마이징 (여기서 색상을 변경하세요) ===== */
+    /* ===== 1. 디자인 커스터마이징 (변수 설정) ===== */
     :root {
-      --배경색: #ffffff;         /* 깔끔한 화이트 배경 */
-      --글자색: #1a1a1a;         /* 짙은 차콜색 글자 */
-      --포인트색: #000000;       /* 마우스 점 색상 */
-      --잔상선색: rgba(0,0,0,0.15); /* 마우스 뒤 잔상 선 색상 */
-      --호버시_점색상: rgba(0,0,0,0.05); /* 이미지 호버 시 퍼지는 원 */
-      
+      --배경색: #ffffff;
+      --글자색: #111111;
+      --포인트색: #000000;
+      --잔상선색: rgba(0,0,0,0.12);
+      --호버시_원색상: rgba(0,0,0,0.08); /* 사진 위에서 퍼지는 원 색상 */
       --폰트: 'Inter', 'Noto Sans KR', sans-serif;
     }
 
@@ -29,41 +28,58 @@
       cursor: none; 
     }
 
-    /* 마우스 커서 & 잔상 최상단 고정 */
+    /* 마우스 커서 & 잔상 */
     #trail-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10000; }
-    .cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--포인트색); border-radius: 50%; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); }
+    .cursor { position: fixed; top: 0; left: 0; width: 10px; height: 10px; background: var(--포인트색); border-radius: 50%; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); }
 
     /* 네비게이션 */
-    nav { position: fixed; top: 0; width: 100%; padding: 40px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 100; mix-blend-mode: difference; color: white; }
-    .logo { font-size: 18px; font-weight: 700; letter-spacing: 0.2em; text-decoration: none; color: inherit; }
+    nav { position: fixed; top: 0; width: 100%; padding: 40px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 500; }
+    .logo { font-size: 16px; font-weight: 700; letter-spacing: 0.3em; text-decoration: none; color: inherit; }
 
-    /* 레이아웃 */
-    section { padding: 0 5%; }
-    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
-    .hero-title { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
-    .hero-sub { margin-top: 30px; font-size: 14px; letter-spacing: 0.1em; color: #666; max-width: 500px; }
+    /* 섹션 기본 설정 */
+    section { padding: 0 8%; opacity: 0; transform: translateY(30px); transition: all 1s ease; }
+    section.is-visible { opacity: 1; transform: translateY(0); }
 
-    /* 프로젝트 리스트 (지그재그) */
-    .project-list { padding-top: 150px; padding-bottom: 200px; }
-    .project-item { width: 100%; margin-bottom: 35vh; display: flex; flex-direction: column; }
-    .project-item:nth-child(even) { align-items: flex-end; }
+    /* Hero 섹션 */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; }
+    .hero-title { font-size: clamp(2.5rem, 9vw, 7.5rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.0; }
+    .hero-sub { margin-top: 40px; font-size: 16px; color: #555; max-width: 600px; line-height: 1.8; word-break: keep-all; }
+
+    /* 프로젝트 리스트 */
+    .project-list { padding: 250px 0; }
+    .project-item { width: 100%; margin-bottom: 45vh; display: flex; flex-direction: column; position: relative; }
+    .project-item:nth-child(even) { align-items: flex-end; text-align: right; }
     
-    .img-wrap { 
-      width: 55%; max-width: 900px; aspect-ratio: 16/10; overflow: hidden; 
-      position: relative; background: #f5f5f5;
+    /* 이미지 프레임 (스크롤 시 커지는 효과의 기반) */
+    .img-frame { 
+      width: 65%; max-width: 1000px; aspect-ratio: 16/9; overflow: hidden; 
+      position: relative; background: #f0f0f0; clip-path: inset(0% 0% 0% 0%);
     }
-    .img-wrap img { 
-      width: 100%; height: 130%; object-fit: cover; 
-      filter: grayscale(1); transition: filter 1s ease;
+    .img-frame img { 
+      width: 100%; height: 100%; object-fit: cover; 
+      filter: grayscale(1); transition: filter 1.2s ease, transform 0.5s ease;
+      transform: scale(1.1); /* 기본적으로 살짝 확대 상태에서 시작 */
     }
-    .img-wrap:hover img { filter: grayscale(0.2); }
+    .img-frame:hover img { filter: grayscale(0.1); }
 
-    .caption { margin-top: 25px; font-size: 12px; }
-    .caption b { display: block; font-size: 18px; font-weight: 600; margin-bottom: 5px; color: #111; }
-    .caption span { color: #888; letter-spacing: 0.05em; }
+    .caption { margin-top: 35px; width: 100%; }
+    .caption h3 { font-size: 32px; font-weight: 600; margin-bottom: 12px; }
+    .caption p { color: #888; font-size: 14px; letter-spacing: 0.05em; line-height: 1.6; }
+    .tags { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+    .project-item:nth-child(even) .tags { justify-content: flex-end; }
+    .tag { padding: 5px 12px; border: 1px solid #ddd; border-radius: 30px; font-size: 11px; color: #666; }
 
-    footer { padding: 100px 50px; border-top: 1px solid #eee; text-align: left; }
-    .footer-content { display: grid; grid-template-columns: 1fr 1fr; font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
+    /* 푸터 */
+    footer { padding: 150px 8% 80px; background: #fafafa; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; border-top: 1px solid #eee; padding-top: 50px; }
+    .footer-title { font-size: 14px; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.1em; }
+    .footer-link { display: block; font-size: 13px; color: #888; text-decoration: none; margin-bottom: 8px; }
+
+    @media (max-width: 768px) {
+      .img-frame { width: 100%; }
+      nav { padding: 25px; }
+      .hero-title { font-size: 3.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -72,150 +88,170 @@
   <div class="cursor"></div>
 
   <nav>
-    <a href="#" class="logo">FA / AUTOMATION</a>
-    <div style="font-size: 10px; letter-spacing: 0.1em;">CONTROL SYSTEM DESIGN</div>
+    <a href="#" class="logo">AUTOMATION STUDIO</a>
+    <div style="font-size: 11px; font-weight: 600;">PORTFOLIO 2026</div>
   </nav>
 
   <main>
-    <section class="hero">
+    <section class="hero is-visible">
       <h1 class="hero-title">
-        <span>PRECISION</span><br>
-        <span>CONTROL SYSTEMS</span>
+        ADVANCED<br>CONTROL LOGIC
       </h1>
-      <p class="hero-sub">PLC 제어, HMI 작화, SBC 통합 및 전기설계부터 전장 판넬 제작까지. 공정 자동화의 모든 단계를 설계하고 구축합니다.</p>
+      <p class="hero-sub">
+        PLC 시퀀스 제어부터 고성능 SBC 기반의 데이터 통합까지, <br>
+        현장의 효율을 극대화하는 정밀 자동화 시스템을 설계합니다.
+      </p>
     </section>
 
     <section class="project-list">
       <div class="project-item">
-        <div class="img-wrap hover-target">
-          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80" class="parallax">
+        <div class="img-frame hover-target">
+          <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500&q=80" class="scroll-zoom">
         </div>
         <div class="caption">
-          <b>PLC & HMI Programming</b>
-          <span>Mitsubishi, LS, Siemens / Pro-face, GOT Integration</span>
+          <h3>PLC & HMI Optimization</h3>
+          <p>고속 정밀 위치 결정 제어 및 모니터링 시스템 구축</p>
+          <div class="tags">
+            <span class="tag">MELSEC-Q/R</span> <span class="tag">XGT</span> <span class="tag">SCADA</span> <span class="tag">Touch Panel</span>
+          </div>
         </div>
       </div>
 
       <div class="project-item">
-        <div class="img-wrap hover-target">
-          <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&w=1200&q=80" class="parallax">
+        <div class="img-frame hover-target">
+          <img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500&q=80" class="scroll-zoom">
         </div>
         <div class="caption">
-          <b>Control Panel Fabrication</b>
-          <span>Electrical Design / Hardware Assembly / Wiring</span>
+          <h3>Electrical Panel Design</h3>
+          <p>전기 도면 설계 및 노이즈 대책을 고려한 하드웨어 판넬 제작</p>
+          <div class="tags">
+            <span class="tag">EPLAN</span> <span class="tag">AutoCAD</span> <span class="tag">Wiring</span> <span class="tag">Circuit Protection</span>
+          </div>
         </div>
       </div>
 
       <div class="project-item">
-        <div class="img-wrap hover-target">
-          <img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1200&q=80" class="parallax">
+        <div class="img-frame hover-target">
+          <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1500&q=80" class="scroll-zoom">
         </div>
         <div class="caption">
-          <b>SBC & Data Integration</b>
-          <span>Linux-based SBC / IoT Sensor Monitoring / Smart Factory</span>
+          <h3>SBC & Smart Factory</h3>
+          <p>Raspberry Pi / Jetson을 활용한 공정 데이터 수집 및 클라우드 연동</p>
+          <div class="tags">
+            <span class="tag">Python</span> <span class="tag">Modbus TCP</span> <span class="tag">IoT</span> <span class="tag">Linux</span>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="footer-content">
-      <div>Expertise: PLC, HMI, SBC, Electrical Design</div>
-      <div style="text-align: right;">&copy; 2026 FA PORTFOLIO.</div>
+    <div class="footer-grid">
+      <div>
+        <p class="footer-title">FA SOLUTIONS</p>
+        <p style="font-size: 13px; color: #aaa;">끊임없는 연구와 현장 경험으로 <br> 최적의 자동화 솔루션을 제공합니다.</p>
+      </div>
+      <div>
+        <p class="footer-title">CONTACT</p>
+        <a href="#" class="footer-link">plc_engineer@example.com</a>
+        <a href="#" class="footer-link">010-0000-0000</a>
+      </div>
+      <div>
+        <p class="footer-title">SERVICES</p>
+        <span class="footer-link">PLC / HMI / SBC</span>
+        <span class="footer-link">Electrical Design</span>
+      </div>
     </div>
   </footer>
 
   <script>
-    /* ===== 마우스 및 잔상 설정 ===== */
-    const 설정 = {
-      점크기: 8,
-      점반응속도: 0.18,
-      선굵기: 1.0,
-      선길이: 35,
-      확대배율: 7
+    /* ===== 마우스 및 잔상 설정 (보정 완료) ===== */
+    const CONFIG = {
+      pSize: 10,
+      pLerp: 0.16,
+      tWidth: 1.0,
+      tLength: 30,
+      hoverScale: 4.5 // 사진 위에서 너무 커지지 않도록 7 -> 4.5로 수정
     };
 
-    const 커서 = document.querySelector('.cursor');
-    const 캔버스 = document.getElementById('trail-canvas');
-    const ctx = 캔버스.getContext('2d');
-    
-    let mouse = { x: 0, y: 0 };
-    let pos = { x: 0, y: 0 };
-    let points = [];
+    const cursor = document.querySelector('.cursor');
+    const canvas = document.getElementById('trail-canvas');
+    const ctx = canvas.getContext('2d');
+    let m = { x: 0, y: 0 }, p = { x: 0, y: 0 }, pts = [];
 
-    function resize() {
-      캔버스.width = window.innerWidth;
-      캔버스.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    window.addEventListener('mousemove', e => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    window.addEventListener('mousemove', e => { m.x = e.clientX; m.y = e.clientY; });
 
     function render() {
-      pos.x += (mouse.x - pos.x) * 설정.점반응속도;
-      pos.y += (mouse.y - pos.y) * 설정.점반응속도;
-      커서.style.transform = `translate(${pos.x}px, ${pos.y}px) translate(-50%, -50%)`;
-
-      points.push({ ...pos });
-      if (points.length > 설정.선길이) points.shift();
-
-      ctx.clearRect(0, 0, 캔버스.width, 캔버스.height);
-      if (points.length > 1) {
+      p.x += (m.x - p.x) * CONFIG.pLerp;
+      p.y += (m.y - p.y) * CONFIG.pLerp;
+      cursor.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
+      pts.push({ ...p });
+      if (pts.length > CONFIG.tLength) pts.shift();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (pts.length > 1) {
         ctx.beginPath();
-        ctx.lineWidth = 설정.선굵기;
+        ctx.lineWidth = CONFIG.tWidth;
         ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--잔상선색');
-        ctx.moveTo(points[0].x, points[0].y);
-        for (let i = 1; i < points.length; i++) {
-          ctx.lineTo(points[i].x, points[i].y);
-        }
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
         ctx.stroke();
       }
       requestAnimationFrame(render);
     }
     render();
 
-    /* 이미지 호버 효과 */
-    document.querySelectorAll('.hover-target').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        gsap.to(커서, { 
-          width: 설정.점크기 * 설정.확대배율, 
-          height: 설정.점크기 * 설정.확대배율, 
-          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--호버시_점색상'),
-          duration: 0.4 
-        });
-      });
-      el.addEventListener('mouseleave', () => {
-        gsap.to(커서, { 
-          width: 설정.점크기, 
-          height: 설정.점크기, 
-          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--포인트색'),
-          duration: 0.3 
-        });
-      });
-    });
-
-    /* 스무스 스크롤 & 애니메이션 */
-    const lenis = new Lenis({ lerp: 0.1 });
+    /* ===== 스크롤 효과 (줌 & 페이드) ===== */
+    const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // 이미지 패럴랙스 (이미지 안쪽 이동 효과)
-    document.querySelectorAll('.parallax').forEach(img => {
-      gsap.to(img, {
-        scrollTrigger: { trigger: img.parentElement, scrub: 1 },
-        y: "20%", ease: "none"
+    // 1. 전체 섹션 페이드 인/아웃 효과
+    document.querySelectorAll('section').forEach(sec => {
+      ScrollTrigger.create({
+        trigger: sec,
+        start: "top 85%",
+        onEnter: () => sec.classList.add('is-visible'),
+        onLeaveBack: () => sec.classList.remove('is-visible') // 올릴 때 다시 페이드 아웃
       });
     });
 
-    // 텍스트 순차 등장
-    gsap.from('.hero-title span', {
-      y: 50, opacity: 0, duration: 1.2, stagger: 0.2, ease: "power3.out"
+    // 2. 이미지 스크롤 줌 효과 (요청하신 부분)
+    document.querySelectorAll('.scroll-zoom').forEach(img => {
+      gsap.to(img, {
+        scrollTrigger: {
+          trigger: img.parentElement,
+          start: "top bottom", 
+          end: "bottom top",
+          scrub: true // 스크롤에 맞춰 부드럽게
+        },
+        scale: 1.4, // 내릴수록 사진이 커짐
+        y: "10%" // 사진 내부 패럴랙스 병행
+      });
+    });
+
+    /* 마우스 호버 시 커서 크기 보정 */
+    document.querySelectorAll('.hover-target').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        gsap.to(cursor, { 
+          width: CONFIG.pSize * CONFIG.hoverScale, 
+          height: CONFIG.pSize * CONFIG.hoverScale, 
+          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--호버시_원색상'),
+          duration: 0.5,
+          ease: "power2.out"
+        });
+      });
+      el.addEventListener('mouseleave', () => {
+        gsap.to(cursor, { 
+          width: CONFIG.pSize, 
+          height: CONFIG.pSize, 
+          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--포인트색'),
+          duration: 0.3 
+        });
+      });
     });
   </script>
 </body>
