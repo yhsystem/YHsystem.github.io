@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hotaeys | Integrated Control Solution</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <title>YH-SYSTEM | Integrated Control Solution</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* 배경색을 단순 검정에서 짙은 네이비 톤이 섞인 다크 그레이로 조정 */
-            --bg: #0d0d10; 
-            --card-bg: rgba(25, 25, 30, 0.6); /* 투명도를 주어 그라데이션이 비치게 설정 */
-            --text: #ececec;
-            --sub-text: #949499;
-            --point: #007aff;
-            --border: #252529;
+            /* 따뜻한 베이지 톤으로 변경 */
+            --bg: #faf8f5;
+            --bg-secondary: #f5f1eb;
+            --card-bg: #ffffff;
+            --text: #4a4a4a;
+            --text-light: #8b8680;
+            --point: #d4a574;
+            --point-dark: #b8956a;
+            --accent: #e8b4a2;
+            --border: #e8e4de;
         }
 
-        /* 초기화 및 기본 설정 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         html, body {
@@ -26,158 +28,181 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Malgun Gothic', sans-serif;
+            font-family: 'Noto Sans KR', sans-serif;
             color: var(--text);
-            line-height: 1.6;
-            letter-spacing: -0.4px;
+            line-height: 1.8;
+            letter-spacing: -0.3px;
             word-break: keep-all;
         }
 
-        /* 배경 효과 레이어: 세련된 다크 그라데이션 추가 */
+        /* 부드러운 그라데이션 배경 */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            /* 여러 층의 그라데이션을 겹쳐 깊이감 형성 */
             background: 
-                radial-gradient(circle at 10% 20%, rgba(0, 122, 255, 0.12) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(88, 86, 214, 0.1) 0%, transparent 40%),
-                linear-gradient(135deg, #0d0d10 0%, #1a1a20 100%);
+                radial-gradient(circle at 20% 30%, rgba(212, 165, 116, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(232, 180, 162, 0.06) 0%, transparent 50%);
             z-index: -1;
-            transition: transform 0.8s cubic-bezier(0.2, 0, 0.2, 1), filter 0.8s ease;
-            will-change: transform, filter;
         }
 
-        /* 스크롤 시 배경 흐림 및 확대 효과 */
-        body.scrolled::before {
-            transform: scale(1.1);
-            filter: blur(15px);
-        }
-
-        /* 반응형 컨테이너 */
         .container {
-            width: 90%;
-            max-width: 1000px;
+            width: 85%;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 80px 0;
+            padding: 120px 0;
         }
 
+        /* 히어로 섹션 - 이미지 스타일 */
         header {
             text-align: center;
-            margin-bottom: 100px;
-            padding: 0 10px;
+            margin-bottom: 140px;
+            padding: 60px 0;
+            position: relative;
         }
 
-        /* [수정] 타이틀 폰트를 이미지와 유사한 스타일로 변경 */
         header h1 {
-            font-family: 'Black Han Sans', sans-serif;
-            font-size: clamp(2.5rem, 12vw, 4.5rem); /* 이미지처럼 굵고 강조되도록 크기 조정 */
-            font-weight: 400; /* Black Han Sans는 기본적으로 굵은 폰트입니다 */
-            color: #ffffff;
-            letter-spacing: 2px; /* 이미지의 적절한 자간 반영 */
-            margin-bottom: 15px;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 400;
+            color: var(--text);
+            letter-spacing: 0.15em;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
         header p {
-            font-size: clamp(0.7rem, 3vw, 1rem);
-            color: var(--point);
-            font-weight: 500;
-            letter-spacing: 4px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            letter-spacing: 0.3em;
             text-transform: uppercase;
+            font-weight: 300;
         }
 
-        section { margin-bottom: 100px; }
+        /* 일본어 스타일의 서브 타이틀 */
+        .jp-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 30px;
+            line-height: 2;
+            font-weight: 300;
+        }
+
+        section { margin-bottom: 120px; }
         
         h2 {
-            font-size: 0.8rem;
-            color: var(--point);
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin-bottom: 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--text);
+            letter-spacing: 0.2em;
+            margin-bottom: 60px;
             text-align: center;
+            font-weight: 400;
+            position: relative;
+            padding-bottom: 20px;
         }
 
-        /* 그리드 반응형 설정 */
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 1px;
+            background-color: var(--point);
+        }
+
+        /* 그리드 - 더 둥글고 부드러운 카드 */
         .spec-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
         }
 
         .spec-item {
             background-color: var(--card-bg);
-            backdrop-filter: blur(10px); /* 카드 뒤 배경 살짝 흐리게 */
-            padding: 30px;
-            border-radius: 12px;
+            padding: 40px 35px;
+            border-radius: 20px;
             border: 1px solid var(--border);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            text-align: center;
         }
 
         .spec-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
             border-color: var(--point);
-            background-color: rgba(30, 30, 35, 0.8);
         }
 
         .spec-item strong {
             display: block;
-            font-size: 1.1rem;
-            color: #ffffff;
-            margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 15px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
         }
 
         .spec-item span {
             font-size: 0.9rem;
-            color: var(--sub-text);
+            color: var(--text-light);
+            line-height: 1.8;
+            font-weight: 300;
         }
 
+        /* 솔루션 아이템 - 더 여유로운 스타일 */
         .solution-item {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             background-color: var(--card-bg);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 12px;
+            padding: 50px;
+            border-radius: 24px;
             border: 1px solid var(--border);
+            transition: all 0.4s ease;
+        }
+
+        .solution-item:hover {
+            box-shadow: 0 25px 50px rgba(0,0,0,0.06);
         }
 
         .solution-item h3 {
-            font-size: 1.3rem;
-            color: #ffffff;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--text);
+            margin-bottom: 15px;
+            font-weight: 400;
+            letter-spacing: 0.05em;
         }
         
-        .solution-item h3::before {
-            content: '';
-            width: 6px; height: 6px;
-            background-color: var(--point);
-            border-radius: 50%;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-
         .solution-item .eng-tag {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--point);
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
+            letter-spacing: 0.2em;
+            margin-bottom: 10px;
             display: block;
+            font-weight: 500;
+            text-transform: uppercase;
         }
 
         .solution-item p {
-            font-size: 0.95rem;
-            color: var(--sub-text);
+            font-size: 1rem;
+            color: var(--text-light);
+            line-height: 2;
+            font-weight: 300;
         }
 
-        /* 미디어 그리드 */
+        .solution-item p strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* 미디어 그리드 - 둥근 이미지 */
         .media-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
-            gap: 20px;
+            gap: 30px;
         }
 
         @media (min-width: 768px) {
@@ -187,64 +212,154 @@
         .media-item {
             background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 24px;
             overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .media-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
         .media-item img, .media-item video {
             width: 100%; 
             height: auto;
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 4 / 3;
             object-fit: cover; 
             display: block;
         }
 
         .media-item .caption {
-            padding: 15px;
-            font-size: 0.85rem;
-            color: var(--sub-text);
-            border-top: 1px solid var(--border);
+            padding: 25px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 0.05em;
         }
 
-        /* 하단 컨택트 영역 */
+        /* 컨택트 영역 - 미니멀하게 */
         .contact-office {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 40px;
-            padding-top: 60px;
+            gap: 60px;
+            padding-top: 80px;
             border-top: 1px solid var(--border);
-            margin-top: 60px;
+            margin-top: 80px;
+            text-align: center;
         }
 
         @media (min-width: 768px) {
-            .contact-office { grid-template-columns: 1.2fr 0.8fr; }
+            .contact-office { 
+                grid-template-columns: 1fr 1fr;
+                text-align: left;
+            }
+        }
+
+        .contact-info h3, .office-address h3 {
+            font-size: 0.8rem;
+            color: var(--point);
+            letter-spacing: 0.3em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .contact-info p {
+            color: var(--text-light);
+            font-weight: 300;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
         }
 
         .contact-info a {
-            color: #ffffff;
+            color: var(--text);
             text-decoration: none;
-            font-weight: 700;
-            font-size: clamp(1.2rem, 5vw, 1.8rem);
-            background: linear-gradient(to right, #fff, var(--point));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            border-bottom: 1px solid var(--point);
+            padding-bottom: 5px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .contact-info a:hover {
+            color: var(--point);
+            border-color: var(--text);
+        }
+
+        .office-address p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.8;
+            font-weight: 300;
         }
 
         footer {
-            margin-top: 80px;
+            margin-top: 120px;
             padding-bottom: 40px;
-            font-size: 0.75rem;
-            color: #555;
+            font-size: 0.8rem;
+            color: var(--text-light);
             text-align: center;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+        }
+
+        /* 원형 장식 요소들 (이미지 스타일) */
+        .circle-deco {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.15) 0%, transparent 70%);
+            top: 100px;
+            right: -100px;
+        }
+
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(232, 180, 162, 0.12) 0%, transparent 70%);
+            bottom: 200px;
+            left: -50px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 80px 0;
+            }
+            
+            .solution-item {
+                padding: 35px 25px;
+            }
+            
+            .spec-item {
+                padding: 30px 25px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <div class="circle-deco circle-1"></div>
+    <div class="circle-deco circle-2"></div>
+
     <div class="container">
         <header>
-            <h1>용화 시스템</h1>
-            <p>ADVANCED CONTROL ARCHITECT</p>
+            <h1>YH-SYSTEM</h1>
+            <p>Integrated Control Solution</p>
+            <div class="jp-subtitle">
+                身も心もゆるまる、<br>
+                わたしが選んだあたらしい居場所。
+            </div>
         </header>
 
         <section>
@@ -252,25 +367,25 @@
             <div class="spec-grid">
                 <div class="spec-item">
                     <strong>PLC Architecture</strong>
-                    <span>LS / Mitsubishi 기반의 고신뢰성 시퀀스 및 제어 로직 설계</span>
+                    <span>LS / Mitsubishi 기반의<br>고신뢰성 시퀀스 및 제어 로직 설계</span>
                 </div>
                 <div class="spec-item">
                     <strong>Advanced HMI</strong>
-                    <span>Intuitive UX 디자인을 적용한 모니터링 시스템</span>
+                    <span>Intuitive UX 디자인을 적용한<br>모니터링 시스템</span>
                 </div>
                 <div class="spec-item">
                     <strong>Motion & Network</strong>
-                    <span>Industrial Ethernet 기반의 안정적인 장비 간 Protocol 통합 및 Robot Interface</span>
+                    <span>Industrial Ethernet 기반의<br>안정적인 장비 간 Protocol 통합</span>
                 </div>
                 <div class="spec-item">
                     <strong>Embedded & SBC</strong>
-                    <span>SBC Gateway와 Python을 활용한 지능형 데이터 프로세싱 및 스마트 제어 솔루션</span>
+                    <span>SBC Gateway와 Python을 활용한<br>지능형 데이터 프로세싱</span>
                 </div>
             </div>
         </section>
 
         <section>
-            <h2>INNOVATIVE SOLUTIONS</h2>
+            <h2>SOLUTIONS</h2>
             
             <div class="solution-item">
                 <span class="eng-tag">MOBILITY & EFFICIENCY</span>
@@ -309,15 +424,14 @@
 
         <div class="contact-office">
             <div class="contact-info">
-                <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:15px;">CONSULTING</h3>
-                <p style="margin-bottom: 15px; color: var(--sub-text); font-weight: 300; font-size: 0.9rem;">자동화 시스템의 고도화와 현장 혁신을 제안합니다.</p>
+                <h3>CONSULTING</h3>
+                <p>자동화 시스템의 고도화와<br>현장 혁신을 제안합니다.</p>
                 <a href="mailto:hotaeys@email.com">SEND INQUIRY</a>
             </div>
 
             <div class="office-address">
-                <h3 style="font-size:0.8rem; color:var(--point); letter-spacing:3px; margin-bottom:15px;">LOCATION</h3>
-                <p style="font-size: 0.9rem;">경상남도 창원시 성산구 여기가 어딘지 나도 모르게 </p>
-                <p style="font-size: 0.9rem;">(우) 삼겹</p>
+                <h3>LOCATION</h3>
+                <p>경상남도 창원시 성산구<br>여기가 어딘지 나도 모르게<br>(우) 삼겹</p>
             </div>
         </div>
 
@@ -325,16 +439,6 @@
             &copy; 2026 YH-SYSTEM. Crafting Precision in Automation.
         </footer>
     </div>
-
-    <script>
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                document.body.classList.add('scrolled');
-            } else {
-                document.body.classList.remove('scrolled');
-            }
-        });
-    </script>
 
 </body>
 </html>
