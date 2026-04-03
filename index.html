@@ -3,263 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LQVE — Final Responsive Clone</title>
+    <title>LQVE — Absolute Final</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* 1. 스타일 초기화 및 반응형 기본 설정 */
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-            cursor: none; /* 기본 마우스 숨김 */
-        }
+        /* 기본 초기화 */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { background-color: #fff; color: #000; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        body {
-            background-color: #fff; color: #000;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden; /* 가로 스크롤 방지 */
-            line-height: 1.2;
-        }
+        /* 마우스 뒤에 생기는 선 (Canvas) */
+        #trail-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9; }
+        /* 커스텀 마우스 포인터 */
+        #cursor { position: fixed; width: 6px; height: 6px; background: #000; border-radius: 50%; pointer-events: none; z-index: 999; transform: translate(-50%, -50%); }
 
-        /* 2. [핵심] 마우스 뒤에 생기는 선 (Canvas) */
-        #trail-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 9998; /* 콘텐츠 뒤에 배치 */
-        }
-
-        /* 3. [핵심] 커스텀 마우스 포인터 (작은 점) */
-        #cursor {
-            position: fixed; width: 6px; height: 6px;
-            background: #000; border-radius: 50%;
-            pointer-events: none; z-index: 10000;
-            transform: translate(-50%, -50%); /* 중심 정렬 */
-        }
-
-        /* 4. 헤더 (고정) */
-        header {
-            position: fixed; top: 0; width: 100%;
-            padding: 40px 50px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000;
-        }
-
+        header { position: fixed; top: 0; width: 100%; padding: 40px; display: flex; justify-content: space-between; z-index: 100; }
         .logo { font-size: 20px; font-weight: 700; letter-spacing: 0.3em; }
-        .nav-right { font-size: 10px; font-weight: 400; letter-spacing: 0.2em; gap: 40px; display: flex; }
 
-        /* 5. [반응형 핵심] 가로로 꽉 차는 이미지 레이아웃 */
-        main { padding-top: 150px; padding-bottom: 200px; }
+        main { padding-top: 200px; padding-bottom: 100px; }
 
-        .section-item {
-            width: 100%;
-            padding: 0 4%; /* 화면 너비에 맞게 유동적 */
-            margin-bottom: 25vh; /* 깊은 수직 여백 */
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* 비대칭 배치 (반응형 대응) */
+        /* 반응형 이미지 레이아웃 */
+        .section-item { width: 100%; padding: 0 5%; margin-bottom: 20vh; display: flex; flex-direction: column; }
         .section-item:nth-child(even) { align-items: flex-end; }
-        .section-item:nth-child(odd) { align-items: flex-start; }
-
-        /* 이미지 컨테이너 (패럴랙스 마스크) */
-        .img-mask {
-            width: 90%; /* 기본: 화면 가로 가득 채움 */
-            max-width: 1100px; /* 데스크탑 최대 너비 */
-            height: 60vh; /* 화면 높이 기준 비율 */
-            overflow: hidden;
-            position: relative;
-            opacity: 0; transform: translateY(80px); /* 애니메이션 초기값 */
+        
+        .img-mask { 
+            width: 80%; max-width: 900px; height: 60vh; overflow: hidden; position: relative;
+            background: #f0f0f0; /* 이미지 로딩 전 회색 박스 표시 */
         }
-
-        .img-mask img {
-            width: 100%;
-            height: 140%; /* 내부 패럴랙스 여유분 (위아래로 움직임) */
-            object-fit: cover;
-            position: absolute;
-            top: -20%; /* 초기 위치 */
-            filter: grayscale(100%); /* 초기 흑백 */
-            transition: filter 1s ease;
+        
+        /* [중요] 이미지 주소가 잘못되어도 박스는 보이게 설정 */
+        .img-mask img { 
+            width: 100%; height: 140%; object-fit: cover; position: absolute; top: -20%; 
+            filter: grayscale(100%); transition: filter 0.8s;
         }
+        .img-mask:hover img { filter: grayscale(0%); }
 
-        .img-mask:hover img { filter: grayscale(0%); /* 호버 시 컬러 */ }
+        .caption-wrap { margin-top: 20px; overflow: hidden; height: 15px; }
+        .caption { font-size: 10px; letter-spacing: 0.15em; color: #888; transform: translateY(100%); }
 
-        /* 글자 애니메이션 (아래에서 위로 솟음) */
-        .caption-wrap { margin-top: 20px; overflow: hidden; }
-        .caption {
-            font-size: 10px; letter-spacing: 0.15em; color: #888; text-transform: uppercase;
-            transform: translateY(100%); /* 숨겨둠 */
-        }
-
-        /* 6. 푸터 */
-        footer {
-            padding: 100px 50px; text-align: center;
-            font-size: 9px; letter-spacing: 0.3em; color: #ccc;
-            border-top: 1px solid #eee;
-        }
-
-        /* [반응형 미디어 쿼리] 모바일 화면 대응 */
-        @media (max-width: 768px) {
-            header { padding: 20px; }
-            .logo { font-size: 16px; }
-            .nav-right { gap: 15px; font-size: 9px; }
-            
-            .section-item { margin-bottom: 15vh; }
-            .section-item:nth-child(even) { align-items: center; } /* 모바일은 가운데 */
-            .section-item:nth-child(odd) { align-items: center; }  /* 모바일은 가운데 */
-            
-            .img-mask { width: 100%; height: 50vh; }
-            .caption { font-size: 9px; }
-        }
+        footer { padding: 100px; text-align: center; font-size: 9px; color: #ccc; border-top: 1px solid #eee; }
     </style>
 </head>
 <body>
 
     <canvas id="trail-canvas"></canvas>
-
     <div id="cursor"></div>
 
     <header>
         <div class="logo">LQVE</div>
-        <div class="nav-right">
-            <span>COLLECTION</span>
-            <span>INFO</span>
-        </div>
+        <div style="font-size: 10px; letter-spacing: 0.1em;">INDEX / INFO</div>
     </header>
 
     <main>
         <div class="section-item">
-            <div class="img-mask reveal">
-                <img src="https://images.unsplash.com/photo-1512418491321-7299383626e2?auto=format&fit=crop&w=1600&q=80" class="parallax">
+            <div class="img-mask">
+                <img src="https://picsum.photos/1200/1600?random=1" class="parallax">
             </div>
-            <div class="caption-wrap">
-                <p class="caption">01 — ESSENTIAL CONCEPT</p>
-            </div>
+            <div class="caption-wrap"><p class="caption">01 — VISUAL ARCHIVE</p></div>
         </div>
 
         <div class="section-item">
-            <div class="img-mask reveal">
-                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1600&q=80" class="parallax">
+            <div class="img-mask">
+                <img src="https://picsum.photos/1200/1600?random=2" class="parallax">
             </div>
-            <div class="caption-wrap">
-                <p class="caption">02 — STRUCTURE / LIGHT</p>
-            </div>
-        </div>
-
-        <div class="section-item">
-            <div class="img-mask reveal">
-                <img src="https://images.unsplash.com/photo-1496200186974-4293800e2c20?auto=format&fit=crop&w=1600&q=80" class="parallax">
-            </div>
-            <div class="caption-wrap">
-                <p class="caption">03 — MONOCHROME VISION</p>
-            </div>
+            <div class="caption-wrap"><p class="caption">02 — MINIMAL STRUCTURE</p></div>
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2026 LQVE STUDIO. ALL RIGHTS RESERVED.</p>
-    </footer>
+    <footer>&copy; 2026 LQVE STUDIO.</footer>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // [핵심 1] 마우스 뒤에 생기는 선 (Canvas API)
+        // 1. 마우스 선 효과 (Canvas)
         const canvas = document.getElementById('trail-canvas');
         const ctx = canvas.getContext('2d');
         let points = [];
-        let mouseX = 0, mouseY = 0;
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
 
-        // 캔버스 크기를 화면 꽉 차게 설정
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        // 마우스 움직임 기록
         document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            points.push({ x: mouseX, y: mouseY, age: 0 }); // 마우스 좌표 기록
+            points.push({ x: e.clientX, y: e.clientY, age: 0 });
+            gsap.to("#cursor", { x: e.clientX, y: e.clientY, duration: 0.1 });
         });
 
-        // 애니메이션 루프: 매 프레임마다 선을 그림
         function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // 이전 프레임 지움
-            
-            // 점들을 연결하여 선을 그림
-            ctx.beginPath();
-            ctx.lineWidth = 1; // 선 굵기
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)'; // 검은색 투명도 30%
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath(); ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(0,0,0,0.2)';
             for (let i = 0; i < points.length; i++) {
-                const pt = points[i];
-                if (i === 0) ctx.moveTo(pt.x, pt.y);
-                else ctx.lineTo(pt.x, pt.y);
-                
-                // 점의 수명을 관리 (오래된 점은 투명해지다가 사라짐)
-                pt.age++;
-                if (pt.age > 40) points.splice(i, 1); // 40프레임 뒤 삭제
+                const p = points[i];
+                if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+                p.age++; if (p.age > 30) points.splice(i, 1);
             }
-            ctx.stroke();
-            
-            // 작은 점 커서 움직임 (똑같이 따라오기)
-            gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1 });
-            
-            requestAnimationFrame(animate); // 무한 루프
+            ctx.stroke(); requestAnimationFrame(animate);
         }
-        animate(); // 시작
+        animate();
 
-        const cursor = document.querySelector('#cursor');
+        // 2. 스크롤 애니메이션
+        document.querySelectorAll(".section-item").forEach((item) => {
+            const img = item.querySelector(".img-mask img");
+            const cap = item.querySelector(".caption");
 
-        // [핵심 2] 스크롤 시 이미지 내부가 움직이는 패럴랙스
-        const parallaxImages = document.querySelectorAll(".parallax");
-        parallaxImages.forEach((img) => {
+            // 이미지 패럴랙스
             gsap.to(img, {
-                scrollTrigger: {
-                    trigger: img.parentElement,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1.5 // 끈적하게 따라오는 관성 효과
-                },
-                y: "25%", // 이미지 내부 이동 범위
-                ease: "none"
-            });
-        });
-
-        // [핵심 3] 스크롤 시 순차적 등장 애니메이션
-        const revealBoxes = document.querySelectorAll(".section-item");
-        revealBoxes.forEach((item) => {
-            const img = item.querySelector(".img-mask");
-            const txt = item.querySelector(".caption");
-
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: item,
-                    start: "top 85%", // 화면 하단에 보이기 시작할 때
-                    toggleActions: "play none none reverse"
-                }
+                scrollTrigger: { trigger: item, scrub: 1.5 },
+                y: "20%", ease: "none"
             });
 
-            tl.to(img, {
-                opacity: 1,
-                y: 0,
-                duration: 1.8,
-                ease: "power4.out"
-            })
-            .to(txt, {
-                y: 0,
-                duration: 1.2,
-                ease: "power3.out"
-            }, "-=1.2"); // 이미지 올라올 때 글자도 같이 등장
-        });
-
-        // 마우스 호버 시 포인터 확대 효과 (자석 효과)
-        document.querySelectorAll('.img-mask').forEach(box => {
-            box.addEventListener('mouseenter', () => gsap.to(cursor, { scale: 6, alpha: 0.2 }));
-            box.addEventListener('mouseleave', () => gsap.to(cursor, { scale: 1, alpha: 1 }));
+            // 등장 애니메이션
+            gsap.to(cap, {
+                scrollTrigger: { trigger: item, start: "top 80%" },
+                y: 0, duration: 1, ease: "power2.out"
+            });
         });
     </script>
 </body>
