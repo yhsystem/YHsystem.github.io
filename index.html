@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>FA Systems Engineering — Soft Fade</title>
+  <title>FA Systems Portfolio</title>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet"/>
 
   <style>
@@ -14,18 +13,17 @@
       --배경색: #ffffff;
       --글자색: #000000;
       --포인트색: #ff0000; 
-      --잔상선색: rgba(255, 0, 0, 0.25); 
+      --잔상선색: rgba(255, 0, 0, 0.3); 
       --폰트: 'Inter', 'Noto Sans KR', sans-serif;
     }
 
-    /* [수정] 모바일 새로고침 방지 및 기본 스크롤 제거 */
     html, body {
       margin: 0; padding: 0; width: 100%; height: 100%;
-      overflow: hidden; 
-      overscroll-behavior-y: none; /* 위로 당겨서 새로고침 방지 */
       background: var(--배경색); color: var(--글자색);
-      font-family: var(--폰트);
+      font-family: var(--폰트); overflow: hidden;
       cursor: none; 
+      /* [중요] 기본적으로는 none이지만 JS에서 제어함 */
+      overscroll-behavior-y: auto; 
     }
 
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
@@ -38,7 +36,7 @@
     nav { position: fixed; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 500; mix-blend-mode: exclusion; color: white; }
     .logo { font-size: 14px; font-weight: 700; letter-spacing: 0.3em; text-decoration: none; color: inherit; }
 
-    /* 장면 전환 컨테이너 */
+    /* 장면 전환 레이아웃 */
     .container { width: 100%; height: 100%; position: relative; }
 
     .section {
@@ -49,29 +47,17 @@
       opacity: 0; 
       visibility: hidden;
       pointer-events: none;
-      /* [수정] 전환 애니메이션 설정 (더 천천히, 부드럽게) */
-      transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.8s;
-      will-change: opacity, transform;
+      /* [수정] 전환 속도를 0.7초로 단축하여 훨씬 빠릿하게 변경 */
+      transition: opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.7s;
+      will-change: opacity;
     }
 
-    /* 활성화된 섹션: 천천히 나타남 */
-    .section.active { 
-      opacity: 1; 
-      visibility: visible; 
-      pointer-events: auto;
-      transform: scale(1);
-    }
-
-    /* 비활성화되는 섹션: 살짝 커지면서 사라짐 (깊이감 부여) */
-    .section.prev { 
-      opacity: 0; 
-      transform: scale(1.05); 
-    }
+    .section.active { opacity: 1; visibility: visible; pointer-events: auto; }
 
     /* Hero 섹션 모바일 대응 */
     .hero-title { 
-      font-size: clamp(2.4rem, 12vw, 8.5rem); 
-      font-weight: 900; letter-spacing: -0.05em; line-height: 0.95; 
+      font-size: clamp(2rem, 12vw, 8rem); 
+      font-weight: 900; letter-spacing: -0.05em; line-height: 1.0; 
       text-align: center;
     }
 
@@ -79,21 +65,21 @@
     .content-wrap { width: 100%; max-width: 1000px; display: flex; flex-direction: column; align-items: center; }
     .img-mask { 
       width: 100%; aspect-ratio: 16/9; overflow: hidden; 
-      border: 1px solid #f0f0f0; margin-bottom: 35px;
+      border: 1px solid #f0f0f0; margin-bottom: 25px;
       background: #fafafa;
     }
     .img-mask img { width: 100%; height: 100%; object-fit: cover; }
 
     .caption { width: 100%; text-align: left; }
-    .caption h3 { font-size: clamp(22px, 4vw, 36px); font-weight: 700; margin-bottom: 12px; text-transform: uppercase; letter-spacing: -0.02em; }
-    .caption p { font-size: clamp(14px, 1.6vw, 16px); line-height: 1.7; color: #444; word-break: keep-all; }
+    .caption h3 { font-size: clamp(20px, 4vw, 30px); font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+    .caption p { font-size: 14px; line-height: 1.6; color: #444; word-break: keep-all; }
     
-    .tags { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
-    .tag { padding: 5px 12px; border: 1px solid #ddd; border-radius: 40px; font-size: 11px; font-weight: 600; color: #777; text-transform: uppercase; }
+    .tags { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; }
+    .tag { padding: 4px 10px; border: 1px solid #ddd; border-radius: 40px; font-size: 10px; font-weight: 600; color: #777; }
 
     @media (max-width: 768px) {
       .section { padding: 0 7%; }
-      .img-mask { aspect-ratio: 4/5; margin-bottom: 25px; }
+      .img-mask { aspect-ratio: 4/5; }
     }
   </style>
 </head>
@@ -109,10 +95,7 @@
 
   <div class="container">
     <section class="section active">
-      <h1 class="hero-title">
-        <span>ENGINEERING</span><br>
-        <span>THE FUTURE</span>
-      </h1>
+      <h1 class="hero-title">ENGINEERING<br>THE FUTURE</h1>
     </section>
 
     <section class="section">
@@ -120,8 +103,8 @@
         <div class="img-mask"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500" alt="PLC"></div>
         <div class="caption">
           <h3>PLC Logic Optimization</h3>
-          <p>미쓰비시 Q/R 시리즈 및 지멘스 S7-1500 정밀 제어 로직 설계. 복잡한 시퀀스를 최적화하여 공정 사이클 타임을 획기적으로 단축합니다.</p>
-          <div class="tags"><span class="tag">MELSEC-Q</span><span class="tag">Siemens</span><span class="tag">Logic</span></div>
+          <p>미쓰비시 Q/R 시리즈 및 지멘스 S7-1500 정밀 제어 로직 설계. 복잡한 시퀀스를 최적화하여 공정 사이클 타임을 단축합니다.</p>
+          <div class="tags"><span class="tag">MELSEC-Q</span><span class="tag">Siemens</span></div>
         </div>
       </div>
     </section>
@@ -131,8 +114,8 @@
         <div class="img-mask"><img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?auto=format&fit=crop&w=1500" alt="HMI"></div>
         <div class="caption">
           <h3>HMI / SCADA Interface</h3>
-          <p>사용자 중심의 직관적인 HMI 작화 및 실시간 데이터 모니터링 시스템 구축. 공정 가동률 분석 및 정밀한 알람 추적 기능을 통합합니다.</p>
-          <div class="tags"><span class="tag">Pro-face</span><span class="tag">SCADA</span><span class="tag">UX Design</span></div>
+          <p>사용자 중심의 직관적인 HMI 작화 및 데이터 모니터링 시스템 구축. 공정 가동률 분석 기능을 통합합니다.</p>
+          <div class="tags"><span class="tag">Pro-face</span><span class="tag">SCADA</span></div>
         </div>
       </div>
     </section>
@@ -142,8 +125,8 @@
         <div class="img-mask"><img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500" alt="Panel"></div>
         <div class="caption">
           <h3>Electrical Control Panel</h3>
-          <p>EPLAN 기반의 표준화된 전기 도면 설계. 하드웨어 노이즈 대책을 고려한 최적화된 전장 판넬 레이아웃과 배선 설계를 제공합니다.</p>
-          <div class="tags"><span class="tag">EPLAN</span><span class="tag">CAD</span><span class="tag">Hardware</span></div>
+          <p>EPLAN 기반의 표준화된 전기 도면 설계. 하드웨어 노이즈 대책을 고려한 최적화된 전장 판넬 배선 설계를 제공합니다.</p>
+          <div class="tags"><span class="tag">EPLAN</span><span class="tag">CAD</span></div>
         </div>
       </div>
     </section>
@@ -153,8 +136,8 @@
         <div class="img-mask"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500" alt="SBC"></div>
         <div class="caption">
           <h3>SBC & Edge Computing</h3>
-          <p>라즈베리 파이 및 엣지 장치를 활용한 필드 데이터 수집. 상위 MES/ERP 시스템과의 원활한 연동을 위한 데이터 통신 인터페이스 개발.</p>
-          <div class="tags"><span class="tag">IoT</span><span class="tag">Linux</span><span class="tag">Modbus</span></div>
+          <p>라즈베리 파이 및 엣지 장치를 활용한 필드 데이터 수집. 상위 MES 시스템과의 연동 인터페이스 개발.</p>
+          <div class="tags"><span class="tag">IoT</span><span class="tag">Python</span></div>
         </div>
       </div>
     </section>
@@ -164,92 +147,90 @@
         <div class="img-mask"><img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1500" alt="Smart Factory"></div>
         <div class="caption">
           <h3>Smart Factory Solution</h3>
-          <p>디지털 트윈 기반의 공정 시뮬레이션 및 AI 비전 검사 시스템 통합. 설비 예지 보전 기술을 통해 무중단 제조 환경을 구현합니다.</p>
-          <div class="tags"><span class="tag">Vision AI</span><span class="tag">Digital Twin</span><span class="tag">Smart</span></div>
+          <p>디지털 트윈 기반의 공정 시뮬레이션 및 AI 비전 검사 시스템 통합. 예지 보전 기술을 구현합니다.</p>
+          <div class="tags"><span class="tag">Vision AI</span><span class="tag">Smart</span></div>
         </div>
       </div>
     </section>
   </div>
 
   <script>
-    /* ===== [1] 부드러운 장면 전환 로직 (Cross-fade) ===== */
     let currentIdx = 0;
     const sections = document.querySelectorAll('.section');
     const totalSections = sections.length;
     let isAnimating = false;
 
+    /* [핵심 수정] 첫 페이지에서만 새로고침 허용하는 로직 */
+    function updateRefreshState() {
+      if (currentIdx === 0) {
+        document.body.style.overscrollBehaviorY = 'auto'; // 첫 페이지: 새로고침 가능
+      } else {
+        document.body.style.overscrollBehaviorY = 'none'; // 나머지: 새로고침 차단
+      }
+    }
+
     function goToSection(idx) {
       if (isAnimating || idx < 0 || idx >= totalSections) return;
       isAnimating = true;
 
-      // 이전 섹션 처리 (멀어지며 사라짐)
       sections[currentIdx].classList.remove('active');
-      sections[currentIdx].classList.add('prev');
-      
-      const prevIdx = currentIdx;
-      
-      // 새 섹션 처리 (서서히 나타남)
       currentIdx = idx;
-      sections[currentIdx].classList.remove('prev');
       sections[currentIdx].classList.add('active');
 
-      // 애니메이션 완료 후 prev 클래스 제거
-      setTimeout(() => {
-        sections[prevIdx].classList.remove('prev');
-        isAnimating = false;
-      }, 1800); // CSS transition 시간과 맞춤
+      updateRefreshState(); // 상태 업데이트
+
+      setTimeout(() => { isAnimating = false; }, 800);
     }
 
-    // 마우스 휠 이벤트 (감도 조절)
+    // 마우스 휠
     window.addEventListener('wheel', (e) => {
-      if (Math.abs(e.deltaY) < 10) return; // 미세한 움직임 무시
+      if (Math.abs(e.deltaY) < 30) return;
       if (e.deltaY > 0) goToSection(currentIdx + 1);
       else goToSection(currentIdx - 1);
     }, { passive: false });
 
-    // 모바일 터치 이벤트 (새로고침 방지 포함)
+    // 터치 (새로고침 호환 스와이프)
     let touchStartY = 0;
     window.addEventListener('touchstart', (e) => { 
       touchStartY = e.touches[0].clientY; 
-    }, { passive: false });
+    }, { passive: true });
 
     window.addEventListener('touchmove', (e) => {
-      e.preventDefault(); // 브라우저 기본 스크롤 및 새로고침 동작 차단
+      // 첫 페이지에서 위로 당길 때는 preventDefault 안 함 (새로고침 허용)
+      if (currentIdx === 0 && e.touches[0].clientY > touchStartY) return;
+      if (e.cancelable) e.preventDefault(); 
     }, { passive: false });
 
     window.addEventListener('touchend', (e) => {
       let touchEndY = e.changedTouches[0].clientY;
       let diff = touchStartY - touchEndY;
-      if (Math.abs(diff) > 50) { // 최소 50px 이상 이동 시 작동
+      if (Math.abs(diff) > 70) {
         if (diff > 0) goToSection(currentIdx + 1);
         else goToSection(currentIdx - 1);
       }
     });
 
-    /* ===== [2] 마우스 커서 및 빨간 잔상 효과 ===== */
+    /* 마우스 커서 & 빨간 잔상 */
     const trailCanvas = document.getElementById('trail-canvas');
     const trailCtx = trailCanvas.getContext('2d');
     const cursorDot = document.getElementById('cursor');
-
     let m = { x: -100, y: -100 }, p = { x: 0, y: 0 }, pts = [];
+    
     function resize() { trailCanvas.width = window.innerWidth; trailCanvas.height = window.innerHeight; }
     window.addEventListener('resize', resize); resize();
-
     window.addEventListener('mousemove', e => { m.x = e.clientX; m.y = e.clientY; });
-    window.addEventListener('touchmove', e => { 
-      const touch = e.touches[0]; m.x = touch.clientX; m.y = touch.clientY; 
-    });
+    window.addEventListener('touchmove', e => { const touch = e.touches[0]; m.x = touch.clientX; m.y = touch.clientY; });
 
     function drawTrail() {
-      p.x += (m.x - p.x) * 0.15; p.y += (m.y - p.y) * 0.15;
+      p.x += (m.x - p.x) * 0.18; p.y += (m.y - p.y) * 0.18;
       cursorDot.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
       pts.push({ ...p });
-      if (pts.length > 25) pts.shift();
+      if (pts.length > 20) pts.shift();
       trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
       if (pts.length > 1) {
         trailCtx.beginPath();
         trailCtx.lineWidth = 1.0;
-        trailCtx.strokeStyle = "rgba(255, 0, 0, 0.25)";
+        trailCtx.strokeStyle = "rgba(255, 0, 0, 0.3)";
         trailCtx.moveTo(pts[0].x, pts[0].y);
         for (let i = 1; i < pts.length; i++) trailCtx.lineTo(pts[i].x, pts[i].y);
         trailCtx.stroke();
@@ -257,6 +238,7 @@
       requestAnimationFrame(drawTrail);
     }
     drawTrail();
+    updateRefreshState();
   </script>
 </body>
 </html>
