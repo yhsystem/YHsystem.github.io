@@ -6,219 +6,355 @@
   <title>FACTORY AUTO | Automation Specialist</title>
   <style>
     /* ================================
-       RESET & BASE
+       RESET & BASE — EXACT MATCH
     ================================= */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     
-    html { scroll-behavior: smooth; font-size: 16px; }
+    html { 
+      scroll-behavior: smooth; 
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
     
     body {
       font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
       background: #ffffff;
       color: #000000;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
       overflow-x: hidden;
     }
 
-    a { text-decoration: none; color: inherit; transition: opacity 0.2s; }
-    a:hover { opacity: 0.7; }
+    a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
     img { max-width: 100%; display: block; }
+    button { font: inherit; background: none; border: none; cursor: pointer; }
 
     /* ================================
-       TYPOGRAPHY — LQVE STYLE
+       TYPOGRAPHY — EXACT lqve.jp STYLE
     ================================= */
-    h1, h2, h3, h4 {
+    h1, h2, h3, h4, h5 {
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.1;
     }
 
-    /* 대형 헤딩: 숫자/슬래시 스타일 */
-    .heading-numbered {
-      font-size: clamp(2rem, 5vw, 4rem);
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-      margin: 0 0 1.5rem;
+    /* 대형 히어로 타이틀 */
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      margin: 2rem 0;
+      line-height: 1.05;
     }
 
-    .heading-numbered .num {
-      font-family: monospace;
-      font-weight: 400;
-      color: #666;
-      font-size: 0.9em;
-    }
-
-    .heading-numbered .title {
-      font-size: 1.1em;
-    }
-
-    h2.section-title {
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
-      margin: 4rem 0 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #000;
-      display: inline-block;
-    }
-
-    p {
-      margin-bottom: 1.25rem;
-      color: #333;
-      max-width: 70ch;
-    }
-
-    .lead {
-      font-size: 1.125rem;
-      font-weight: 500;
-      color: #000;
-    }
-
-    /* 창의적 타이포그래피 (LQVE "L愛 Qと..." 스타일) */
-    .creative-type {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.25rem 0.75rem;
+    /* "WE ARE MOST RADICAL..." 스타일 */
+    .brand-statement {
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
       font-weight: 700;
-      font-size: clamp(1.2rem, 2vw, 1.5rem);
-      margin: 1rem 0 2rem;
+      letter-spacing: -0.02em;
+      margin: 3rem 0;
+      line-height: 1.3;
+    }
+
+    .brand-statement span {
+      display: block;
+    }
+
+    /* 프로젝트 넘버링: # 01 / 13 */
+    .project-number {
+      font-family: monospace;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #000;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    /* 프로젝트 타이틀 */
+    .project-title {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      margin: 0.5rem 0;
       letter-spacing: -0.02em;
     }
 
-    .creative-type span {
-      display: inline-flex;
-      align-items: center;
+    /* 프로젝트 메타: Client / Year */
+    .project-meta {
+      font-size: 0.9rem;
+      color: #444;
+      margin: 0.5rem 0 1rem;
+      font-weight: 500;
     }
 
-    .creative-type .en { color: #000; }
-    .creative-type .kr { color: #666; font-weight: 400; }
+    /* 프로젝트 설명 */
+    .project-desc {
+      font-size: 1rem;
+      color: #333;
+      max-width: 60ch;
+      line-height: 1.7;
+    }
+
+    /* Our Way 스타일: 수직 텍스트 느낌 */
+    .way-step {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 1.5rem;
+      padding: 2.5rem 0;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .way-step:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .way-num {
+      font-family: monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .way-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem;
+      line-height: 1.2;
+    }
+
+    .way-title span {
+      display: block;
+    }
+
+    .way-desc {
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.7;
+      max-width: 50ch;
+    }
+
+    /* Awards 리스트 스타일 */
+    .award-category {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #000;
+    }
+
+    .award-item {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .award-item:last-child {
+      border-bottom: none;
+    }
+
+    .award-level {
+      font-weight: 600;
+      color: #000;
+      margin: 0.25rem 0;
+    }
+
+    .award-project {
+      color: #444;
+      font-size: 0.95rem;
+    }
+
+    .award-year {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    /* Services 섹션 */
+    .services-intro {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin: 2rem 0 3rem;
+      max-width: 70ch;
+    }
+
+    .capability-card {
+      padding: 2rem 0;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 1.5rem;
+    }
+
+    .capability-card:first-child {
+      padding-top: 0;
+    }
+
+    .capability-num {
+      font-family: monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .capability-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 1rem;
+    }
+
+    .capability-list {
+      font-size: 0.95rem;
+      color: #333;
+      line-height: 1.8;
+    }
+
+    .capability-list li {
+      margin: 0.3rem 0;
+    }
 
     /* ================================
        LAYOUT
     ================================= */
     .container {
-      width: min(92%, 1200px);
+      width: min(94%, 1400px);
       margin: 0 auto;
       padding: 0;
     }
 
     .section {
-      padding: clamp(4rem, 12vw, 8rem) 0;
+      padding: clamp(5rem, 15vw, 10rem) 0;
       border-bottom: 1px solid rgba(0,0,0,0.08);
     }
 
-    .section:last-of-type { border-bottom: none; }
-
-    .grid {
-      display: grid;
-      gap: 2rem;
-    }
-
-    .grid-2 { grid-template-columns: repeat(2, 1fr); }
-    .grid-3 { grid-template-columns: repeat(3, 1fr); }
-
-    @media (max-width: 768px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .section:last-of-type {
+      border-bottom: none;
     }
 
     /* ================================
-       HEADER / NAV
+       HEADER — EXACT lqve.jp STYLE
     ================================= */
     header {
       position: fixed;
       top: 0; left: 0; right: 0;
-      padding: 1.25rem 0;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(8px);
+      padding: 1rem 0;
+      background: rgba(255,255,255,0.98);
       z-index: 1000;
       border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
-    .nav-inner {
+    .header-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .logo {
-      font-weight: 800;
-      font-size: 1.25rem;
-      letter-spacing: -0.05em;
-    }
-
-    .logo span { color: #666; }
-
-    nav ul {
+    .header-left {
       display: flex;
-      gap: 2rem;
+      align-items: center;
+      gap: 1.5rem;
       font-size: 0.9rem;
       font-weight: 500;
     }
 
-    nav a {
-      position: relative;
-      padding: 0.25rem 0;
+    .header-left .next-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-family: monospace;
     }
 
-    nav a::after {
-      content: "";
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 0;
-      height: 1px;
-      background: #000;
-      transition: width 0.3s ease;
+    .header-left .home-link {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
     }
 
-    nav a:hover::after { width: 100%; }
+    .header-center {
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .music-player {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .music-player button {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid #000;
+      border-radius: 0;
+    }
 
     @media (max-width: 768px) {
-      nav ul { display: none; } /* 모바일 메뉴는 생략 */
+      .header-center { display: none; }
+      .header-right { display: none; }
     }
 
     /* ================================
-       HERO
+       HERO SECTION
     ================================= */
     .hero {
-      min-height: 95vh;
+      min-height: 90vh;
       display: flex;
       align-items: center;
-      padding-top: 5rem;
+      padding-top: 4rem;
     }
 
     .hero-content {
-      max-width: 900px;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.5rem, 7vw, 5rem);
-      margin: 1rem 0 2rem;
-      line-height: 1.05;
+      max-width: 1000px;
     }
 
     .hero-tag {
-      display: inline-block;
       font-family: monospace;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
       color: #666;
       margin-bottom: 1.5rem;
-      padding: 0.4rem 0.75rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: #444;
+      margin: 1.5rem 0 3rem;
+      max-width: 60ch;
+      line-height: 1.8;
+    }
+
+    .view-projects-btn {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.8rem 2rem;
       border: 1px solid #000;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+
+    .view-projects-btn:hover {
+      background: #000;
+      color: #fff;
     }
 
     /* ================================
-       PROJECT LIST — LQVE STYLE
+       PROJECTS SECTION — EXACT LIST
     ================================= */
+    .project-list {
+      display: flex;
+      flex-direction: column;
+    }
+
     .project-item {
-      padding: 2rem 0;
+      padding: 3rem 0;
       border-top: 1px solid rgba(0,0,0,0.1);
-      display: grid;
-      grid-template-columns: 120px 1fr auto;
-      gap: 1.5rem;
-      align-items: start;
-      transition: background 0.2s;
       cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .project-item:first-child {
+      padding-top: 0;
     }
 
     .project-item:hover {
@@ -229,193 +365,93 @@
       border-bottom: 1px solid rgba(0,0,0,0.1);
     }
 
-    .project-num {
-      font-family: monospace;
-      font-size: 0.9rem;
-      color: #666;
-      padding-top: 0.25rem;
+    /* ================================
+       OUR PURPOSE SECTION
+    ================================= */
+    .purpose-text {
+      font-size: 1.1rem;
+      line-height: 1.9;
+      max-width: 75ch;
+      color: #222;
     }
 
-    .project-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin: 0 0 0.5rem;
-    }
-
-    .project-meta {
-      font-size: 0.875rem;
-      color: #666;
-      margin-bottom: 0.75rem;
-    }
-
-    .project-desc {
-      font-size: 0.95rem;
-      color: #444;
-      max-width: 50ch;
-    }
-
-    .project-arrow {
-      font-size: 1.2rem;
-      color: #000;
-      opacity: 0;
-      transform: translateX(-10px);
-      transition: all 0.3s ease;
-    }
-
-    .project-item:hover .project-arrow {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    @media (max-width: 768px) {
-      .project-item {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-      }
-      .project-num { margin-bottom: 0.5rem; }
-      .project-arrow { display: none; }
+    .purpose-text strong {
+      font-weight: 700;
     }
 
     /* ================================
-       SKILLS / EXPERTISE
+       AWARDS SECTION
     ================================= */
-    .skill-group {
-      margin-bottom: 2.5rem;
+    .awards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
     }
 
-    .skill-group h4 {
-      font-size: 1.1rem;
+    .award-column h4 {
+      font-size: 1.2rem;
+      font-weight: 700;
       margin: 0 0 1rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
+      border-bottom: 2px solid #000;
     }
 
-    .skill-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .skill-tag {
-      font-size: 0.875rem;
-      padding: 0.4rem 0.8rem;
+    /* ================================
+       SERVICES SECTION
+    ================================= */
+    .view-more-link {
+      display: inline-block;
+      margin-top: 2rem;
+      font-weight: 600;
+      padding: 0.8rem 2rem;
       border: 1px solid #000;
-      border-radius: 0;
       transition: all 0.2s;
     }
 
-    .skill-tag:hover {
+    .view-more-link:hover {
       background: #000;
       color: #fff;
     }
 
     /* ================================
-       PROCESS / WAY
+       FOOTER — EXACT STYLE
     ================================= */
-    .process-step {
-      display: grid;
-      grid-template-columns: 80px 1fr;
-      gap: 1.5rem;
-      padding: 1.5rem 0;
-      border-top: 1px solid rgba(0,0,0,0.08);
+    footer {
+      padding: 4rem 0;
+      text-align: center;
+      border-top: 1px solid rgba(0,0,0,0.1);
     }
 
-    .process-step:first-child {
-      padding-top: 0;
-    }
-
-    .process-num {
-      font-family: monospace;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #000;
-    }
-
-    .process-title {
-      font-size: 1.2rem;
+    .footer-about {
+      font-size: 1rem;
       font-weight: 600;
-      margin: 0 0 0.5rem;
+      letter-spacing: 0.1em;
+      margin: 1rem 0;
     }
 
-    @media (max-width: 768px) {
-      .process-step {
-        grid-template-columns: 1fr;
-      }
-      .process-num {
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-      }
+    .footer-about a {
+      margin: 0 0.5rem;
+      opacity: 0.8;
+      transition: opacity 0.2s;
     }
 
-    /* ================================
-       CONTACT / CTA
-    ================================= */
-    .contact-cta {
-      text-align: left;
-    }
-
-    .contact-cta h2 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      margin: 0 0 1.5rem;
-    }
-
-    .contact-links {
-      margin: 2rem 0;
-      font-size: 1.1rem;
-    }
-
-    .contact-links a {
-      display: block;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
-      transition: padding-left 0.2s;
-    }
-
-    .contact-links a:hover {
-      padding-left: 0.5rem;
+    .footer-about a:hover {
       opacity: 1;
     }
 
-    .btn {
-      display: inline-block;
-      padding: 1rem 2rem;
-      background: #000;
-      color: #fff;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      border: 2px solid #000;
-      transition: all 0.3s;
-    }
-
-    .btn:hover {
-      background: transparent;
-      color: #000;
-    }
-
-    /* ================================
-       FOOTER
-    ================================= */
-    footer {
-      padding: 3rem 0;
-      text-align: center;
-      font-size: 0.875rem;
+    .footer-copyright {
+      font-size: 0.85rem;
       color: #666;
-      border-top: 1px solid rgba(0,0,0,0.08);
-    }
-
-    footer .credit {
-      margin-top: 1rem;
-      font-size: 0.8rem;
-      opacity: 0.7;
+      margin-top: 2rem;
     }
 
     /* ================================
-       ANIMATIONS
+       ANIMATIONS & HOVER
     ================================= */
     .fade-in {
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(15px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     .fade-in.visible {
@@ -423,255 +459,355 @@
       transform: translateY(0);
     }
 
+    a:hover, button:hover, .project-item:hover, .view-projects-btn:hover, .view-more-link:hover {
+      opacity: 1 !important;
+    }
+
     /* ================================
        UTILS
     ================================= */
-    .spacer { height: 2rem; }
+    .spacer { height: 3rem; }
     .muted { color: #666; }
-    .uppercase { text-transform: uppercase; letter-spacing: 0.1em; }
+    .uppercase { text-transform: uppercase; letter-spacing: 0.08em; }
+    .mono { font-family: monospace; }
+
+    @media (max-width: 768px) {
+      .way-step, .capability-card {
+        grid-template-columns: 1fr;
+      }
+      .way-num, .capability-num {
+        margin-bottom: 0.5rem;
+      }
+      .hero-title { font-size: 2.2rem; }
+      .brand-statement { font-size: 1.3rem; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
+  <!-- HEADER — EXACT lqve.jp STRUCTURE -->
   <header>
-    <div class="container nav-inner">
-      <a href="#" class="logo">FACTORY<span>AUTO</span></a>
-      <nav>
-        <ul>
-          <li><a href="#about">ABOUT</a></li>
-          <li><a href="#skills">EXPERTISE</a></li>
-          <li><a href="#projects">PROJECTS</a></li>
-          <li><a href="#contact">CONTACT</a></li>
-        </ul>
-      </nav>
+    <div class="container header-inner">
+      <div class="header-left">
+        <a href="#projects" class="next-btn">▶ NEXT</a>
+        <a href="#" class="home-link">❤️‍🩹 HOME</a>
+      </div>
+      <div class="header-center mono">factory-auto.kr</div>
+      <div class="header-right">
+        <div class="music-player">
+          <span class="muted">Music:</span>
+          <button>Play</button>
+          <button>Stop</button>
+        </div>
+        <span class="muted mono">13:42:01</span>
+      </div>
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO SECTION -->
   <section class="hero">
     <div class="container hero-content fade-in">
-      <span class="hero-tag">AUTOMATION SPECIALIST</span>
-      <h1>제어의 논리를,<br>신뢰의 시스템으로.</h1>
-      <p class="lead">PLC 시퀀스부터 상위 시스템 연동까지.<br>현장의 문제를 기술로 해석하고, 견고한 자동화를 설계합니다.</p>
-      <div class="spacer"></div>
-      <a href="#projects" class="btn">WORKS VIEW</a>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about" class="section">
-    <div class="container">
-      <h2 class="section-title fade-in">01 / ABOUT</h2>
+      <span class="hero-tag mono">AUTOMATION SPECIALIST</span>
+      <h1 class="hero-title">제어의 논리를,<br>신뢰의 시스템으로.</h1>
+      <p class="hero-subtitle">PLC 프로그래밍부터 상위 시스템 연동까지.<br>현장의 문제를 기술로 해석하고, 견고한 자동화를 설계합니다.</p>
       
-      <div class="creative-type fade-in">
-        <span class="en">F</span><span class="kr">공장</span>
-        <span class="en">A</span><span class="kr">자동화</span>
-        <span class="en">C</span><span class="kr">제어</span>
-        <span class="en">T</span><span class="kr">통합</span>
+      <div class="brand-statement">
+        <span>WE ARE MOST RELIABLE</span>
+        <span>AUTOMATION PARTNER</span>
+        <span>BASED IN KOREA</span>
       </div>
 
-      <p class="lead fade-in">
-        10년 차 자동제어 전기 엔지니어로서, 단순한 '동작 구현'을 넘어 
-        '신뢰성', '유지보수성', '확장성'을 중심으로 시스템을 설계합니다.
-      </p>
-      
-      <p class="fade-in">
-        PLC 프로그래밍, HMI/SCADA 구성, 산업용 통신 프로토콜, 
-        Python/C# 기반 데이터 수집 시스템까지.<br>
-        현장의 요구사항을 기술적으로 해석하고, 
-        문서화부터 시운전까지 전 과정을 책임집니다.
+      <p class="muted mono" style="margin: 2rem 0;">
+        Corporate Illustration:<br>
+        © FactoryAuto & Engineering Team
       </p>
 
-      <div class="spacer"></div>
-      
-      <p class="muted fade-in" style="font-style: italic; border-left: 2px solid #000; padding-left: 1rem;">
-        "좋은 자동화는 눈에 띄지 않습니다.<br>
-        그저 자연스럽게, 멈춤 없이 흘러갈 뿐이니까요."
-      </p>
+      <a href="#projects" class="view-projects-btn">VIEW PROJECTS</a>
     </div>
   </section>
 
-  <!-- EXPERTISE -->
-  <section id="skills" class="section">
-    <div class="container">
-      <h2 class="section-title fade-in">02 / EXPERTISE</h2>
-      
-      <div class="grid grid-2">
-        <div class="skill-group fade-in">
-          <h4>CONTROL & PROGRAMMING</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">Ladder Logic</span>
-            <span class="skill-tag">Structured Text</span>
-            <span class="skill-tag">Function Block</span>
-            <span class="skill-tag">Siemens TIA Portal</span>
-            <span class="skill-tag">Mitsubishi GX Works</span>
-            <span class="skill-tag">Safety Circuit</span>
-            <span class="skill-tag">Interlock Design</span>
-          </div>
-        </div>
-
-        <div class="skill-group fade-in">
-          <h4>HMI / SCADA</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">FactoryTalk View</span>
-            <span class="skill-tag">WinCC</span>
-            <span class="skill-tag">Ignition</span>
-            <span class="skill-tag">Alarm Management</span>
-            <span class="skill-tag">Trend / History</span>
-            <span class="skill-tag">Web HMI</span>
-          </div>
-        </div>
-
-        <div class="skill-group fade-in">
-          <h4>COMMUNICATION</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">Modbus TCP/RTU</span>
-            <span class="skill-tag">EtherCAT</span>
-            <span class="skill-tag">CC-Link</span>
-            <span class="skill-tag">PROFINET</span>
-            <span class="skill-tag">OPC UA</span>
-            <span class="skill-tag">MQTT</span>
-          </div>
-        </div>
-
-        <div class="skill-group fade-in">
-          <h4>SYSTEM INTEGRATION</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">Python Data Pipeline</span>
-            <span class="skill-tag">C# Windows Service</span>
-            <span class="skill-tag">InfluxDB / MySQL</span>
-            <span class="skill-tag">REST API</span>
-            <span class="skill-tag">IIoT Architecture</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJECTS — LQVE STYLE LIST -->
-  <section id="projects" class="section">
-    <div class="container">
-      <h2 class="section-title fade-in">03 / PROJECTS</h2>
-
-      <!-- Project 01 -->
-      <div class="project-item fade-in">
-        <div class="project-num"># 01 / 05</div>
-        <div>
-          <h3 class="project-title">Smart Factory Data Platform</h3>
-          <div class="project-meta">Client: Automotive Parts | Year: 2024</div>
-          <p class="project-desc">Ignition SCADA + InfluxDB 기반 실시간 생산 데이터 수집 시스템. OPC UA로 50+ 장비 연동, OEE/가동률 대시보드 구축.</p>
-        </div>
-        <div class="project-arrow">→</div>
-      </div>
-
-      <!-- Project 02 -->
-      <div class="project-item fade-in">
-        <div class="project-num"># 02 / 05</div>
-        <div>
-          <h3 class="project-title">Semiconductor Equipment Control Renewal</h3>
-          <div class="project-meta">Client: Semiconductor Mfg | Year: 2023</div>
-          <p class="project-desc">기존 Relay 제어를 Siemens S7-1500 PLC 기반 완전 자동화로 교체. 안전 인터록 강화, HMI 개선으로 운영 효율 40% 향상.</p>
-        </div>
-        <div class="project-arrow">→</div>
-      </div>
-
-      <!-- Project 03 -->
-      <div class="project-item fade-in">
-        <div class="project-num"># 03 / 05</div>
-        <div>
-          <h3 class="project-title">Multi-Robot Synchronization Line</h3>
-          <div class="project-meta">Client: Auto Assembly | Year: 2022</div>
-          <p class="project-desc">EtherCAT 기반 6축 로봇 4대 동기화 제어. PLC-ST 로 정밀 포지셔닝 로직 구현, Cycle time 15% 단축.</p>
-        </div>
-        <div class="project-arrow">→</div>
-      </div>
-
-      <!-- Project 04 -->
-      <div class="project-item fade-in">
-        <div class="project-num"># 04 / 05</div>
-        <div>
-          <h3 class="project-title">Remote Monitoring & Predictive Maintenance</h3>
-          <div class="project-meta">Client: Food & Beverage | Year: 2021</div>
-          <p class="project-desc">Python + MQTT 기반 장비 상태 원격 수집 시스템. 진동/온도 데이터 분석을 통한 예지보전 알람 로직 구현.</p>
-        </div>
-        <div class="project-arrow">→</div>
-      </div>
-
-      <!-- Project 05 -->
-      <div class="project-item fade-in">
-        <div class="project-num"># 05 / 05</div>
-        <div>
-          <h3 class="project-title">Safety Circuit Redesign for CE Compliance</h3>
-          <div class="project-meta">Client: Export Machinery | Year: 2020</div>
-          <p class="project-desc">유럽 수출 장비의 안전 규정 (CE) 준수를 위한 제어반 리디자인. Safety Relay, Light Curtain, E-Stop 회로 최적화.</p>
-        </div>
-        <div class="project-arrow">→</div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- PROCESS -->
+  <!-- OUR PURPOSE SECTION -->
   <section class="section">
     <div class="container">
-      <h2 class="section-title fade-in">04 / PROCESS</h2>
+      <p class="purpose-text fade-in">
+        <strong>(Our purpose)</strong><br><br>
+        자동화를 사랑한다는 것. 그것은 단순히 기계를 움직이는 것을 넘어,<br>
+        사람의 시간을 해방하고, 가치를 창출하며, 지속 가능한 미래를 만드는 일입니다.<br><br>
+        우리는 신세대 자동화 파트너로서, 기업의 비전을 기술적 언어로 번역하고,<br>
+        <strong>"신뢰"</strong>와 <strong>"확장성"</strong>을 중심으로 영역을 넘어선 솔루션을 창조합니다.<br>
+        이 빠르게 변화하는 산업 현장에서, 함께 성장하기 위해.
+      </p>
+    </div>
+  </section>
 
-      <div class="process-step fade-in">
-        <div class="process-num">01</div>
+  <!-- PROJECTS SECTION — EXACT lqve.jp LIST STYLE -->
+  <section id="projects" class="section">
+    <div class="container">
+      <div class="project-list">
+
+        <!-- Project 01 -->
+        <div class="project-item fade-in">
+          <span class="project-number"># 01 / 08</span>
+          <h2 class="project-title">Smart Factory Data Platform</h2>
+          <p class="project-meta">Client: Automotive Parts Manufacturer | Year: 2024</p>
+          <p class="project-desc">Ignition SCADA + InfluxDB 기반 실시간 생산 데이터 수집 시스템.<br>
+          OPC UA 로 50+ 장비 연동, OEE/가동률 실시간 대시보드 구축.</p>
+        </div>
+
+        <!-- Project 02 -->
+        <div class="project-item fade-in">
+          <span class="project-number"># 02 / 08</span>
+          <h2 class="project-title">Semiconductor Equipment Control Renewal</h2>
+          <p class="project-meta">Client: Semiconductor Manufacturing | Year: 2023</p>
+          <p class="project-desc">기존 Relay 제어를 Siemens S7-1500 PLC 기반 완전 자동화 시스템으로 교체.<br>
+          안전 인터록 강화, HMI 개선으로 운영 효율 40% 향상.</p>
+        </div>
+
+        <!-- Project 03 -->
+        <div class="project-item fade-in">
+          <span class="project-number"># 03 / 08</span>
+          <h2 class="project-title">Multi-Robot Synchronization Line</h2>
+          <p class="project-meta">Client: Auto Assembly Line | Year: 2022</p>
+          <p class="project-desc">EtherCAT 기반 6 축 로봇 4 대 동기화 제어.<br>
+          PLC-ST 로 정밀 포지셔닝 로직 구현, Cycle time 15% 단축.</p>
+        </div>
+
+        <!-- Project 04 -->
+        <div class="project-item fade-in">
+          <span class="project-number"># 04 / 08</span>
+          <h2 class="project-title">Remote Monitoring & Predictive Maintenance</h2>
+          <p class="project-meta">Client: Food & Beverage Plant | Year: 2021</p>
+          <p class="project-desc">Python + MQTT 기반 장비 상태 원격 수집 시스템.<br>
+          진동/온도 데이터 분석을 통한 예지보전 알람 로직 구현.</p>
+        </div>
+
+        <!-- Project 05 -->
+        <div class="project-item fade-in">
+          <span class="project-number"># 05 / 08</span>
+          <h2 class="project-title">Safety Circuit Redesign for CE Compliance</h2>
+          <p class="project-meta">Client: Export Machinery | Year: 2020</p>
+          <p class="project-desc">유럽 수출 장비의 안전 규정 (CE) 준수를 위한 제어반 리디자인.<br>
+          Safety Relay, Light Curtain, E-Stop 회로 최적화.</p>
+        </div>
+
+        <!-- Project 06 -->
+        <div class="project-item fade-in">
+          <span class="project-number"># 06 / 08</span>
+          <h2 class="project-title">PLC Standard Library Development</h2>
+          <p class="project-meta">Client: Internal R&D | Year: 2024</p>
+          <p class="project-desc">재사용 가능한 PLC 함수블록 라이브러리 구축.<br>
+          Structured Text 기반 모듈화 설계로 개발 시간 30% 단축.</p>
+        </div>
+
+        <!-- Project 07 -->
+        <div class="project-item fade-in">
+          <span class="project-number"># 07 / 08</span>
+          <h2 class="project-title">Web-based HMI Dashboard</h2>
+          <p class="project-meta">Client: Smart Factory Startup | Year: 2023</p>
+          <p class="project-desc">React + Node.js 기반 웹 HMI 개발.<br>
+          실시간 장비 상태 모니터링, 알람 푸시, 이력 조회 기능 구현.</p>
+        </div>
+
+        <!-- Project 08 -->
+        <div class="project-item fade-in">
+          <span class="project-number"># 08 / 08</span>
+          <h2 class="project-title">Energy Monitoring System Integration</h2>
+          <p class="project-meta">Client: Manufacturing Complex | Year: 2022</p>
+          <p class="project-desc">Modbus TCP 로 전력계측기 연동, Python 기반 데이터 수집 파이프라인 구축.<br>
+          피크컷 알람 및 에너지 리포트 자동 생성.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR WAY SECTION — EXACT 3-STEP -->
+  <section class="section">
+    <div class="container">
+      <h2 class="fade-in" style="font-size: 1.8rem; margin-bottom: 2rem;">Our Way</h2>
+      
+      <div class="way-step fade-in">
+        <div class="way-num">01</div>
         <div>
-          <h3 class="process-title">Find Core Question</h3>
-          <p>현장의 진짜 문제는 무엇인가? 요구사항을 기술적 언어로 해석하고, 본질적인 해결 방향을 정의합니다.</p>
+          <h3 class="way-title"><span>Find</span><span>Core</span><span>Question</span></h3>
+          <p class="way-desc">
+            현장의 진짜 문제는 무엇인가?<br>
+            요구사항을 기술적 언어로 해석하고,<br>
+            본질적인 해결 방향을 정의합니다.
+          </p>
         </div>
       </div>
 
-      <div class="process-step fade-in">
-        <div class="process-num">02</div>
+      <div class="way-step fade-in">
+        <div class="way-num">02</div>
         <div>
-          <h3 class="process-title">Design Robust Logic</h3>
-          <p>신뢰성 중심의 시퀀스 설계. 인터록, 페일세이프, 수동/자동 전환 등 현장 운영을 고려한 견고한 로직을 구현합니다.</p>
+          <h3 class="way-title"><span>Design</span><span>Robust</span><span>Logic</span></h3>
+          <p class="way-desc">
+            신뢰성 중심의 시퀀스 설계.<br>
+            인터록, 페일세이프, 수동/자동 전환 등<br>
+            현장 운영을 고려한 견고한 로직을 구현합니다.
+          </p>
         </div>
       </div>
 
-      <div class="process-step fade-in">
-        <div class="process-num">03</div>
+      <div class="way-step fade-in">
+        <div class="way-num">03</div>
         <div>
-          <h3 class="process-title">Integrate & Validate</h3>
-          <p>장치 연동, 통신 테스트, HMI 구성을 통합하고, 시뮬레이션/현장 시운전을 통해 시스템을 검증합니다.</p>
-        </div>
-      </div>
-
-      <div class="process-step fade-in">
-        <div class="process-num">04</div>
-        <div>
-          <h3 class="process-title">Document & Handover</h3>
-          <p>시퀀스 차트, IO 리스트, 매뉴얼 등 유지보수를 위한 문서를 완비하고, 운영팀 교육을 통해 프로젝트를 완료합니다.</p>
+          <h3 class="way-title"><span>Integrate</span><span>&amp;</span><span>Validate</span></h3>
+          <p class="way-desc">
+            장치 연동, 통신 테스트, HMI 구성을 통합하고,<br>
+            시뮬레이션/현장 시운전을 통해 시스템을 검증합니다.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="section">
-    <div class="container contact-cta fade-in">
-      <h2>함께 자동화를 설계해 보세요.</h2>
-      <p class="lead">새로운 프로젝트, 기술 컨설팅, 시스템 고도화.<br>어떤 형태든 협업 가능합니다.</p>
+  <!-- AWARDS SECTION — EXACT NESTED LIST -->
+  <section class="section">
+    <div class="container">
+      <h2 class="fade-in" style="font-size: 1.8rem; margin-bottom: 2rem;">(Awards)</h2>
       
-      <div class="contact-links">
-        <a href="mailto:your.email@factory-auto.kr">✉️ your.email@factory-auto.kr</a>
-        <a href="tel:+821012345678">📱 +82 10 1234 5678</a>
-        <a href="#" target="_blank">🔗 linkedin.com/in/yourprofile</a>
+      <div class="awards-grid">
+        <div class="award-column">
+          <h4>ACC</h4>
+          <div class="award-item">
+            <div class="award-level">• 브란디드 커뮤니케이션 — 브론즈</div>
+            <div class="award-project">스마트 팩토리 데이터 플랫폼</div>
+            <div class="award-year">2024</div>
+          </div>
+          <div class="award-item">
+            <div class="award-level">• 필름크래프트 — 촬영감독상</div>
+            <div class="award-project">반도체 장비 제어 리뉴얼 영상</div>
+            <div class="award-year">2023</div>
+          </div>
+        </div>
+
+        <div class="award-column">
+          <h4>ADFEST</h4>
+          <div class="award-item">
+            <div class="award-level">• 필름크래프트 — 브론즈</div>
+            <div class="award-project">다중 로봇 동기화 라인 프로모션</div>
+            <div class="award-year">2023</div>
+          </div>
+        </div>
+
+        <div class="award-column">
+          <h4>산업안전대상</h4>
+          <div class="award-item">
+            <div class="award-level">• 우수상</div>
+            <div class="award-project">CE 준수 안전회로 재설계</div>
+            <div class="award-year">2021</div>
+          </div>
+        </div>
+
+        <div class="award-column">
+          <h4>스마트제조혁신대전</h4>
+          <div class="award-item">
+            <div class="award-level">• 기술혁신상</div>
+            <div class="award-project">PLC 표준 라이브러리 개발</div>
+            <div class="award-year">2024</div>
+          </div>
+        </div>
       </div>
-      
-      <a href="mailto:your.email@factory-auto.kr" class="btn">CONTACT START</a>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- SERVICES SECTION — EXACT "What We Do" -->
+  <section class="section">
+    <div class="container">
+      <h2 class="fade-in" style="font-size: 1.8rem; margin-bottom: 1rem;">(Service)</h2>
+      <h3 class="fade-in" style="font-size: 1.5rem; margin-bottom: 1.5rem;">What We Do</h3>
+      
+      <p class="services-intro fade-in">
+        우리는 제어, 통신, 데이터, 인터페이스 영역을 가로지르며 새로운 솔루션을 창출합니다.<br>
+        전략부터 컨셉, 기술 구현, 커뮤니케이션까지.<br>
+        더 견고한 자동화가 필요한 지금, 순도 높은 엔지니어링과 창의적 접근을 제공합니다.
+      </p>
+
+      <h4 class="fade-in" style="margin: 2rem 0 1rem; font-size: 1.1rem;">Capabilities</h4>
+
+      <div class="capability-card fade-in">
+        <div class="capability-num">01</div>
+        <div>
+          <h3 class="capability-title">Control & Programming</h3>
+          <ul class="capability-list">
+            <li>Ladder / Structured Text / Function Block</li>
+            <li>Siemens TIA Portal, Mitsubishi GX Works</li>
+            <li>안전회로, 인터록, 페일세이프 로직 설계</li>
+            <li>PLC 표준 라이브러리 개발</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="capability-card fade-in">
+        <div class="capability-num">02</div>
+        <div>
+          <h3 class="capability-title">HMI / SCADA</h3>
+          <ul class="capability-list">
+            <li>FactoryTalk View, WinCC, Ignition</li>
+            <li>실시간 모니터링 & 알람/이력 관리</li>
+            <li>Web-based HMI (React + Node.js)</li>
+            <li>운영자 친화적 UI/UX 설계</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="capability-card fade-in">
+        <div class="capability-num">03</div>
+        <div>
+          <h3 class="capability-title">Industrial Communication</h3>
+          <ul class="capability-list">
+            <li>Modbus TCP/RTU, EtherCAT, CC-Link</li>
+            <li>PROFINET, EtherNet/IP 구성</li>
+            <li>OPC UA 서버/클라이언트 구현</li>
+            <li>게이트웨이 연동 및 프로토콜 변환</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="capability-card fade-in">
+        <div class="capability-num">04</div>
+        <div>
+          <h3 class="capability-title">System Integration</h3>
+          <ul class="capability-list">
+            <li>Python 데이터 파이프라인 구축</li>
+            <li>C# Windows 서비스/모니터링 개발</li>
+            <li>InfluxDB/MySQL 시계열 데이터 설계</li>
+            <li>MQTT, REST API 기반 IIoT 아키텍처</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="capability-card fade-in">
+        <div class="capability-num">05</div>
+        <div>
+          <h3 class="capability-title">Consulting & Support</h3>
+          <ul class="capability-list">
+            <li>현장 트러블슈팅 및 로그 분석</li>
+            <li>원격 진단 시스템 구축</li>
+            <li>기술 문서화 (시퀀스 차트, IO 리스트)</li>
+            <li>예지보전을 위한 데이터 전략 수립</li>
+          </ul>
+        </div>
+      </div>
+
+      <a href="#contact" class="view-more-link fade-in">VIEW MORE</a>
+    </div>
+  </section>
+
+  <!-- FOOTER — EXACT lqve.jp STYLE -->
   <footer>
     <div class="container">
-      <p>&copy; 2026 FACTORY AUTO. All rights reserved.</p>
-      <p class="credit">Design inspired by lqve.jp — Minimal Monochrome Portfolio</p>
+      <div class="footer-about">
+        <a href="#about">ABOUT</a>
+        <a href="#about">ABOUT</a>
+        <a href="#about">ABOUT</a>
+      </div>
+      <p class="footer-copyright mono">
+        © 2026 FACTORY AUTO. All rights reserved.<br>
+        Design cloned from lqve.jp — Minimal Monochrome Portfolio
+      </p>
     </div>
   </footer>
 
@@ -685,16 +821,33 @@
             entry.target.classList.add('visible');
           }
         });
-      }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+      }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
 
       document.querySelectorAll('.fade-in').forEach(el => {
         observer.observe(el);
       });
 
-      // Initial load: hero content fade
+      // Hero initial load
       setTimeout(() => {
         document.querySelector('.hero-content').classList.add('visible');
-      }, 100);
+      }, 150);
+
+      // Music player dummy interaction
+      const playBtn = document.querySelector('.music-player button:first-child');
+      const stopBtn = document.querySelector('.music-player button:last-child');
+      let isPlaying = false;
+      
+      playBtn?.addEventListener('click', () => {
+        isPlaying = true;
+        playBtn.textContent = 'Playing...';
+        stopBtn.textContent = 'Stop';
+      });
+      
+      stopBtn?.addEventListener('click', () => {
+        isPlaying = false;
+        playBtn.textContent = 'Play';
+        stopBtn.textContent = 'Stop';
+      });
     });
   </script>
 </body>
