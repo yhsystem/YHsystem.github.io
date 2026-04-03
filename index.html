@@ -3,72 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LQVE JP Style Portfolio</title>
+  <title>FA Engineer Portfolio — System Design</title>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ===== 1. 색상 및 스타일 설정 (여기서만 수정하세요) ===== */
+    /* ===== 1. 디자인 커스터마이징 (여기서 색상을 변경하세요) ===== */
     :root {
-      --배경색: white;         /* 전체 배경색 */
-      --글자색: black;         /* 기본 글자색 */
-      --포인트색: black;       /* 마우스 점 색상 */
-      --잔상선색: rgba(0,0,0,0.2); /* 마우스 뒤에 생기는 선 색상 (투명도 포함) */
-      --호버시_점색상: rgba(0,0,0,0.1); /* 사진 위에 올렸을 때 퍼지는 원 색상 */
+      --배경색: #ffffff;         /* 깔끔한 화이트 배경 */
+      --글자색: #1a1a1a;         /* 짙은 차콜색 글자 */
+      --포인트색: #000000;       /* 마우스 점 색상 */
+      --잔상선색: rgba(0,0,0,0.15); /* 마우스 뒤 잔상 선 색상 */
+      --호버시_점색상: rgba(0,0,0,0.05); /* 이미지 호버 시 퍼지는 원 */
       
-      --폰트: 'Inter', sans-serif;
+      --폰트: 'Inter', 'Noto Sans KR', sans-serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
       background: var(--배경색); color: var(--글자색); 
       font-family: var(--폰트); line-height: 1.6; overflow-x: hidden;
-      cursor: none; /* 기본 커서 숨김 */
+      cursor: none; 
     }
 
-    /* 캔버스와 커서가 모든 요소(이미지 포함) 위에 오도록 설정 */
-    #trail-canvas {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 10000; /* 최상단 */
-    }
-    .cursor {
-      position: fixed; top: 0; left: 0; width: 8px; height: 8px;
-      background: var(--포인트색); border-radius: 50%;
-      pointer-events: none; z-index: 10001; /* 캔버스보다 위 */
-      transform: translate(-50%, -50%);
-    }
+    /* 마우스 커서 & 잔상 최상단 고정 */
+    #trail-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10000; }
+    .cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--포인트색); border-radius: 50%; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); }
 
     /* 네비게이션 */
-    nav { position: fixed; top: 0; width: 100%; padding: 40px 50px; display: flex; justify-content: space-between; z-index: 100; }
-    .logo { font-size: 20px; font-weight: 600; letter-spacing: 0.3em; text-decoration: none; color: inherit; }
+    nav { position: fixed; top: 0; width: 100%; padding: 40px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 100; mix-blend-mode: difference; color: white; }
+    .logo { font-size: 18px; font-weight: 700; letter-spacing: 0.2em; text-decoration: none; color: inherit; }
 
     /* 레이아웃 */
-    section { padding: 10vh 5%; display: flex; flex-direction: column; }
-    .hero { min-height: 100vh; justify-content: center; }
-    .hero-title { font-size: clamp(3rem, 10vw, 8rem); font-weight: 400; letter-spacing: -0.02em; line-height: 0.9; }
-    .hero-title span { display: block; overflow: hidden; }
+    section { padding: 0 5%; }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+    .hero-title { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+    .hero-sub { margin-top: 30px; font-size: 14px; letter-spacing: 0.1em; color: #666; max-width: 500px; }
 
-    /* 이미지 섹션 (lqve.jp 특유의 지그재그 배치) */
-    .project-list { padding-top: 200px; }
-    .project-item { width: 100%; margin-bottom: 30vh; display: flex; flex-direction: column; }
+    /* 프로젝트 리스트 (지그재그) */
+    .project-list { padding-top: 150px; padding-bottom: 200px; }
+    .project-item { width: 100%; margin-bottom: 35vh; display: flex; flex-direction: column; }
     .project-item:nth-child(even) { align-items: flex-end; }
     
     .img-wrap { 
-      width: 60%; max-width: 1000px; aspect-ratio: 4/5; overflow: hidden; 
-      position: relative; background: #eee;
+      width: 55%; max-width: 900px; aspect-ratio: 16/10; overflow: hidden; 
+      position: relative; background: #f5f5f5;
     }
     .img-wrap img { 
-      width: 100%; height: 120%; object-fit: cover; 
-      filter: grayscale(1); transition: filter 0.8s ease;
+      width: 100%; height: 130%; object-fit: cover; 
+      filter: grayscale(1); transition: filter 1s ease;
     }
-    .img-wrap:hover img { filter: grayscale(0); }
+    .img-wrap:hover img { filter: grayscale(0.2); }
 
-    .caption { margin-top: 20px; font-size: 11px; letter-spacing: 0.1em; color: #888; }
+    .caption { margin-top: 25px; font-size: 12px; }
+    .caption b { display: block; font-size: 18px; font-weight: 600; margin-bottom: 5px; color: #111; }
+    .caption span { color: #888; letter-spacing: 0.05em; }
 
-    footer { padding: 100px 50px; text-align: center; font-size: 10px; letter-spacing: 0.2em; color: #ccc; }
+    footer { padding: 100px 50px; border-top: 1px solid #eee; text-align: left; }
+    .footer-content { display: grid; grid-template-columns: 1fr 1fr; font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.1em; }
   </style>
 </head>
 <body>
@@ -77,58 +72,77 @@
   <div class="cursor"></div>
 
   <nav>
-    <a href="#" class="logo">LQVE</a>
-    <div style="font-size: 10px; letter-spacing: 0.2em;">COLLECTION / INFO</div>
+    <a href="#" class="logo">FA / AUTOMATION</a>
+    <div style="font-size: 10px; letter-spacing: 0.1em;">CONTROL SYSTEM DESIGN</div>
   </nav>
 
   <main>
     <section class="hero">
       <h1 class="hero-title">
-        <span class="reveal">ESSENTIAL</span>
-        <span class="reveal">MINIMALISM</span>
+        <span>PRECISION</span><br>
+        <span>CONTROL SYSTEMS</span>
       </h1>
+      <p class="hero-sub">PLC 제어, HMI 작화, SBC 통합 및 전기설계부터 전장 판넬 제작까지. 공정 자동화의 모든 단계를 설계하고 구축합니다.</p>
     </section>
 
     <section class="project-list">
       <div class="project-item">
         <div class="img-wrap hover-target">
-          <img src="https://picsum.photos/1000/1250?random=1" class="parallax">
+          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80" class="parallax">
         </div>
-        <p class="caption">PROJECT 01 / TOKYO</p>
+        <div class="caption">
+          <b>PLC & HMI Programming</b>
+          <span>Mitsubishi, LS, Siemens / Pro-face, GOT Integration</span>
+        </div>
       </div>
 
       <div class="project-item">
         <div class="img-wrap hover-target">
-          <img src="https://picsum.photos/1000/1250?random=2" class="parallax">
+          <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&w=1200&q=80" class="parallax">
         </div>
-        <p class="caption">PROJECT 02 / PARIS</p>
+        <div class="caption">
+          <b>Control Panel Fabrication</b>
+          <span>Electrical Design / Hardware Assembly / Wiring</span>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="img-wrap hover-target">
+          <img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1200&q=80" class="parallax">
+        </div>
+        <div class="caption">
+          <b>SBC & Data Integration</b>
+          <span>Linux-based SBC / IoT Sensor Monitoring / Smart Factory</span>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>&copy; 2026 LQVE STUDIO. ALL RIGHTS RESERVED.</footer>
+  <footer>
+    <div class="footer-content">
+      <div>Expertise: PLC, HMI, SBC, Electrical Design</div>
+      <div style="text-align: right;">&copy; 2026 FA PORTFOLIO.</div>
+    </div>
+  </footer>
 
   <script>
-    /* ============================================================
-       [수정] 마우스 및 잔상 설정 (직관적 수치)
-       ============================================================ */
+    /* ===== 마우스 및 잔상 설정 ===== */
     const 설정 = {
-      점크기: 8,              // 평소 마우스 점 크기
-      점반응속도: 0.15,       // 낮을수록 묵직하게 따라옴 (0.1 ~ 0.3 권장)
-      선굵기: 1.2,            // 잔상 선 두께
-      선길이: 40,             // 잔상 선이 유지되는 길이
-      확대배율: 6             // 사진 위에 올렸을 때 원이 커지는 정도
+      점크기: 8,
+      점반응속도: 0.18,
+      선굵기: 1.0,
+      선길이: 35,
+      확대배율: 7
     };
 
     const 커서 = document.querySelector('.cursor');
     const 캔버스 = document.getElementById('trail-canvas');
     const ctx = 캔버스.getContext('2d');
     
-    let mouse = { x: 0, y: 0 };  // 실제 마우스 위치
-    let pos = { x: 0, y: 0 };    // 따라오는 점 위치
-    let points = [];             // 선 좌표 저장
+    let mouse = { x: 0, y: 0 };
+    let pos = { x: 0, y: 0 };
+    let points = [];
 
-    // 화면 크기 맞춤
     function resize() {
       캔버스.width = window.innerWidth;
       캔버스.height = window.innerHeight;
@@ -136,30 +150,23 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // 마우스 좌표 업데이트 (모든 요소 위에서 작동)
     window.addEventListener('mousemove', e => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     });
 
-    // 애니메이션 루프
     function render() {
-      // 점 위치 계산
       pos.x += (mouse.x - pos.x) * 설정.점반응속도;
       pos.y += (mouse.y - pos.y) * 설정.점반응속도;
-      
       커서.style.transform = `translate(${pos.x}px, ${pos.y}px) translate(-50%, -50%)`;
 
-      // 잔상 선 좌표 기록
       points.push({ ...pos });
       if (points.length > 설정.선길이) points.shift();
 
-      // 선 그리기
       ctx.clearRect(0, 0, 캔버스.width, 캔버스.height);
       if (points.length > 1) {
         ctx.beginPath();
         ctx.lineWidth = 설정.선굵기;
-        // CSS 변수에서 색상 가져오기
         ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--잔상선색');
         ctx.moveTo(points[0].x, points[0].y);
         for (let i = 1; i < points.length; i++) {
@@ -171,14 +178,14 @@
     }
     render();
 
-    /* 사진 호버 효과 (z-index 충돌 해결) */
+    /* 이미지 호버 효과 */
     document.querySelectorAll('.hover-target').forEach(el => {
       el.addEventListener('mouseenter', () => {
         gsap.to(커서, { 
           width: 설정.점크기 * 설정.확대배율, 
           height: 설정.점크기 * 설정.확대배율, 
           backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--호버시_점색상'),
-          duration: 0.5 
+          duration: 0.4 
         });
       });
       el.addEventListener('mouseleave', () => {
@@ -192,23 +199,23 @@
     });
 
     /* 스무스 스크롤 & 애니메이션 */
-    const lenis = new Lenis();
+    const lenis = new Lenis({ lerp: 0.1 });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // 텍스트 등장
-    gsap.from('.reveal', {
-      y: 100, opacity: 0, duration: 1.5, stagger: 0.2, ease: "power4.out"
-    });
-
-    // 이미지 패럴랙스
+    // 이미지 패럴랙스 (이미지 안쪽 이동 효과)
     document.querySelectorAll('.parallax').forEach(img => {
       gsap.to(img, {
         scrollTrigger: { trigger: img.parentElement, scrub: 1 },
-        y: "15%", ease: "none"
+        y: "20%", ease: "none"
       });
+    });
+
+    // 텍스트 순차 등장
+    gsap.from('.hero-title span', {
+      y: 50, opacity: 0, duration: 1.2, stagger: 0.2, ease: "power3.out"
     });
   </script>
 </body>
