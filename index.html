@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>FA Systems Engineering Portfolio</title>
+  <title>FA Systems Engineering — Cinematic</title>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet"/>
 
   <style>
@@ -17,59 +16,73 @@
       --포인트색: #ff0000; 
       --잔상선색: rgba(255, 0, 0, 0.3); 
       --폰트: 'Inter', 'Noto Sans KR', sans-serif;
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    
+    /* 스크롤바 숨기기 (장면 전환 집중) */
+    body::-webkit-scrollbar { display: none; }
     body { 
       background: var(--배경색); color: var(--글자색); 
-      font-family: var(--폰트); line-height: 1.4; overflow-x: hidden;
+      font-family: var(--폰트); overflow: hidden; /* 기본 스크롤 막고 GSAP 제어 */
       cursor: none; 
     }
 
-    /* 마우스 커서 & 잔상 캔버스 (최상단) */
+    /* 마우스 커서 & 잔상 */
     #trail-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10000; }
-    #cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--포인트색); border-radius: 50%; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); will-change: transform; }
+    #cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--포인트색); border-radius: 50%; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); }
 
     /* 네비게이션 */
     nav { position: fixed; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 500; mix-blend-mode: exclusion; color: white; }
-    .logo { font-size: 16px; font-weight: 700; letter-spacing: 0.3em; text-decoration: none; color: inherit; }
+    .logo { font-size: 14px; font-weight: 700; letter-spacing: 0.3em; text-decoration: none; color: inherit; }
 
-    /* Hero 섹션 */
-    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; }
-    .hero-title { font-size: clamp(3rem, 10vw, 8rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.9; }
-    .hero-title span { display: block; overflow: hidden; opacity: 0; transform: translateY(50px); }
+    /* [핵심] 장면 전환 컨테이너 */
+    .container {
+      width: 100%; height: 100vh;
+      position: relative; overflow: hidden;
+    }
 
-    /* 프로젝트 리스트 (세로 스크롤) */
-    .project-list { width: 100%; padding-bottom: 200px; }
-    .project-item { width: 100%; min-height: 120vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10vh 5%; position: relative; }
+    .section {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 0 10%;
+      opacity: 0; visibility: hidden; /* 초기엔 숨김 */
+      transition: visibility 0s 0.6s;
+    }
+    .section.active { opacity: 1; visibility: visible; transition: opacity 1.2s ease, visibility 0s; }
+
+    /* Hero 섹션 모바일 대응 */
+    .hero-title { 
+      font-size: clamp(2.2rem, 10vw, 8rem); /* 모바일 잘림 방지를 위해 최소 크기 하향 */
+      font-weight: 900; letter-spacing: -0.05em; line-height: 1.0; 
+      text-align: center;
+    }
+    .hero-title span { display: block; }
+
+    /* 이미지 및 캡션 레이아웃 */
+    .content-wrap { 
+      width: 100%; max-width: 1100px; 
+      display: flex; flex-direction: column; align-items: center; 
+    }
+    .img-mask { 
+      width: 100%; aspect-ratio: 16/9; overflow: hidden; 
+      border: 1px solid #eee; margin-bottom: 30px;
+    }
+    .img-mask img { width: 100%; height: 100%; object-fit: cover; }
+
+    .caption { width: 100%; text-align: left; }
+    .caption h3 { font-size: clamp(20px, 4vw, 32px); font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+    .caption p { font-size: clamp(13px, 1.5vw, 15px); line-height: 1.6; color: #555; word-break: keep-all; }
     
-    /* 이미지 프레임 줌 효과 */
-    .img-frame-wrap { width: 100%; max-width: 1200px; position: relative; display: flex; flex-direction: column; align-items: center; }
-    .img-mask { width: 70%; aspect-ratio: 16/9; overflow: hidden; background: #f0f0f0; will-change: width, height; border: 1px solid #eee; }
-    .img-mask img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transition: filter 0.8s var(--ease-out); transform: scale(1.2); will-change: transform; }
-    .img-mask:hover img { filter: grayscale(0); }
+    .tags { display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap; }
+    .tag { padding: 4px 10px; border: 1px solid #ddd; border-radius: 40px; font-size: 10px; font-weight: 600; color: #888; }
 
-    /* [수정] 캡션을 이미지 바깥으로 뺌 */
-    .caption { width: 70%; margin-top: 40px; text-align: left; opacity: 0; transform: translateY(20px); transition: all 0.8s var(--ease-out); }
-    .project-item.active .caption { opacity: 1; transform: translateY(0); }
-
-    .caption h3 { font-size: clamp(24px, 4vw, 40px); font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: -0.02em; }
-    .caption p { font-size: 15px; line-height: 1.6; color: #444; max-width: 600px; word-break: keep-all; }
-    .tags { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-    .tag { padding: 6px 14px; border: 1px solid #ddd; border-radius: 40px; font-size: 11px; font-weight: 600; color: #666; text-transform: uppercase; }
-
-    /* 푸터 */
-    footer { padding: 100px 10%; border-top: 1px solid #eee; background: #fff; }
-    .footer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; font-size: 12px; color: #888; letter-spacing: 0.1em; }
-
-    /* 모바일 반응형 */
+    /* 모바일 전용 여백 및 크기 조정 */
     @media (max-width: 768px) {
-      .hero-title { font-size: 3.5rem; }
-      .img-mask { width: 100%; aspect-ratio: 4/5; }
-      .caption { width: 100%; margin-top: 25px; }
-      .caption h3 { font-size: 26px; }
-      .footer-grid { grid-template-columns: 1fr; }
+      .section { padding: 0 6%; }
+      .img-mask { aspect-ratio: 4/5; margin-bottom: 20px; }
+      .logo { font-size: 11px; }
     }
   </style>
 </head>
@@ -80,103 +93,116 @@
   
   <nav>
     <a href="#" class="logo">AUTOMATION STUDIO</a>
-    <div style="font-size: 10px; font-weight: 700;">SYSTEM ARCHITECT / 2026</div>
+    <div style="font-size: 9px; font-weight: 700;">SYSTEM ARCHITECT / 2026</div>
   </nav>
 
-  <main>
-    <section class="hero">
+  <div class="container">
+    <section class="section active">
       <h1 class="hero-title">
-        <span>ENGINEERING</span><br>
+        <span>ENGINEERING</span>
         <span>THE FUTURE</span>
       </h1>
     </section>
 
-    <section class="project-list">
-      <div class="project-item">
-        <div class="img-frame-wrap">
-          <div class="img-mask scroll-zoom hover-target">
-            <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500&q=80" alt="PLC Control">
-          </div>
-          <div class="caption">
-            <h3>PLC & Logic Sequence</h3>
-            <p>미쓰비시 Q/R 시리즈 및 지멘스 S7-1500을 활용한 고속 정밀 공정 제어 로직 설계. 복잡한 시퀀스를 최적화하여 공정 사이클 타임을 15% 단축했습니다.</p>
-            <div class="tags"><span class="tag">MELSEC-Q</span><span class="tag">Siemens</span><span class="tag">Optimization</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-item">
-        <div class="img-frame-wrap">
-          <div class="img-mask scroll-zoom hover-target">
-            <img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?auto=format&fit=crop&w=1500&q=80" alt="HMI Design">
-          </div>
-          <div class="caption">
-            <h3>HMI / SCADA Interface</h3>
-            <p>사용자 중심의 직관적인 HMI 작화 및 데이터 모니터링 시스템 구축. 실시간 가동률 분석 및 알람 로그 추적 기능을 통합하여 유지보수 효율을 높였습니다.</p>
-            <div class="tags"><span class="tag">Pro-face</span><span class="tag">GOT2000</span><span class="tag">UX/UI</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-item">
-        <div class="img-frame-wrap">
-          <div class="img-mask scroll-zoom hover-target">
-            <img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500&q=80" alt="Panel Design">
-          </div>
-          <div class="caption">
-            <h3>Electrical Control Panel</h3>
-            <p>EPLAN 기반의 표준화된 전기 도면 설계 및 노이즈 대책을 고려한 하드웨어 판넬 제작. 분산 제어 시스템(DCS) 구성을 위한 전장 기술을 보유하고 있습니다.</p>
-            <div class="tags"><span class="tag">EPLAN</span><span class="tag">AutoCAD</span><span class="tag">Panel Wiring</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-item">
-        <div class="img-frame-wrap">
-          <div class="img-mask scroll-zoom hover-target">
-            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500&q=80" alt="SBC IoT">
-          </div>
-          <div class="caption">
-            <h3>SBC & Edge Computing</h3>
-            <p>라즈베리 파이 및 Jetson Nano를 활용한 엣지 컴퓨팅 기반 데이터 수집. 상위 ERP/MES 시스템과의 연동을 위한 Modbus 및 TCP/IP 통신 인터페이스를 개발합니다.</p>
-            <div class="tags"><span class="tag">Python</span><span class="tag">Linux</span><span class="tag">MQTT</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-item">
-        <div class="img-frame-wrap">
-          <div class="img-mask scroll-zoom hover-target">
-            <img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1500&q=80" alt="Smart Factory">
-          </div>
-          <div class="caption">
-            <h3>Smart Factory Solution</h3>
-            <p>디지털 트윈 및 AI 비전 검사를 통합한 차세대 스마트 팩토리 솔루션. 설비 예지 보전(PdM) 알고리즘 적용을 통해 가동 중단 시간을 최소화합니다.</p>
-            <div class="tags"><span class="tag">Vision AI</span><span class="tag">Digital Twin</span><span class="tag">IoT</span></div>
-          </div>
+    <section class="section">
+      <div class="content-wrap">
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500" alt="PLC"></div>
+        <div class="caption">
+          <h3>PLC Logic Optimization</h3>
+          <p>미쓰비시 Q/R 시리즈 및 지멘스 S7-1500 정밀 제어 로직 설계. 복잡한 시퀀스를 최적화하여 공정 사이클 타임을 단축합니다.</p>
+          <div class="tags"><span class="tag">MELSEC-Q</span><span class="tag">Siemens</span><span class="tag">Sequence</span></div>
         </div>
       </div>
     </section>
-  </main>
 
-  <footer>
-    <div class="footer-grid">
-      <div>Expertise: PLC, HMI, SBC, Electrical Design</div>
-      <div style="text-align: right;">&copy; 2026 FA PORTFOLIO. CHANGWON-SI</div>
-    </div>
-  </footer>
+    <section class="section">
+      <div class="content-wrap">
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?auto=format&fit=crop&w=1500" alt="HMI"></div>
+        <div class="caption">
+          <h3>HMI / SCADA Interface</h3>
+          <p>직관적인 HMI 작화 및 실시간 데이터 모니터링 시스템 구축. 가동률 분석 및 알람 로그 추적 기능을 통합 제공합니다.</p>
+          <div class="tags"><span class="tag">Pro-face</span><span class="tag">UX/UI</span><span class="tag">Monitoring</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="content-wrap">
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500" alt="Panel"></div>
+        <div class="caption">
+          <h3>Electrical Control Panel</h3>
+          <p>EPLAN 기반의 표준화된 전기 도면 설계 및 노이즈 대책을 고려한 정밀 하드웨어 판넬 레이아웃 설계.</p>
+          <div class="tags"><span class="tag">EPLAN</span><span class="tag">AutoCAD</span><span class="tag">Design</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="content-wrap">
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500" alt="SBC"></div>
+        <div class="caption">
+          <h3>SBC & Edge Computing</h3>
+          <p>라즈베리 파이 및 엣지 컴퓨팅 기반 데이터 수집. 상위 ERP/MES 시스템과의 연동 인터페이스를 개발합니다.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Linux</span><span class="tag">Modbus</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="content-wrap">
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1500" alt="Smart Factory"></div>
+        <div class="caption">
+          <h3>Smart Factory Solution</h3>
+          <p>디지털 트윈 및 AI 비전 검사를 통합한 차세대 솔루션. 예지 보전을 통해 설비 가동 중단 시간을 최소화합니다.</p>
+          <div class="tags"><span class="tag">Vision AI</span><span class="tag">Digital Twin</span><span class="tag">IoT</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <script>
-    gsap.registerPlugin(ScrollTrigger);
+    /* ===== [1] 장면 전환 로직 (Full-page Snap & Fade) ===== */
+    let currentIdx = 0;
+    const sections = document.querySelectorAll('.section');
+    const totalSections = sections.length;
+    let isAnimating = false;
 
-    /* ===== [1] 마우스 커서 및 빨간 잔상 효과 ===== */
+    function goToSection(idx) {
+      if (isAnimating || idx < 0 || idx >= totalSections) return;
+      isAnimating = true;
+
+      // 이전 섹션 비활성화
+      sections[currentIdx].classList.remove('active');
+      
+      // 새 섹션 활성화
+      currentIdx = idx;
+      sections[currentIdx].classList.add('active');
+
+      // 전환 중 중복 작동 방지 (1.2초 후 해제)
+      setTimeout(() => { isAnimating = false; }, 1200);
+    }
+
+    // 휠 이벤트 (PC)
+    window.addEventListener('wheel', (e) => {
+      if (e.deltaY > 0) goToSection(currentIdx + 1);
+      else goToSection(currentIdx - 1);
+    });
+
+    // 터치 이벤트 (모바일 스와이프)
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; });
+    window.addEventListener('touchend', (e) => {
+      let touchEndY = e.changedTouches[0].clientY;
+      if (touchStartY - touchEndY > 50) goToSection(currentIdx + 1);
+      else if (touchEndY - touchStartY > 50) goToSection(currentIdx - 1);
+    });
+
+    /* ===== [2] 마우스 커서 및 빨간 잔상 효과 ===== */
     const trailCanvas = document.getElementById('trail-canvas');
     const trailCtx = trailCanvas.getContext('2d');
     const cursorDot = document.getElementById('cursor');
 
     let m = { x: -100, y: -100 }, p = { x: 0, y: 0 }, pts = [];
-    let cLerp = 0.18;
-
     function resize() { trailCanvas.width = window.innerWidth; trailCanvas.height = window.innerHeight; }
     window.addEventListener('resize', resize); resize();
 
@@ -184,16 +210,15 @@
     window.addEventListener('touchmove', e => { const touch = e.touches[0]; m.x = touch.clientX; m.y = touch.clientY; });
 
     function drawTrail() {
-      p.x += (m.x - p.x) * cLerp;
-      p.y += (m.y - p.y) * cLerp;
+      p.x += (m.x - p.x) * 0.18; p.y += (m.y - p.y) * 0.18;
       cursorDot.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
       pts.push({ ...p });
-      if (pts.length > 30) pts.shift();
+      if (pts.length > 25) pts.shift();
       trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
       if (pts.length > 1) {
         trailCtx.beginPath();
         trailCtx.lineWidth = 1.0;
-        trailCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--잔상선색');
+        trailCtx.strokeStyle = "rgba(255, 0, 0, 0.3)";
         trailCtx.moveTo(pts[0].x, pts[0].y);
         for (let i = 1; i < pts.length; i++) trailCtx.lineTo(pts[i].x, pts[i].y);
         trailCtx.stroke();
@@ -201,40 +226,6 @@
       requestAnimationFrame(drawTrail);
     }
     drawTrail();
-
-    /* ===== [2] 스무스 스크롤 (Lenis) ===== */
-    const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-
-    /* ===== [3] 스크롤 애니메이션 (줌 & 텍스트) ===== */
-    // Hero 텍스트 등장
-    gsap.to('.hero-title span', { y: 0, opacity: 1, duration: 1.5, stagger: 0.3, ease: 'power4.out', delay: 0.5 });
-
-    // 각 프로젝트 아이템 애니메이션
-    document.querySelectorAll('.project-item').forEach(item => {
-      const mask = item.querySelector('.img-mask');
-      const img = item.querySelector('img');
-
-      gsap.to(mask, {
-        scrollTrigger: {
-          trigger: item,
-          start: "top 80%",
-          end: "bottom 20%",
-          scrub: 1,
-          onEnter: () => item.classList.add('active'),
-          onLeaveBack: () => item.classList.remove('active')
-        },
-        width: "100%", // 스크롤 시 화면 가득 채움
-        ease: "none"
-      });
-
-      gsap.to(img, {
-        scrollTrigger: { trigger: item, scrub: 1 },
-        scale: 1, // 이미지 원래 배율로 줌인
-        ease: "none"
-      });
-    });
   </script>
 </body>
 </html>
