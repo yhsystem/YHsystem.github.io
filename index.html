@@ -3,35 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Creative Portfolio</title>
-  <meta name="description" content="크리에이티브 포트폴리오 사이트"/>
+  <title>Creative Studio</title>
+  <meta name="description" content="Minimalist Creative Portfolio"/>
   
-  <!-- Google Fonts -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   
-  <!-- GSAP & Lenis CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
-  
-  <!-- Three.js for WebGL effects -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 
   <style>
-    /* ===== CSS VARIABLES & RESET ===== */
+    /* ===== VARIABLES & RESET ===== */
     :root {
-      --bg: #0a0a0a;
-      --text: #ffffff;
-      --text-dim: #888888;
-      --accent: #6366f1;
-      --accent-glow: rgba(99, 102, 241, 0.4);
-      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      --font-main: 'Noto Sans KR', sans-serif;
+      --bg: #f8f8f6;
+      --bg-card: #ffffff;
+      --text: #0f0f0f;
+      --text-muted: #555555;
+      --border: rgba(0,0,0,0.08);
+      --shadow: 0 8px 30px rgba(0,0,0,0.06);
+      --accent: #111111;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --font-main: 'Inter', 'Noto Sans KR', sans-serif;
     }
-    
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
     html.lenis { height: auto; }
     .lenis.lenis-smooth { scroll-behavior: auto; }
     
@@ -41,33 +40,39 @@
       color: var(--text);
       line-height: 1.6;
       overflow-x: hidden;
-      cursor: none; /* Custom cursor */
+      /* 데스크톱에서만 기본 커서 숨김 */
+      cursor: none;
     }
-    
-    a { text-decoration: none; color: inherit; transition: var(--transition); }
+
+    @media (pointer: coarse) {
+      body { cursor: auto; }
+      .cursor { display: none; }
+    }
+
+    a { text-decoration: none; color: inherit; transition: color 0.3s; }
     img { max-width: 100%; display: block; }
-    button { font-family: inherit; border: none; background: none; cursor: pointer; }
-    
+    button { font-family: inherit; border: none; background: none; }
+
     /* ===== CUSTOM CURSOR ===== */
     .cursor {
       position: fixed;
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--text);
+      top: 0; left: 0;
+      width: 12px; height: 12px;
+      background: var(--text);
       border-radius: 50%;
       pointer-events: none;
-      transform: translate(-50%, -50%);
-      transition: width 0.3s, height 0.3s, background 0.3s;
       z-index: 9999;
       mix-blend-mode: difference;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), opacity 0.3s;
     }
     .cursor.hover {
-      width: 50px;
-      height: 50px;
-      background: var(--text);
-      opacity: 0.2;
+      width: 48px; height: 48px;
+      opacity: 0.15;
+      background: #fff;
     }
-    
+
     /* ===== LOADER ===== */
     .loader {
       position: fixed;
@@ -77,85 +82,72 @@
       align-items: center;
       justify-content: center;
       z-index: 10000;
-      transition: opacity 0.6s, visibility 0.6s;
-    }
-    .loader.hidden {
-      opacity: 0;
-      visibility: hidden;
       pointer-events: none;
     }
-    .loader-text {
-      font-size: 1.5rem;
-      font-weight: 300;
-      letter-spacing: 0.3em;
-      animation: pulse 1.5s infinite;
+    .loader-bar {
+      width: 60px; height: 2px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
+    .loader-bar::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      height: 100%; width: 0%;
+      background: var(--text);
+      animation: load 1.2s var(--ease-out) forwards;
     }
-    
+    @keyframes load { to { width: 100%; } }
+
     /* ===== NAVIGATION ===== */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 1.5rem 5%;
+      top: 0; left: 0; right: 0;
+      padding: 1.5rem 4%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 100;
-      mix-blend-mode: difference;
+      background: rgba(248,248,246,0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
     }
     .logo {
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
     }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 400;
       position: relative;
-      padding: 0.3rem 0;
+      padding-bottom: 2px;
     }
     .nav-links a::after {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 1px;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
       background: var(--text);
-      transition: width 0.3s ease;
+      transition: width 0.3s var(--ease-out);
     }
     .nav-links a:hover::after { width: 100%; }
-    
-    /* ===== HERO SECTION ===== */
+
+    /* ===== HERO ===== */
     .hero {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 0 5%;
+      padding: 0 4%;
       position: relative;
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      opacity: 0.3;
     }
     .hero-title {
-      font-size: clamp(3rem, 10vw, 8rem);
-      font-weight: 700;
-      line-height: 0.9;
+      font-size: clamp(3rem, 9vw, 7.5rem);
+      font-weight: 500;
+      line-height: 0.95;
       letter-spacing: -0.03em;
       margin-bottom: 1.5rem;
       overflow: hidden;
@@ -165,203 +157,153 @@
       transform: translateY(100%);
       opacity: 0;
     }
-    .hero-subtitle {
-      font-size: clamp(1rem, 2vw, 1.3rem);
-      color: var(--text-dim);
-      max-width: 500px;
-      margin-bottom: 3rem;
-      opacity: 0;
-      transform: translateY(20px);
+    .hero-desc {
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      opacity: 0; transform: translateY(15px);
     }
-    .hero-cta {
+    .hero-btn {
       display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 1rem 2rem;
+      align-items: center; gap: 0.5rem;
+      padding: 0.9rem 2rem;
       border: 1px solid var(--text);
-      border-radius: 50px;
+      border-radius: 100px;
       font-size: 0.95rem;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    .hero-cta:hover {
-      background: var(--text);
-      color: var(--bg);
-    }
-    .hero-cta svg {
-      width: 16px;
-      transition: transform 0.3s;
-    }
-    .hero-cta:hover svg { transform: translateX(4px); }
-    
-    /* ===== SECTION STYLES ===== */
-    section {
-      padding: 8rem 5%;
-    }
-    .section-title {
-      font-size: clamp(2rem, 5vw, 3.5rem);
       font-weight: 500;
-      margin-bottom: 4rem;
+      opacity: 0; transform: translateY(15px);
+    }
+    .hero-btn:hover { background: var(--text); color: #fff; }
+    .hero-btn svg { width: 14px; transition: transform 0.3s; }
+    .hero-btn:hover svg { transform: translateX(3px); }
+
+    /* ===== SECTIONS ===== */
+    section { padding: 7rem 4%; }
+    .section-header {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 500;
+      margin-bottom: 3.5rem;
       position: relative;
       display: inline-block;
     }
-    .section-title::after {
+    .section-header::after {
       content: '';
       position: absolute;
-      bottom: -10px;
-      left: 0;
-      width: 60px;
-      height: 2px;
-      background: var(--accent);
+      bottom: -8px; left: 0;
+      width: 50px; height: 2px;
+      background: var(--text);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s var(--ease-out);
     }
-    
+    .section-header.active::after { transform: scaleX(1); }
+
     /* ===== PROJECTS GRID ===== */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 3rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
     }
     .project-card {
-      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
-      cursor: pointer;
-      group: hover;
+      box-shadow: var(--shadow);
+      transition: transform 0.5s var(--ease-out), box-shadow 0.5s;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+    }
+    .project-img-wrap {
+      aspect-ratio: 16/10;
+      overflow: hidden;
     }
     .project-img {
-      width: 100%;
-      aspect-ratio: 4/3;
+      width: 100%; height: 100%;
       object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      filter: grayscale(20%);
+      transition: transform 0.7s var(--ease-out);
+      filter: grayscale(15%);
     }
-    .project-card:hover .project-img {
-      transform: scale(1.05);
-      filter: grayscale(0%);
-    }
-    .project-info {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 2rem;
-      background: linear-gradient(transparent, rgba(10,10,10,0.95));
-      transform: translateY(20px);
-      opacity: 0;
-      transition: var(--transition);
-    }
-    .project-card:hover .project-info {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    .project-title {
-      font-size: 1.4rem;
-      font-weight: 500;
-      margin-bottom: 0.3rem;
-    }
-    .project-cat {
-      font-size: 0.9rem;
-      color: var(--text-dim);
-    }
-    
-    /* ===== ABOUT SECTION ===== */
-    .about-content {
+    .project-card:hover .project-img { transform: scale(1.04); filter: grayscale(0); }
+    .project-info { padding: 1.4rem; }
+    .project-title { font-size: 1.3rem; font-weight: 500; margin-bottom: 0.3rem; }
+    .project-cat { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* ===== ABOUT ===== */
+    .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 4rem;
       align-items: center;
     }
     .about-text p {
-      font-size: 1.1rem;
-      color: var(--text-dim);
-      margin-bottom: 1.5rem;
-      line-height: 1.8;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 1.4rem;
+      line-height: 1.85;
     }
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      margin-top: 2rem;
-    }
+    .skills { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; }
     .skill-tag {
-      padding: 0.5rem 1.2rem;
-      border: 1px solid var(--text-dim);
+      padding: 0.5rem 1.1rem;
+      border: 1px solid var(--border);
       border-radius: 50px;
-      font-size: 0.85rem;
-      transition: var(--transition);
+      font-size: 0.8rem;
+      background: #fff;
+      transition: all 0.3s;
     }
-    .skill-tag:hover {
-      border-color: var(--accent);
-      background: var(--accent-glow);
+    .skill-tag:hover { border-color: var(--text); background: #111; color: #fff; }
+    .about-visual {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
-    
-    /* ===== CONTACT SECTION ===== */
+
+    /* ===== CONTACT ===== */
     .contact {
       text-align: center;
-      padding: 10rem 5%;
+      padding: 9rem 4%;
     }
     .contact-title {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 700;
-      margin-bottom: 2rem;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 600;
+      margin-bottom: 1.2rem;
     }
-    .contact-subtitle {
-      color: var(--text-dim);
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto 3rem;
+    .contact-sub {
+      color: var(--text-muted);
+      max-width: 550px;
+      margin: 0 auto 2.5rem;
     }
-    .contact-email {
-      font-size: clamp(1.2rem, 3vw, 1.8rem);
-      padding: 1.2rem 3rem;
-      border: 1px solid var(--text);
-      border-radius: 50px;
+    .contact-btn {
       display: inline-block;
-      transition: var(--transition);
+      padding: 1rem 2.5rem;
+      border: 1px solid var(--text);
+      border-radius: 100px;
+      font-weight: 500;
+      transition: all 0.3s;
     }
-    .contact-email:hover {
-      background: var(--text);
-      color: var(--bg);
-    }
-    
+    .contact-btn:hover { background: var(--text); color: #fff; }
+
     /* ===== FOOTER ===== */
     footer {
-      padding: 2rem 5%;
+      padding: 2rem 4%;
       text-align: center;
-      color: var(--text-dim);
-      font-size: 0.9rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-card);
     }
-    
-    /* ===== PARALLAX IMAGE ===== */
-    .parallax-wrap {
-      overflow: hidden;
-      border-radius: 12px;
-    }
-    .parallax-img {
-      width: 100%;
-      height: 120%;
-      object-fit: cover;
-      will-change: transform;
-    }
-    
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
+      nav { padding: 1.2rem 5%; }
       .nav-links { display: none; }
-      .about-content { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       section { padding: 5rem 5%; }
-      .hero-title { font-size: clamp(2.5rem, 12vw, 5rem); }
-    }
-    
-    /* ===== UTILITY ANIMATIONS ===== */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s, transform 0.8s;
-    }
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
+      .hero-title { font-size: clamp(2.8rem, 13vw, 4.5rem); }
     }
   </style>
 </head>
@@ -371,305 +313,184 @@
   
   <!-- Loader -->
   <div class="loader">
-    <div class="loader-text">LOADING</div>
+    <div class="loader-bar"></div>
   </div>
-  
+
   <!-- Navigation -->
   <nav>
-    <a href="#" class="logo hover-trigger">LQVE.CLONE</a>
+    <a href="#" class="logo hover-trigger">LQVE.STUDIO</a>
     <ul class="nav-links">
       <li><a href="#work" class="hover-trigger">Work</a></li>
       <li><a href="#about" class="hover-trigger">About</a></li>
       <li><a href="#contact" class="hover-trigger">Contact</a></li>
     </ul>
   </nav>
-  
-  <!-- Hero Section -->
+
+  <!-- Hero -->
   <section class="hero">
-    <div class="hero-bg" id="heroBg"></div>
     <h1 class="hero-title">
-      <span>Creative</span>
-      <span>Digital</span>
+      <span>Design</span>
       <span>Experience</span>
+      <span>Tomorrow</span>
     </h1>
-    <p class="hero-subtitle">
-      우리는 브랜드의 이야기를 시각적 언어로 변환하는 크리에이티브 스튜디오입니다.
-    </p>
-    <a href="#work" class="hero-cta hover-trigger">
-      Explore Work
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M5 12h14M12 5l7 7-7 7"/>
-      </svg>
+    <p class="hero-desc">브랜드의 본질을 시각적 언어로 해석하고, 디지털 공간에서 의미 있는 경험을 설계합니다.</p>
+    <a href="#work" class="hero-btn hover-trigger">
+      View Projects
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </section>
-  
-  <!-- Projects Section -->
+
+  <!-- Work -->
   <section id="work">
-    <h2 class="section-title reveal">Selected Work</h2>
+    <h2 class="section-header reveal-line">Selected Work</h2>
     <div class="projects-grid">
-      <!-- Project 1 -->
-      <div class="project-card hover-trigger reveal">
-        <img src="https://picsum.photos/seed/1/800/600" alt="Project 1" class="project-img"/>
-        <div class="project-info">
-          <h3 class="project-title">Brand Identity</h3>
-          <p class="project-cat">Design / Strategy</p>
-        </div>
-      </div>
-      <!-- Project 2 -->
-      <div class="project-card hover-trigger reveal">
-        <img src="https://picsum.photos/seed/2/800/600" alt="Project 2" class="project-img"/>
-        <div class="project-info">
-          <h3 class="project-title">Web Experience</h3>
-          <p class="project-cat">Development / UX</p>
-        </div>
-      </div>
-      <!-- Project 3 -->
-      <div class="project-card hover-trigger reveal">
-        <img src="https://picsum.photos/seed/3/800/600" alt="Project 3" class="project-img"/>
-        <div class="project-info">
-          <h3 class="project-title">Motion Design</h3>
-          <p class="project-cat">Animation / VFX</p>
-        </div>
-      </div>
-      <!-- Project 4 -->
-      <div class="project-card hover-trigger reveal">
-        <img src="https://picsum.photos/seed/4/800/600" alt="Project 4" class="project-img"/>
-        <div class="project-info">
-          <h3 class="project-title">Campaign 2024</h3>
-          <p class="project-cat">Marketing / Content</p>
-        </div>
-      </div>
+      <article class="project-card hover-trigger reveal-card">
+        <div class="project-img-wrap"><img src="https://picsum.photos/seed/a1/800/500" alt="Project 1" class="project-img"/></div>
+        <div class="project-info"><h3 class="project-title">Editorial Redesign</h3><p class="project-cat">Web / UI</p></div>
+      </article>
+      <article class="project-card hover-trigger reveal-card">
+        <div class="project-img-wrap"><img src="https://picsum.photos/seed/a2/800/500" alt="Project 2" class="project-img"/></div>
+        <div class="project-info"><h3 class="project-title">Motion Identity</h3><p class="project-cat">Branding / 3D</p></div>
+      </article>
+      <article class="project-card hover-trigger reveal-card">
+        <div class="project-img-wrap"><img src="https://picsum.photos/seed/a3/800/500" alt="Project 3" class="project-img"/></div>
+        <div class="project-info"><h3 class="project-title">E-Commerce Flow</h3><p class="project-cat">UX / Development</p></div>
+      </article>
     </div>
   </section>
-  
-  <!-- About Section -->
+
+  <!-- About -->
   <section id="about">
-    <h2 class="section-title reveal">About Us</h2>
-    <div class="about-content">
-      <div class="about-text reveal">
-        <p>
-          우리는 디지털 공간에서 감정과 기능을 연결하는 크리에이티브 팀입니다.
-          단순한 디자인을 넘어, 사용자의 경험 전체를 설계합니다.
-        </p>
-        <p>
-          기술과 예술의 경계에서, 매 순간 새로운 가능성을 탐구합니다.
-        </p>
+    <h2 class="section-header reveal-line">About</h2>
+    <div class="about-grid">
+      <div class="about-text reveal-text">
+        <p>우리는 기술과 미학의 교차점에서 작업합니다. 단순한 화면 구성을 넘어, 사용자가 느끼는 감정과 직관을 설계하는 것이 저희의 철학입니다.</p>
+        <p>모든 픽셀에는 이유가 있고, 모든 인터랙션에는 목적이 있습니다.</p>
         <div class="skills">
           <span class="skill-tag hover-trigger">UI/UX Design</span>
           <span class="skill-tag hover-trigger">Frontend Dev</span>
-          <span class="skill-tag hover-trigger">Motion Graphics</span>
-          <span class="skill-tag hover-trigger">3D / WebGL</span>
-          <span class="skill-tag hover-trigger">Brand Strategy</span>
+          <span class="skill-tag hover-trigger">Motion Design</span>
+          <span class="skill-tag hover-trigger">Creative Direction</span>
         </div>
       </div>
-      <div class="about-visual parallax-wrap reveal">
-        <img src="https://picsum.photos/seed/about/600/800" alt="About" class="parallax-img"/>
+      <div class="about-visual reveal-img">
+        <img src="https://picsum.photos/seed/about/600/700" alt="Studio"/>
       </div>
     </div>
   </section>
-  
-  <!-- Contact Section -->
+
+  <!-- Contact -->
   <section id="contact" class="contact">
-    <h2 class="contact-title reveal">Let's Create Together</h2>
-    <p class="contact-subtitle reveal">
-      새로운 프로젝트, 협업 제안, 또는 단순한 인사도 환영입니다.
-      언제든지 연락주세요.
-    </p>
-    <a href="mailto:hello@example.com" class="contact-email hover-trigger reveal">
-      hello@yourstudio.com
-    </a>
+    <h2 class="contact-title reveal-text">Let's work together</h2>
+    <p class="contact-sub reveal-text">새로운 프로젝트나 협업 제안은 언제든지 환영합니다. 편하게 연락해 주세요.</p>
+    <a href="mailto:hello@studio.com" class="contact-btn hover-trigger reveal-text">hello@studio.com</a>
   </section>
-  
-  <!-- Footer -->
+
   <footer>
-    <p>&copy; 2024 Creative Studio. All rights reserved.</p>
+    <p>&copy; 2025 Creative Studio. All rights reserved.</p>
   </footer>
 
   <script>
-    // ===== INIT: Wait for DOM =====
-    document.addEventListener('DOMContentLoaded', () => {
-      
-      // ----- 1. CUSTOM CURSOR -----
-      const cursor = document.querySelector('.cursor');
-      const hoverTriggers = document.querySelectorAll('.hover-trigger');
-      
-      document.addEventListener('mousemove', (e) => {
-        gsap.to(cursor, {
-          x: e.clientX,
-          y: e.clientY,
-          duration: 0.1,
-          ease: 'power2.out'
-        });
+    // ===== 1. SMOOTH CURSOR (Lerp Follow + Hover) =====
+    const cursor = document.querySelector('.cursor');
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+
+    // 모바일/터치 디바이스에서는 커서 비활성화
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+
+    if (!isTouch) {
+      document.addEventListener('mousemove', e => {
+        targetX = e.clientX;
+        targetY = e.clientY;
       });
-      
-      hoverTriggers.forEach(el => {
+
+      function animateCursor() {
+        // 관성 효과 (Lerp)
+        currentX += (targetX - currentX) * 0.15;
+        currentY += (targetY - currentY) * 0.15;
+        cursor.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+
+      // 호버 효과
+      document.querySelectorAll('.hover-trigger').forEach(el => {
         el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
         el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
       });
-      
-      // ----- 2. LOADER ANIMATION -----
-      const loader = document.querySelector('.loader');
-      const tlLoader = gsap.timeline();
-      
-      tlLoader
-        .to('.loader-text', { opacity: 0, y: -20, duration: 0.4, delay: 0.8 })
-        .to(loader, { 
-          opacity: 0, 
-          visibility: 'hidden', 
-          duration: 0.5,
-          onComplete: initAnimations 
-        });
-      
-      // ----- 3. SMOOTH SCROLL (Lenis) -----
-      const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smooth: true
-      });
-      
-      function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
+    }
+
+    // ===== 2. LOADER & INIT =====
+    window.addEventListener('load', () => {
+      gsap.to('.loader', { opacity: 0, duration: 0.4, delay: 0.8, onComplete: initAnimations });
+    });
+
+    // ===== 3. LENIS SMOOTH SCROLL =====
+    const lenis = new Lenis({
+      duration: 1.1,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
       requestAnimationFrame(raf);
-      
-      // Register GSAP ScrollTrigger
-      gsap.registerPlugin(ScrollTrigger);
-      
-      // ----- 4. HERO ANIMATIONS -----
-      function initAnimations() {
-        const tlHero = gsap.timeline();
-        
-        // Title lines stagger reveal
-        tlHero.to('.hero-title span', {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          stagger: 0.15,
-          ease: 'power4.out'
-        })
-        .to('.hero-subtitle', {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power3.out'
-        }, '-=0.5')
-        .to('.hero-cta', {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power2.out'
-        }, '-=0.4');
-        
-        // ----- 5. SCROLL REVEAL ELEMENTS -----
-        gsap.utils.toArray('.reveal').forEach(el => {
-          ScrollTrigger.create({
-            trigger: el,
-            start: 'top 85%',
-            onEnter: () => el.classList.add('active'),
-            once: true
-          });
-        });
-        
-        // ----- 6. PROJECT CARDS STAGGER -----
-        gsap.from('.project-card', {
-          scrollTrigger: {
-            trigger: '.projects-grid',
-            start: 'top 80%'
-          },
-          y: 60,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: 'power3.out'
-        });
-        
-        // ----- 7. PARALLAX IMAGE EFFECT -----
-        const parallaxImg = document.querySelector('.parallax-img');
-        if (parallaxImg) {
-          ScrollTrigger.create({
-            trigger: '.about-visual',
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-            onUpdate: (self) => {
-              gsap.to(parallaxImg, {
-                y: self.progress * 100,
-                ease: 'none'
-              });
-            }
-          });
-        }
-        
-        // ----- 8. HERO BG PARTICLE EFFECT (Simple Canvas) -----
-        initHeroBackground();
-      }
-      
-      // ----- 9. HERO BACKGROUND PARTICLES -----
-      function initHeroBackground() {
-        const container = document.getElementById('heroBg');
-        if (!container) return;
-        
-        const canvas = document.createElement('canvas');
-        container.appendChild(canvas);
-        const ctx = canvas.getContext('2d');
-        
-        let width, height;
-        let particles = [];
-        
-        function resize() {
-          width = container.offsetWidth;
-          height = container.offsetHeight;
-          canvas.width = width;
-          canvas.height = height;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-        
-        class Particle {
-          constructor() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.size = Math.random() * 2 + 1;
-            this.alpha = Math.random() * 0.5 + 0.1;
-          }
-          update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            if (this.x < 0 || this.x > width) this.vx *= -1;
-            if (this.y < 0 || this.y > height) this.vy *= -1;
-          }
-          draw() {
-            ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
-        
-        for (let i = 0; i < 50; i++) particles.push(new Particle());
-        
-        function animate() {
-          ctx.clearRect(0, 0, width, height);
-          particles.forEach(p => { p.update(); p.draw(); });
-          requestAnimationFrame(animate);
-        }
-        animate();
-      }
-      
-      // ----- 10. SMOOTH ANCHOR LINKS -----
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute('href'));
-          if (target) {
-            lenis.scrollTo(target, { offset: -80 });
-          }
+    }
+    requestAnimationFrame(raf);
+
+    // Lenis 와 ScrollTrigger 동기화
+    gsap.registerPlugin(ScrollTrigger);
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    // ===== 4. ANIMATIONS =====
+    function initAnimations() {
+      // Hero 텍스트 등장
+      gsap.to('.hero-title span', {
+        y: 0, opacity: 1, duration: 1.1, stagger: 0.12, ease: 'power4.out'
+      });
+      gsap.to('.hero-desc, .hero-btn', {
+        y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.4
+      });
+
+      // 섹션 타이틀 라인
+      gsap.utils.toArray('.reveal-line').forEach(el => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 80%',
+          onEnter: () => el.classList.add('active')
         });
       });
-      
+
+      // 카드 스태거 등장
+      gsap.from('.reveal-card', {
+        scrollTrigger: { trigger: '.projects-grid', start: 'top 75%' },
+        y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out'
+      });
+
+      // 텍스트/이미지 패럴랙스
+      gsap.utils.toArray('.reveal-text, .reveal-img').forEach(el => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 85%',
+          onEnter: () => gsap.to(el, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }),
+          once: true
+        });
+      });
+
+      // 초기 상태 설정
+      gsap.set(['.reveal-text', '.reveal-img'], { y: 40, opacity: 0 });
+    }
+
+    // ===== 5. SMOOTH ANCHOR SCROLL =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) lenis.scrollTo(target, { offset: -80 });
+      });
     });
   </script>
 </body>
