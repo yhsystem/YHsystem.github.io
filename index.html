@@ -3,46 +3,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FACTORY AUTO | Control & Integration</title>
+  <title>FACTORY AUTO | Automation Specialist</title>
   <style>
     /* ================================
-       BASE & TYPOGRAPHY
+       RESET & BASE
     ================================= */
-    :root {
-      --bg: #ffffff;
-      --text: #111111;
-      --accent: #333333;
-      --muted: #666666;
-      --grid-gap: 2rem;
-      --margin-x: clamp(1.5rem, 5vw, 4rem);
-      --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; font-size: 16px; }
     
     body {
       font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.8;
-      font-size: 16px;
+      background: #ffffff;
+      color: #000000;
+      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
+    a { text-decoration: none; color: inherit; transition: opacity 0.2s; }
+    a:hover { opacity: 0.7; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+
     /* ================================
-       LAYOUT UTILITIES
+       TYPOGRAPHY — LQVE STYLE
+    ================================= */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    /* 대형 헤딩: 숫자/슬래시 스타일 */
+    .heading-numbered {
+      font-size: clamp(2rem, 5vw, 4rem);
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin: 0 0 1.5rem;
+    }
+
+    .heading-numbered .num {
+      font-family: monospace;
+      font-weight: 400;
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    .heading-numbered .title {
+      font-size: 1.1em;
+    }
+
+    h2.section-title {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      margin: 4rem 0 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #000;
+      display: inline-block;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: #333;
+      max-width: 70ch;
+    }
+
+    .lead {
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: #000;
+    }
+
+    /* 창의적 타이포그래피 (LQVE "L愛 Qと..." 스타일) */
+    .creative-type {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 0.75rem;
+      font-weight: 700;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      margin: 1rem 0 2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .creative-type span {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .creative-type .en { color: #000; }
+    .creative-type .kr { color: #666; font-weight: 400; }
+
+    /* ================================
+       LAYOUT
     ================================= */
     .container {
-      max-width: 1200px;
+      width: min(92%, 1200px);
       margin: 0 auto;
-      padding: 0 var(--margin-x);
+      padding: 0;
     }
+
+    .section {
+      padding: clamp(4rem, 12vw, 8rem) 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .section:last-of-type { border-bottom: none; }
 
     .grid {
       display: grid;
-      gap: var(--grid-gap);
+      gap: 2rem;
     }
 
     .grid-2 { grid-template-columns: repeat(2, 1fr); }
@@ -53,530 +123,578 @@
     }
 
     /* ================================
-       TYPOGRAPHY & MAGAZINE STYLE
+       HEADER / NAV
     ================================= */
-    h1, h2, h3 {
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 1.25rem 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
-    h1 {
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      margin: 2rem 0;
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    h2 {
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      margin: 3rem 0 1.5rem;
-      position: relative;
-      padding-left: 1rem;
-    }
-
-    h2::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.25em;
-      bottom: 0.25em;
-      width: 3px;
-      background: var(--text);
-    }
-
-    h3 {
-      font-size: 1.4rem;
-      margin: 1.5rem 0 0.75rem;
-      color: var(--accent);
-    }
-
-    p {
-      margin-bottom: 1.25rem;
-      color: var(--muted);
-      max-width: 65ch;
-    }
-
-    .lead {
+    .logo {
+      font-weight: 800;
       font-size: 1.25rem;
-      color: var(--text);
+      letter-spacing: -0.05em;
+    }
+
+    .logo span { color: #666; }
+
+    nav ul {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.9rem;
       font-weight: 500;
     }
 
-    .caption {
-      font-size: 0.875rem;
-      color: var(--muted);
-      font-style: italic;
-      border-left: 2px solid var(--accent);
-      padding-left: 1rem;
-      margin: 2rem 0;
+    nav a {
+      position: relative;
+      padding: 0.25rem 0;
     }
 
-    /* ================================
-       VERTICAL TEXT (Editorial Touch)
-    ================================= */
-    .vertical-text {
-      writing-mode: vertical-rl;
-      text-orientation: upright;
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: 0.1em;
-      padding: 1rem 0;
-      color: var(--accent);
+    nav a::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0;
+      height: 1px;
+      background: #000;
+      transition: width 0.3s ease;
     }
+
+    nav a:hover::after { width: 100%; }
 
     @media (max-width: 768px) {
-      .vertical-text {
-        writing-mode: horizontal-tb;
-        text-orientation: unset;
-      }
+      nav ul { display: none; } /* 모바일 메뉴는 생략 */
     }
 
     /* ================================
-       HEADER / HERO
+       HERO
     ================================= */
-    header {
-      min-height: 90vh;
+    .hero {
+      min-height: 95vh;
       display: flex;
       align-items: center;
-      padding: 4rem 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    header::after {
-      content: "AUTOMATION";
-      position: absolute;
-      right: -2rem;
-      top: 50%;
-      transform: translateY(-50%) rotate(-90deg);
-      font-size: 8rem;
-      font-weight: 900;
-      color: rgba(0,0,0,0.03);
-      pointer-events: none;
-      white-space: nowrap;
-      z-index: 0;
+      padding-top: 5rem;
     }
 
     .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 800px;
+      max-width: 900px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      margin: 1rem 0 2rem;
+      line-height: 1.05;
     }
 
     .hero-tag {
       display: inline-block;
+      font-family: monospace;
       font-size: 0.875rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--muted);
+      color: #666;
       margin-bottom: 1.5rem;
-      border: 1px solid var(--accent);
-      padding: 0.4rem 1rem;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid #000;
     }
 
     /* ================================
-       SECTION STYLES
+       PROJECT LIST — LQVE STYLE
     ================================= */
-    section {
-      padding: 6rem 0;
-      border-top: 1px solid rgba(0,0,0,0.08);
+    .project-item {
+      padding: 2rem 0;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 1.5rem;
+      align-items: start;
+      transition: background 0.2s;
+      cursor: pointer;
     }
 
-    section:first-of-type { border-top: none; }
+    .project-item:hover {
+      background: rgba(0,0,0,0.02);
+    }
 
-    .section-intro {
-      display: grid;
-      grid-template-columns: 100px 1fr;
-      gap: 2rem;
-      align-items: start;
+    .project-item:last-child {
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .project-num {
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: #666;
+      padding-top: 0.25rem;
+    }
+
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+    }
+
+    .project-meta {
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-desc {
+      font-size: 0.95rem;
+      color: #444;
+      max-width: 50ch;
+    }
+
+    .project-arrow {
+      font-size: 1.2rem;
+      color: #000;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s ease;
+    }
+
+    .project-item:hover .project-arrow {
+      opacity: 1;
+      transform: translateX(0);
     }
 
     @media (max-width: 768px) {
-      .section-intro { grid-template-columns: 1fr; }
+      .project-item {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+      .project-num { margin-bottom: 0.5rem; }
+      .project-arrow { display: none; }
     }
 
     /* ================================
-       SKILL CARDS
+       SKILLS / EXPERTISE
     ================================= */
-    .skill-card {
-      padding: 2rem;
-      border: 1px solid rgba(0,0,0,0.08);
-      transition: var(--transition);
-      background: #fff;
+    .skill-group {
+      margin-bottom: 2.5rem;
     }
 
-    .skill-card:hover {
-      border-color: var(--text);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    .skill-group h4 {
+      font-size: 1.1rem;
+      margin: 0 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
     }
 
-    .skill-card h3 {
-      margin-top: 0;
+    .skill-tags {
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
       gap: 0.5rem;
     }
 
-    .skill-card h3::before {
-      content: "▸";
-      font-size: 1.2rem;
-      color: var(--accent);
+    .skill-tag {
+      font-size: 0.875rem;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid #000;
+      border-radius: 0;
+      transition: all 0.2s;
     }
 
-    .skill-list {
-      list-style: none;
-      margin-top: 1rem;
+    .skill-tag:hover {
+      background: #000;
+      color: #fff;
     }
-
-    .skill-list li {
-      padding: 0.3rem 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-      border-bottom: 1px dashed rgba(0,0,0,0.05);
-    }
-
-    .skill-list li:last-child { border-bottom: none; }
 
     /* ================================
-       PROJECT / EXPERIENCE
+       PROCESS / WAY
     ================================= */
-    .timeline {
-      position: relative;
-      padding-left: 2rem;
-      margin: 2rem 0;
+    .process-step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-top: 1px solid rgba(0,0,0,0.08);
     }
 
-    .timeline::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.5rem;
-      bottom: 0.5rem;
-      width: 1px;
-      background: var(--accent);
+    .process-step:first-child {
+      padding-top: 0;
     }
 
-    .timeline-item {
-      position: relative;
-      padding: 1rem 0 1rem 2rem;
+    .process-num {
+      font-family: monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #000;
     }
 
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: -2rem;
-      top: 1.4rem;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--text);
+    .process-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
     }
 
-    .timeline-year {
-      font-size: 0.875rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      margin-bottom: 0.5rem;
+    @media (max-width: 768px) {
+      .process-step {
+        grid-template-columns: 1fr;
+      }
+      .process-num {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
     }
 
     /* ================================
        CONTACT / CTA
     ================================= */
     .contact-cta {
-      text-align: center;
-      padding: 4rem 0;
+      text-align: left;
+    }
+
+    .contact-cta h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin: 0 0 1.5rem;
+    }
+
+    .contact-links {
+      margin: 2rem 0;
+      font-size: 1.1rem;
+    }
+
+    .contact-links a {
+      display: block;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      transition: padding-left 0.2s;
+    }
+
+    .contact-links a:hover {
+      padding-left: 0.5rem;
+      opacity: 1;
     }
 
     .btn {
       display: inline-block;
-      padding: 1rem 2.5rem;
-      background: var(--text);
-      color: var(--bg);
-      text-decoration: none;
+      padding: 1rem 2rem;
+      background: #000;
+      color: #fff;
       font-weight: 600;
       letter-spacing: 0.05em;
-      transition: var(--transition);
-      border: 2px solid var(--text);
-      margin-top: 1rem;
+      border: 2px solid #000;
+      transition: all 0.3s;
     }
 
     .btn:hover {
       background: transparent;
-      color: var(--text);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--text);
-    }
-
-    .btn-outline:hover {
-      background: var(--text);
-      color: var(--bg);
+      color: #000;
     }
 
     /* ================================
        FOOTER
     ================================= */
     footer {
-      padding: 3rem var(--margin-x);
-      border-top: 1px solid rgba(0,0,0,0.08);
+      padding: 3rem 0;
       text-align: center;
-      color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.875rem;
+      color: #666;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    footer .credit {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      opacity: 0.7;
     }
 
     /* ================================
-       ANIMATIONS (Scroll Reveal)
+       ANIMATIONS
     ================================= */
-    .reveal {
+    .fade-in {
       opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
-    .reveal.active {
+    .fade-in.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
     /* ================================
-       DECORATIVE ELEMENTS
+       UTILS
     ================================= */
-    .divider {
-      height: 1px;
-      background: rgba(0,0,0,0.08);
-      margin: 3rem 0;
-    }
-
-    .quote {
-      font-size: 1.5rem;
-      font-weight: 600;
-      line-height: 1.4;
-      margin: 2rem 0;
-      position: relative;
-      padding: 1rem 0 1rem 2rem;
-    }
-
-    .quote::before {
-      content: """;
-      position: absolute;
-      left: 0;
-      top: -0.5rem;
-      font-size: 4rem;
-      color: rgba(0,0,0,0.1);
-      font-family: serif;
-      line-height: 1;
-    }
-
-    /* ================================
-       RESPONSIVE TYPOGRAPHY
-    ================================= */
-    @media (max-width: 768px) {
-      h1 { font-size: 2.5rem; }
-      h2 { font-size: 1.8rem; }
-      .quote { font-size: 1.2rem; }
-      section { padding: 4rem 0; }
-    }
+    .spacer { height: 2rem; }
+    .muted { color: #666; }
+    .uppercase { text-transform: uppercase; letter-spacing: 0.1em; }
   </style>
 </head>
 <body>
 
-  <!-- HERO SECTION -->
+  <!-- HEADER -->
   <header>
-    <div class="container">
-      <div class="hero-content">
-        <span class="hero-tag">Factory Automation Specialist</span>
-        <h1>제어와 통합의 경계에서,<br>신뢰할 수 있는 자동화를 설계합니다.</h1>
-        <p class="lead">PLC 프로그래밍부터 상위 시스템 연동까지.<br>전기제어의 논리를 코드로, 현장을 데이터로 연결합니다.</p>
-        <div style="margin-top: 2rem;">
-          <a href="#skills" class="btn">전문 분야 보기</a>
-          <a href="#contact" class="btn btn-outline" style="margin-left: 1rem;">연락하기</a>
-        </div>
-      </div>
+    <div class="container nav-inner">
+      <a href="#" class="logo">FACTORY<span>AUTO</span></a>
+      <nav>
+        <ul>
+          <li><a href="#about">ABOUT</a></li>
+          <li><a href="#skills">EXPERTISE</a></li>
+          <li><a href="#projects">PROJECTS</a></li>
+          <li><a href="#contact">CONTACT</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
 
-  <!-- ABOUT / INTRO -->
-  <section id="about">
-    <div class="container">
-      <div class="section-intro reveal">
-        <div class="vertical-text">ABOUT</div>
-        <div>
-          <h2>자동화, 그 이상의 가치</h2>
-          <p class="lead">10년 차 공장자동화 엔지니어로서, 단순한 '동작'이 아닌 '신뢰성'과 '확장성'을 중심으로 제어 시스템을 설계합니다.</p>
-          <p>PLC 시퀀스 로직부터 SCADA/HMI 구성, 산업용 통신 프로토콜, 그리고 Python/C# 기반의 데이터 수집 및 분석 시스템까지. 현장의 요구사항을 기술적으로 해석하고, 유지보수까지 고려한 구조를 제안합니다.</p>
-          <div class="caption">
-            "좋은 자동화는 눈에 띄지 않습니다.<br>
-            그저 자연스럽게, 멈춤 없이 흘러갈 뿐이니까요."
-          </div>
-        </div>
-      </div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-content fade-in">
+      <span class="hero-tag">AUTOMATION SPECIALIST</span>
+      <h1>제어의 논리를,<br>신뢰의 시스템으로.</h1>
+      <p class="lead">PLC 시퀀스부터 상위 시스템 연동까지.<br>현장의 문제를 기술로 해석하고, 견고한 자동화를 설계합니다.</p>
+      <div class="spacer"></div>
+      <a href="#projects" class="btn">WORKS VIEW</a>
     </div>
   </section>
 
-  <!-- SKILLS SECTION -->
-  <section id="skills">
+  <!-- ABOUT -->
+  <section id="about" class="section">
     <div class="container">
-      <h2 class="reveal">Technical Expertise</h2>
-      <div class="grid grid-3">
-        
-        <div class="skill-card reveal">
-          <h3>PLC Programming</h3>
-          <p>신뢰성 중심의 시퀀스 설계</p>
-          <ul class="skill-list">
-            <li>Ladder / Structured Text (ST)</li>
-            <li>Function Block Diagram (FBD)</li>
-            <li>Siemens TIA Portal, Mitsubishi GX Works</li>
-            <li>안전회로, 인터록, 페일세이프 로직</li>
-          </ul>
-        </div>
-
-        <div class="skill-card reveal">
-          <h3>HMI / SCADA</h3>
-          <p>직관적인 운영 인터페이스</p>
-          <ul class="skill-list">
-            <li>FactoryTalk View, WinCC, Ignition</li>
-            <li>실시간 모니터링 & 알람 관리</li>
-            <li>이력 조회, 리포트 자동 생성</li>
-            <li>Web-based HMI (React + Node.js)</li>
-          </ul>
-        </div>
-
-        <div class="skill-card reveal">
-          <h3>Communication</h3>
-          <p>장치 간 원활한 데이터 흐름</p>
-          <ul class="skill-list">
-            <li>Modbus TCP/RTU, EtherCAT, CC-Link</li>
-            <li>PROFINET, EtherNet/IP 구성</li>
-            <li>게이트웨이 연동 및 프로토콜 변환</li>
-            <li>OPC UA 서버/클라이언트 구현</li>
-          </ul>
-        </div>
-
-        <div class="skill-card reveal">
-          <h3>Electrical Control</h3>
-          <p>현장 중심의 전기 설계</p>
-          <ul class="skill-list">
-            <li>제어반 설계 및 배선 다이어그램</li>
-            <li>시작/정지, 수동/자동 전환 로직</li>
-            <li>서보/인버터 드라이브 튜닝</li>
-            <li>안전 규정 (CE, KCS) 준수 설계</li>
-          </ul>
-        </div>
-
-        <div class="skill-card reveal">
-          <h3>System Integration</h3>
-          <p>상위 시스템과의 연결</p>
-          <ul class="skill-list">
-            <li>Python: 데이터 수집, 전처리, API 연동</li>
-            <li>C#: Windows 서비스, WPF 기반 모니터링</li>
-            <li>Database: MySQL, InfluxDB (시계열)</li>
-            <li>MQTT, REST API 기반 IIoT 아키텍처</li>
-          </ul>
-        </div>
-
-        <div class="skill-card reveal">
-          <h3>Debug & Maintenance</h3>
-          <p>문제 해결과 지속 가능성</p>
-          <ul class="skill-list">
-            <li>현장 트러블슈팅 및 로그 분석</li>
-            <li>원격 진단 시스템 구축</li>
-            <li>문서화: 시퀀스 차트, IO 리스트, 매뉴얼</li>
-            <li>예지보전을 위한 데이터 로깅 전략</li>
-          </ul>
-        </div>
-
+      <h2 class="section-title fade-in">01 / ABOUT</h2>
+      
+      <div class="creative-type fade-in">
+        <span class="en">F</span><span class="kr">공장</span>
+        <span class="en">A</span><span class="kr">자동화</span>
+        <span class="en">C</span><span class="kr">제어</span>
+        <span class="en">T</span><span class="kr">통합</span>
       </div>
-    </div>
-  </section>
 
-  <!-- EXPERIENCE / PROJECTS -->
-  <section id="experience">
-    <div class="container">
-      <div class="section-intro reveal">
-        <div class="vertical-text">PROJECTS</div>
-        <div>
-          <h2>주요 프로젝트 이력</h2>
-          <p class="lead">다양한 산업 분야에서 축적한 자동화 시스템 구축 경험</p>
-          
-          <div class="timeline">
-            <div class="timeline-item">
-              <div class="timeline-year">2024 — CURRENT</div>
-              <h3>스마트 팩토리 데이터 플랫폼 구축</h3>
-              <p>Ignition SCADA + InfluxDB + Python 기반의 실시간 생산 데이터 수집 시스템 설계. OPC UA로 50+ 장비 연동, 대시보드에서 OEE/가동률 실시간 모니터링.</p>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-year">2022 — 2023</div>
-              <h3>반도체 장비 자동제어 시스템 리뉴얼</h3>
-              <p>기존 Relay 제어를 Siemens S7-1500 PLC 기반의 완전 자동화 시스템으로 교체. 안전 인터록 강화, HMI 개선을 통해 운영 효율 40% 향상.</p>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-year">2020 — 2021</div>
-              <h3>자동차 부품 라인 다중 로봇 동기화</h3>
-              <p>EtherCAT 기반의 6축 로봇 4대 동기화 제어. Cycle time 15% 단축, PLC-ST 로 정밀 포지셔닝 로직 구현.</p>
-            </div>
-          </div>
-
-          <div class="quote">
-            기술은 도구일 뿐입니다.<br>
-            중요한 것은 '현장의 문제'를 정확히 이해하고,<br>
-            가장 간결하고 견고한 해결책을 제시하는 것입니다.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT SECTION -->
-  <section id="contact" class="contact-cta reveal">
-    <div class="container">
-      <h2>함께 자동화를 설계해 보세요</h2>
-      <p style="max-width: 600px; margin: 1rem auto;">
-        새로운 프로젝트, 기술 컨설팅, 시스템 고도화 등 어떤 형태든 협업 가능합니다.<br>
-        자세한 내용은 아래로 연락 주세요.
+      <p class="lead fade-in">
+        10년 차 자동제어 전기 엔지니어로서, 단순한 '동작 구현'을 넘어 
+        '신뢰성', '유지보수성', '확장성'을 중심으로 시스템을 설계합니다.
       </p>
-      <div style="margin: 2rem 0; font-weight: 500;">
-        ✉️ your.email@factory-auto.kr<br>
-        📱 +82 10 1234 5678<br>
-        🔗 linkedin.com/in/yourprofile
+      
+      <p class="fade-in">
+        PLC 프로그래밍, HMI/SCADA 구성, 산업용 통신 프로토콜, 
+        Python/C# 기반 데이터 수집 시스템까지.<br>
+        현장의 요구사항을 기술적으로 해석하고, 
+        문서화부터 시운전까지 전 과정을 책임집니다.
+      </p>
+
+      <div class="spacer"></div>
+      
+      <p class="muted fade-in" style="font-style: italic; border-left: 2px solid #000; padding-left: 1rem;">
+        "좋은 자동화는 눈에 띄지 않습니다.<br>
+        그저 자연스럽게, 멈춤 없이 흘러갈 뿐이니까요."
+      </p>
+    </div>
+  </section>
+
+  <!-- EXPERTISE -->
+  <section id="skills" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">02 / EXPERTISE</h2>
+      
+      <div class="grid grid-2">
+        <div class="skill-group fade-in">
+          <h4>CONTROL & PROGRAMMING</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Ladder Logic</span>
+            <span class="skill-tag">Structured Text</span>
+            <span class="skill-tag">Function Block</span>
+            <span class="skill-tag">Siemens TIA Portal</span>
+            <span class="skill-tag">Mitsubishi GX Works</span>
+            <span class="skill-tag">Safety Circuit</span>
+            <span class="skill-tag">Interlock Design</span>
+          </div>
+        </div>
+
+        <div class="skill-group fade-in">
+          <h4>HMI / SCADA</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">FactoryTalk View</span>
+            <span class="skill-tag">WinCC</span>
+            <span class="skill-tag">Ignition</span>
+            <span class="skill-tag">Alarm Management</span>
+            <span class="skill-tag">Trend / History</span>
+            <span class="skill-tag">Web HMI</span>
+          </div>
+        </div>
+
+        <div class="skill-group fade-in">
+          <h4>COMMUNICATION</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Modbus TCP/RTU</span>
+            <span class="skill-tag">EtherCAT</span>
+            <span class="skill-tag">CC-Link</span>
+            <span class="skill-tag">PROFINET</span>
+            <span class="skill-tag">OPC UA</span>
+            <span class="skill-tag">MQTT</span>
+          </div>
+        </div>
+
+        <div class="skill-group fade-in">
+          <h4>SYSTEM INTEGRATION</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Python Data Pipeline</span>
+            <span class="skill-tag">C# Windows Service</span>
+            <span class="skill-tag">InfluxDB / MySQL</span>
+            <span class="skill-tag">REST API</span>
+            <span class="skill-tag">IIoT Architecture</span>
+          </div>
+        </div>
       </div>
-      <a href="mailto:your.email@factory-auto.kr" class="btn">메일 보내기</a>
+    </div>
+  </section>
+
+  <!-- PROJECTS — LQVE STYLE LIST -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">03 / PROJECTS</h2>
+
+      <!-- Project 01 -->
+      <div class="project-item fade-in">
+        <div class="project-num"># 01 / 05</div>
+        <div>
+          <h3 class="project-title">Smart Factory Data Platform</h3>
+          <div class="project-meta">Client: Automotive Parts | Year: 2024</div>
+          <p class="project-desc">Ignition SCADA + InfluxDB 기반 실시간 생산 데이터 수집 시스템. OPC UA로 50+ 장비 연동, OEE/가동률 대시보드 구축.</p>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <!-- Project 02 -->
+      <div class="project-item fade-in">
+        <div class="project-num"># 02 / 05</div>
+        <div>
+          <h3 class="project-title">Semiconductor Equipment Control Renewal</h3>
+          <div class="project-meta">Client: Semiconductor Mfg | Year: 2023</div>
+          <p class="project-desc">기존 Relay 제어를 Siemens S7-1500 PLC 기반 완전 자동화로 교체. 안전 인터록 강화, HMI 개선으로 운영 효율 40% 향상.</p>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <!-- Project 03 -->
+      <div class="project-item fade-in">
+        <div class="project-num"># 03 / 05</div>
+        <div>
+          <h3 class="project-title">Multi-Robot Synchronization Line</h3>
+          <div class="project-meta">Client: Auto Assembly | Year: 2022</div>
+          <p class="project-desc">EtherCAT 기반 6축 로봇 4대 동기화 제어. PLC-ST 로 정밀 포지셔닝 로직 구현, Cycle time 15% 단축.</p>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <!-- Project 04 -->
+      <div class="project-item fade-in">
+        <div class="project-num"># 04 / 05</div>
+        <div>
+          <h3 class="project-title">Remote Monitoring & Predictive Maintenance</h3>
+          <div class="project-meta">Client: Food & Beverage | Year: 2021</div>
+          <p class="project-desc">Python + MQTT 기반 장비 상태 원격 수집 시스템. 진동/온도 데이터 분석을 통한 예지보전 알람 로직 구현.</p>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+      <!-- Project 05 -->
+      <div class="project-item fade-in">
+        <div class="project-num"># 05 / 05</div>
+        <div>
+          <h3 class="project-title">Safety Circuit Redesign for CE Compliance</h3>
+          <div class="project-meta">Client: Export Machinery | Year: 2020</div>
+          <p class="project-desc">유럽 수출 장비의 안전 규정 (CE) 준수를 위한 제어반 리디자인. Safety Relay, Light Curtain, E-Stop 회로 최적화.</p>
+        </div>
+        <div class="project-arrow">→</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">04 / PROCESS</h2>
+
+      <div class="process-step fade-in">
+        <div class="process-num">01</div>
+        <div>
+          <h3 class="process-title">Find Core Question</h3>
+          <p>현장의 진짜 문제는 무엇인가? 요구사항을 기술적 언어로 해석하고, 본질적인 해결 방향을 정의합니다.</p>
+        </div>
+      </div>
+
+      <div class="process-step fade-in">
+        <div class="process-num">02</div>
+        <div>
+          <h3 class="process-title">Design Robust Logic</h3>
+          <p>신뢰성 중심의 시퀀스 설계. 인터록, 페일세이프, 수동/자동 전환 등 현장 운영을 고려한 견고한 로직을 구현합니다.</p>
+        </div>
+      </div>
+
+      <div class="process-step fade-in">
+        <div class="process-num">03</div>
+        <div>
+          <h3 class="process-title">Integrate & Validate</h3>
+          <p>장치 연동, 통신 테스트, HMI 구성을 통합하고, 시뮬레이션/현장 시운전을 통해 시스템을 검증합니다.</p>
+        </div>
+      </div>
+
+      <div class="process-step fade-in">
+        <div class="process-num">04</div>
+        <div>
+          <h3 class="process-title">Document & Handover</h3>
+          <p>시퀀스 차트, IO 리스트, 매뉴얼 등 유지보수를 위한 문서를 완비하고, 운영팀 교육을 통해 프로젝트를 완료합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <div class="container contact-cta fade-in">
+      <h2>함께 자동화를 설계해 보세요.</h2>
+      <p class="lead">새로운 프로젝트, 기술 컨설팅, 시스템 고도화.<br>어떤 형태든 협업 가능합니다.</p>
+      
+      <div class="contact-links">
+        <a href="mailto:your.email@factory-auto.kr">✉️ your.email@factory-auto.kr</a>
+        <a href="tel:+821012345678">📱 +82 10 1234 5678</a>
+        <a href="#" target="_blank">🔗 linkedin.com/in/yourprofile</a>
+      </div>
+      
+      <a href="mailto:your.email@factory-auto.kr" class="btn">CONTACT START</a>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 Factory Automation Specialist. All rights reserved.</p>
-    <p style="margin-top: 0.5rem; font-size: 0.85rem;">
-      Designed with editorial minimalism — Inspired by typesetting.studio.site
-    </p>
+    <div class="container">
+      <p>&copy; 2026 FACTORY AUTO. All rights reserved.</p>
+      <p class="credit">Design inspired by lqve.jp — Minimal Monochrome Portfolio</p>
+    </div>
   </footer>
 
-  <!-- SCROLL REVEAL SCRIPT -->
+  <!-- SCROLL ANIMATION SCRIPT -->
   <script>
-    // 간단한 스크롤 애니메이션 (Intersection Observer)
     document.addEventListener('DOMContentLoaded', function() {
-      const reveals = document.querySelectorAll('.reveal');
-      
+      // Fade-in on scroll
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('active');
+            entry.target.classList.add('visible');
           }
         });
-      }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+      }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+      document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
       });
-      
-      reveals.forEach(el => observer.observe(el));
-      
-      // 초기 로딩 시 헤로도 서서히 등장
+
+      // Initial load: hero content fade
       setTimeout(() => {
-        document.querySelector('.hero-content').style.opacity = '1';
-        document.querySelector('.hero-content').style.transform = 'translateY(0)';
-      }, 200);
+        document.querySelector('.hero-content').classList.add('visible');
+      }, 100);
     });
   </script>
 </body>
