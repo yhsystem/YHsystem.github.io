@@ -3,142 +3,195 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FA Systems & Control Engineering</title>
+  <title>FA Systems & Control Engineering — High Performance</title>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet"/>
 
   <style>
     /* ===== 1. 디자인 커스터마이징 (변수 설정) ===== */
     :root {
       --배경색: #ffffff;
-      --글자색: #111111;
-      --포인트색: #000000;
-      --잔상선색: rgba(0,0,0,0.12);
-      --호버시_원색상: rgba(0,0,0,0.08); /* 사진 위에서 퍼지는 원 색상 */
+      --글자색: #000000;
+      /* [수정] 마우스 및 잔상 색상을 강렬한 빨간색으로 변경 */
+      --포인트색: #ff0000; 
+      --잔상선색: rgba(255, 0, 0, 0.25); /* 투명도 포함한 빨간색 */
+      --호버시_원색상: rgba(255, 0, 0, 0.1); /* 사진 위 호버 시 */
+      
       --폰트: 'Inter', 'Noto Sans KR', sans-serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
     body { 
       background: var(--배경색); color: var(--글자색); 
-      font-family: var(--폰트); line-height: 1.6; overflow-x: hidden;
-      cursor: none; 
+      font-family: var(--폰트); line-height: 1.4; overflow-x: hidden;
+      cursor: none; /* 기본 커서 숨김 */
     }
 
-    /* 마우스 커서 & 잔상 */
+    /* [수정] 모바일에서는 커스텀 커서 및 캔버스 비활성화 (성능 및 여백 확보) */
+    @media (pointer: coarse) {
+      body { cursor: auto; }
+      #cursor, #trail-canvas { display: none; }
+    }
+
+    /* 마우스 커서 & 잔상 캔버스 */
     #trail-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10000; }
-    .cursor { position: fixed; top: 0; left: 0; width: 10px; height: 10px; background: var(--포인트색); border-radius: 50%; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); }
+    #cursor { 
+      position: fixed; top: 0; left: 0; width: 8px; height: 8px; 
+      background: var(--포인트색); border-radius: 50%; 
+      pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); 
+      will-change: transform, width, height, opacity;
+    }
 
     /* 네비게이션 */
-    nav { position: fixed; top: 0; width: 100%; padding: 40px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 500; }
-    .logo { font-size: 16px; font-weight: 700; letter-spacing: 0.3em; text-decoration: none; color: inherit; }
-
-    /* 섹션 기본 설정 */
-    section { padding: 0 8%; opacity: 0; transform: translateY(30px); transition: all 1s ease; }
-    section.is-visible { opacity: 1; transform: translateY(0); }
+    nav { 
+      position: fixed; top: 0; width: 100%; padding: 40px 50px; 
+      display: flex; justify-content: space-between; align-items: center; 
+      z-index: 500; mix-blend-mode: exclusion; color: white; /* 이미지 위에서도 보이도록 설정 */
+    }
+    .logo { font-size: 18px; font-weight: 700; letter-spacing: 0.3em; text-decoration: none; color: inherit; }
 
     /* Hero 섹션 */
-    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; }
-    .hero-title { font-size: clamp(2.5rem, 9vw, 7.5rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.0; }
-    .hero-sub { margin-top: 40px; font-size: 16px; color: #555; max-width: 600px; line-height: 1.8; word-break: keep-all; }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 8%; }
+    .hero-title { font-size: clamp(3.5rem, 12vw, 10rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.9; }
+    .hero-title span { display: block; overflow: hidden; opacity: 0; transform: translateY(80px); }
 
-    /* 프로젝트 리스트 */
-    .project-list { padding: 250px 0; }
-    .project-item { width: 100%; margin-bottom: 45vh; display: flex; flex-direction: column; position: relative; }
-    .project-item:nth-child(even) { align-items: flex-end; text-align: right; }
+    /* 프로젝트 리스트 (지그재그 및 Full-screen 줌) */
+    .project-list { padding-bottom: 300px; }
+    .project-item { width: 100%; margin-bottom: 25vh; position: relative; }
     
-    /* 이미지 프레임 (스크롤 시 커지는 효과의 기반) */
-    .img-frame { 
-      width: 65%; max-width: 1000px; aspect-ratio: 16/9; overflow: hidden; 
-      position: relative; background: #f0f0f0; clip-path: inset(0% 0% 0% 0%);
+    /* [핵심 수정] 스크롤 시 화면을 가득 채우는 프레임 효과 */
+    .img-frame-wrap {
+      width: 100%;
+      height: 100vh; /* 화면 가득 차는 높이 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
     }
-    .img-frame img { 
-      width: 100%; height: 100%; object-fit: cover; 
-      filter: grayscale(1); transition: filter 1.2s ease, transform 0.5s ease;
-      transform: scale(1.1); /* 기본적으로 살짝 확대 상태에서 시작 */
-    }
-    .img-frame:hover img { filter: grayscale(0.1); }
 
-    .caption { margin-top: 35px; width: 100%; }
-    .caption h3 { font-size: 32px; font-weight: 600; margin-bottom: 12px; }
-    .caption p { color: #888; font-size: 14px; letter-spacing: 0.05em; line-height: 1.6; }
-    .tags { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-    .project-item:nth-child(even) .tags { justify-content: flex-end; }
-    .tag { padding: 5px 12px; border: 1px solid #ddd; border-radius: 30px; font-size: 11px; color: #666; }
+    /* 실제 이미지가 담기는 마스크 (GSAP으로 크기 조절) */
+    .img-mask {
+      width: 60%; /* 처음엔 작게 시작 */
+      height: 80%;
+      overflow: hidden;
+      background: #eee;
+      clip-path: inset(0% 0% 0% 0%); /* 확장을 위해 클립패스 설정 */
+      will-change: width, height, clip-path;
+    }
+
+    .img-mask img { 
+      width: 100%; height: 100%; object-fit: cover; 
+      filter: grayscale(1); transition: filter 1s var(--ease-out);
+      transform: scale(1.3); /* 이미지 내부 줌 효과 준비 */
+      will-change: transform, filter;
+    }
+    .img-mask:hover img { filter: grayscale(0.2); transform: scale(1.1); }
+
+    /* 캡션: 이미지 위에 겹쳐서 배치 (lqve.jp 감성) */
+    .caption {
+      position: absolute; bottom: 50px; left: 8%;
+      color: white; z-index: 10; mix-blend-mode: exclusion;
+      opacity: 0; transform: translateY(30px);
+    }
+    .project-item.active .caption { opacity: 1; transform: translateY(0); transition: all 1.2s var(--ease-out); }
+
+    .caption h3 { font-size: 28px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
+    .caption p { font-size: 13px; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); }
+    .tags { display: flex; gap: 8px; margin-top: 15px; }
+    .tag { padding: 4px 10px; border: 1px solid rgba(255,255,255,0.3); border-radius: 30px; font-size: 10px; color: rgba(255,255,255,0.8); }
 
     /* 푸터 */
-    footer { padding: 150px 8% 80px; background: #fafafa; }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; border-top: 1px solid #eee; padding-top: 50px; }
-    .footer-title { font-size: 14px; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.1em; }
-    .footer-link { display: block; font-size: 13px; color: #888; text-decoration: none; margin-bottom: 8px; }
+    footer { padding: 150px 8%; border-top: 1px solid #eee; }
+    .footer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 50px; font-size: 12px; color: #999; letter-spacing: 0.15em; }
 
+    /* ===== [핵심 수정] 모바일 반응형 디자인 ===== */
     @media (max-width: 768px) {
-      .img-frame { width: 100%; }
-      nav { padding: 25px; }
-      .hero-title { font-size: 3.5rem; }
+      nav { padding: 25px 20px; }
+      .logo { font-size: 14px; }
+      
+      .hero { padding: 0 5%; }
+      .hero-title { font-size: clamp(2.8rem, 15vw, 4.5rem); letter-spacing: -0.03em; }
+
+      .project-list { padding-bottom: 150px; }
+      .project-item { margin-bottom: 15vh; }
+      
+      /* 모바일에서는 프레임 높이를 줄여 여백 제거 */
+      .img-frame-wrap { height: 70vh; } 
+      
+      /* 모바일은 가로로 꽉 찬 상태에서 시작하거나 스크롤 효과만 적용 */
+      .img-mask { width: 100%; height: 100%; } 
+      .caption { bottom: 30px; left: 5%; }
+      .caption h3 { font-size: 22px; }
+      
+      .footer-grid { grid-template-columns: 1fr; gap: 30px; }
     }
   </style>
 </head>
 <body>
 
   <canvas id="trail-canvas"></canvas>
-  <div class="cursor"></div>
-
+  <div id="cursor"></div>
+  
   <nav>
     <a href="#" class="logo">AUTOMATION STUDIO</a>
-    <div style="font-size: 11px; font-weight: 600;">PORTFOLIO 2026</div>
+    <div style="font-size: 10px; font-weight: 600;">FA PORTFOLIO 2026</div>
   </nav>
 
   <main>
-    <section class="hero is-visible">
+    <section class="hero">
       <h1 class="hero-title">
-        ADVANCED<br>CONTROL LOGIC
+        <span>PRECISION</span><br>
+        <span>CONTROL DESIGN</span>
       </h1>
-      <p class="hero-sub">
-        PLC 시퀀스 제어부터 고성능 SBC 기반의 데이터 통합까지, <br>
-        현장의 효율을 극대화하는 정밀 자동화 시스템을 설계합니다.
-      </p>
     </section>
 
     <section class="project-list">
       <div class="project-item">
-        <div class="img-frame hover-target">
-          <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500&q=80" class="scroll-zoom">
-        </div>
-        <div class="caption">
-          <h3>PLC & HMI Optimization</h3>
-          <p>고속 정밀 위치 결정 제어 및 모니터링 시스템 구축</p>
-          <div class="tags">
-            <span class="tag">MELSEC-Q/R</span> <span class="tag">XGT</span> <span class="tag">SCADA</span> <span class="tag">Touch Panel</span>
+        <div class="img-frame-wrap">
+          <div class="img-mask scroll-zoom hover-target">
+            <img src="https://images.unsplash.com/photo-1518111956461-12c85e2b02a9?auto=format&fit=crop&w=1500&q=80">
+          </div>
+          <div class="caption reveal-text">
+            <h3>PLC Logic Optimization</h3>
+            <p>Mitsubishi Q/R, Siemens S7-1500 System</p>
+            <div class="tags">
+              <span class="tag">MELSEC-Q</span> <span class="tag">SCADA</span> <span class="tag">HMI 작화</span>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
-        <div class="img-frame hover-target">
-          <img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500&q=80" class="scroll-zoom">
-        </div>
-        <div class="caption">
-          <h3>Electrical Panel Design</h3>
-          <p>전기 도면 설계 및 노이즈 대책을 고려한 하드웨어 판넬 제작</p>
-          <div class="tags">
-            <span class="tag">EPLAN</span> <span class="tag">AutoCAD</span> <span class="tag">Wiring</span> <span class="tag">Circuit Protection</span>
+        <div class="img-frame-wrap">
+          <div class="img-mask scroll-zoom hover-target">
+            <img src="https://images.unsplash.com/photo-1596720426673-e4e14290f0cc?auto=format&fit=crop&w=1500&q=80">
+          </div>
+          <div class="caption reveal-text">
+            <h3>Panel Fabrication</h3>
+            <p>EPLAN 기반 전기설계 및 하드웨어 제작</p>
+            <div class="tags">
+              <span class="tag">EPLAN</span> <span class="tag">AutoCAD</span> <span class="tag">Wiring</span>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
-        <div class="img-frame hover-target">
-          <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1500&q=80" class="scroll-zoom">
-        </div>
-        <div class="caption">
-          <h3>SBC & Smart Factory</h3>
-          <p>Raspberry Pi / Jetson을 활용한 공정 데이터 수집 및 클라우드 연동</p>
-          <div class="tags">
-            <span class="tag">Python</span> <span class="tag">Modbus TCP</span> <span class="tag">IoT</span> <span class="tag">Linux</span>
+        <div class="img-frame-wrap">
+          <div class="img-mask scroll-zoom hover-target">
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1500&q=80">
+          </div>
+          <div class="caption reveal-text">
+            <h3>SBC Data Integration</h3>
+            <p>SBC 기반 데이터 수집 및 공정 모니터링</p>
+            <div class="tags">
+              <span class="tag">Raspberry Pi</span> <span class="tag">Modbus TCP</span> <span class="tag">IoT</span>
+            </div>
           </div>
         </div>
       </div>
@@ -147,110 +200,97 @@
 
   <footer>
     <div class="footer-grid">
-      <div>
-        <p class="footer-title">FA SOLUTIONS</p>
-        <p style="font-size: 13px; color: #aaa;">끊임없는 연구와 현장 경험으로 <br> 최적의 자동화 솔루션을 제공합니다.</p>
-      </div>
-      <div>
-        <p class="footer-title">CONTACT</p>
-        <a href="#" class="footer-link">plc_engineer@example.com</a>
-        <a href="#" class="footer-link">010-0000-0000</a>
-      </div>
-      <div>
-        <p class="footer-title">SERVICES</p>
-        <span class="footer-link">PLC / HMI / SBC</span>
-        <span class="footer-link">Electrical Design</span>
-      </div>
+      <div>Expertise: PLC, HMI, SBC, Electrical Design</div>
+      <div style="text-align: right;">&copy; 2026 FA PORTFOLIO. CHANGWON</div>
     </div>
   </footer>
 
   <script>
-    /* ===== 마우스 및 잔상 설정 (보정 완료) ===== */
-    const CONFIG = {
-      pSize: 10,
-      pLerp: 0.16,
-      tWidth: 1.0,
-      tLength: 30,
-      hoverScale: 4.5 // 사진 위에서 너무 커지지 않도록 7 -> 4.5로 수정
-    };
+    gsap.registerPlugin(ScrollTrigger);
 
-    const cursor = document.querySelector('.cursor');
-    const canvas = document.getElementById('trail-canvas');
-    const ctx = canvas.getContext('2d');
+    /* ===== [수정] 마우스 커서 및 빨간 잔상 효과 ===== */
+    const trailCanvas = document.getElementById('trail-canvas');
+    const trailCtx = trailCanvas.getContext('2d');
+    const cursorDot = document.getElementById('cursor');
+
     let m = { x: 0, y: 0 }, p = { x: 0, y: 0 }, pts = [];
+    let cLerp = 0.18; // 포인트 따라오는 속도
 
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize); resize();
-    window.addEventListener('mousemove', e => { m.x = e.clientX; m.y = e.clientY; });
+    // 모바일에서는 커서 활성화 안 함
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
 
-    function render() {
-      p.x += (m.x - p.x) * CONFIG.pLerp;
-      p.y += (m.y - p.y) * CONFIG.pLerp;
-      cursor.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
-      pts.push({ ...p });
-      if (pts.length > CONFIG.tLength) pts.shift();
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (pts.length > 1) {
-        ctx.beginPath();
-        ctx.lineWidth = CONFIG.tWidth;
-        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--잔상선색');
-        ctx.moveTo(pts[0].x, pts[0].y);
-        for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
-        ctx.stroke();
+    if (!isTouch) {
+      function resize() { trailCanvas.width = window.innerWidth; trailCanvas.height = window.innerHeight; }
+      window.addEventListener('resize', resize); resize();
+
+      window.addEventListener('mousemove', e => { m.x = e.clientX; m.y = e.clientY; });
+
+      function drawTrail() {
+        p.x += (m.x - p.x) * cLerp;
+        p.y += (m.y - p.y) * cLerp;
+        cursorDot.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
+        
+        pts.push({ ...p });
+        if (pts.length > 30) pts.shift(); // 잔상 길이 조절
+
+        trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+        if (pts.length > 1) {
+          trailCtx.beginPath();
+          trailCtx.lineWidth = 1.0; // 잔상 선 굵기
+          trailCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--잔상선색');
+          trailCtx.lineCap = 'round';
+          trailCtx.lineJoin = 'round';
+          trailCtx.moveTo(pts[0].x, pts[0].y);
+          for (let i = 1; i < pts.length; i++) trailCtx.lineTo(pts[i].x, pts[i].y);
+          trailCtx.stroke();
+        }
+        requestAnimationFrame(drawTrail);
       }
-      requestAnimationFrame(render);
-    }
-    render();
+      drawTrail();
 
-    /* ===== 스크롤 효과 (줌 & 페이드) ===== */
+      /* 호버 효과 (빨간 원 보정) */
+      document.querySelectorAll('.hover-target').forEach(el => {
+        el.addEventListener('mouseenter', () => gsap.to(cursorDot, { scale: 6, backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--호버시_원색상'), duration: 0.5, ease: "power3.out" }));
+        el.addEventListener('mouseleave', () => gsap.to(cursorDot, { scale: 1, backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--포인트색'), duration: 0.3, ease: "power3.out" }));
+      });
+    }
+
+    /* ===== [수정/핵심] 스크롤 애니메이션 (Lenis 스무스 스크롤) ===== */
     const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
+    lenis.on('scroll', ScrollTrigger.update);
 
-    gsap.registerPlugin(ScrollTrigger);
+    // 1. Hero 텍스트 등장
+    gsap.to('.hero-title span', { y: 0, opacity: 1, duration: 1.5, stagger: 0.3, ease: 'power4.out', delay: 0.5 });
 
-    // 1. 전체 섹션 페이드 인/아웃 효과
-    document.querySelectorAll('section').forEach(sec => {
-      ScrollTrigger.create({
-        trigger: sec,
-        start: "top 85%",
-        onEnter: () => sec.classList.add('is-visible'),
-        onLeaveBack: () => sec.classList.remove('is-visible') // 올릴 때 다시 페이드 아웃
-      });
-    });
+    // 2. [수정/핵심] 스크롤 시 사진 프레임 화면 가득 차는 효과 (scrub)
+    document.querySelectorAll('.project-item').forEach(item => {
+      const mask = item.querySelector('.img-mask');
+      const img = item.querySelector('img');
 
-    // 2. 이미지 스크롤 줌 효과 (요청하신 부분)
-    document.querySelectorAll('.scroll-zoom').forEach(img => {
-      gsap.to(img, {
+      // 스크롤 시 프레임 크기 & 클립패스 조절
+      gsap.to(mask, {
         scrollTrigger: {
-          trigger: img.parentElement,
-          start: "top bottom", 
-          end: "bottom top",
-          scrub: true // 스크롤에 맞춰 부드럽게
+          trigger: item,
+          start: "top 90%", // 화면 90% 지점에서 시작
+          end: "bottom 10%", // 화면 10% 지점에서 끝남
+          scrub: 1.2, // 끈적하게 따라옴
+          toggleActions: "play none none reverse",
+          onEnter: () => item.classList.add('active'), // 캡션 등장용
+          onLeaveBack: () => item.classList.remove('active')
         },
-        scale: 1.4, // 내릴수록 사진이 커짐
-        y: "10%" // 사진 내부 패럴랙스 병행
+        width: "100%",  // 화면 꽉 차게
+        height: "100%", // 화면 꽉 차게
+        clipPath: "inset(0% 0% 0% 0%)", // 모서리 클리핑 제거
+        ease: "none"
       });
-    });
 
-    /* 마우스 호버 시 커서 크기 보정 */
-    document.querySelectorAll('.hover-target').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        gsap.to(cursor, { 
-          width: CONFIG.pSize * CONFIG.hoverScale, 
-          height: CONFIG.pSize * CONFIG.hoverScale, 
-          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--호버시_원색상'),
-          duration: 0.5,
-          ease: "power2.out"
-        });
-      });
-      el.addEventListener('mouseleave', () => {
-        gsap.to(cursor, { 
-          width: CONFIG.pSize, 
-          height: CONFIG.pSize, 
-          backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--포인트색'),
-          duration: 0.3 
-        });
+      // 이미지 내부 줌 효과 (프레임 줌과 병행)
+      gsap.to(img, {
+        scrollTrigger: { trigger: item, scrub: 1.2, start: "top bottom" },
+        scale: 1.0, // 내릴수록 사진이 원래 크기(1.0)로 작아지며 선명해짐 (시각적 입체감)
+        ease: "none"
       });
     });
   </script>
