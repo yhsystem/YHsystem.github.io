@@ -3,76 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LQVE JP Clone</title>
+    <title>LQVE.JP PERFECT CLONE</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        /* 1. 기본 스타일: 원본처럼 극도의 미니멀리즘 */
+        /* 1. 원본 특유의 폰트와 배경 설정 */
         * {
             margin: 0; padding: 0; box-sizing: border-box;
         }
 
         body {
-            background-color: #fff; /* 순백색 배경 */
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            overflow-x: hidden;
+            background-color: #fff;
             color: #000;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* 2. 상단 고정 헤더 */
+        /* 2. 상단 헤더 (로고 왼쪽, 메뉴 오른쪽 끝 배치) */
         header {
-            position: fixed; top: 0; left: 0; width: 100%;
-            padding: 30px 40px;
-            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; width: 100%;
+            padding: 30px 50px;
+            display: flex; justify-content: space-between;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.8); /* 살짝 투명 */
-            backdrop-filter: blur(5px);
+            mix-blend-mode: exclusion; /* 이미지 위에서도 글자가 보이게 함 */
         }
 
-        .logo {
-            font-size: 20px; font-weight: 700; letter-spacing: 5px;
+        .logo { font-size: 18px; font-weight: 900; letter-spacing: 0.3em; }
+        .menu { font-size: 10px; letter-spacing: 0.1em; font-weight: bold; }
+
+        /* 3. [핵심] 원본의 비대칭 레이아웃 구조 */
+        .content-wrapper {
+            padding: 200px 50px;
         }
 
-        nav span {
-            font-size: 12px; letter-spacing: 2px; margin-left: 20px; cursor: pointer;
+        /* 이미지가 지그재그로 배치되는 그리드 */
+        .item-container {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr); /* 12컬럼 시스템 */
+            margin-bottom: 300px; /* 이미지 사이의 거대한 여백 */
         }
 
-        /* 3. 메인 콘텐츠: 이미지들이 길게 나열되는 구조 */
-        main {
-            padding-top: 150px; /* 헤더 공간 확보 */
-            display: flex; flex-direction: column; align-items: center;
-            gap: 100px; /* 이미지 사이 간격 */
-            padding-bottom: 200px;
+        .item {
+            grid-column: span 7; /* 기본적으로 7칸 차지 */
+            position: relative;
+            opacity: 0;
+            transform: translateY(150px); /* 아래에서 대기 */
         }
 
-        .img-box {
-            width: 90%; max-width: 1000px;
-            opacity: 0; /* 처음에 안 보임 */
-            transform: translateY(100px); /* 아래에 배치 */
+        /* 홀수번째 이미지는 왼쪽, 짝수번째는 오른쪽 배치 (원본 스타일) */
+        .item:nth-child(even) {
+            grid-column: 6 / span 7;
         }
 
-        .img-box img {
-            width: 100%; height: auto; display: block;
-            filter: grayscale(20%); /* 원본 특유의 차분한 색감 */
-            transition: filter 0.5s;
+        .item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .img-box:hover img {
-            filter: grayscale(0%); /* 마우스 올리면 컬러로 */
+        /* 마우스 올리면 미세하게 축소/확대되는 효과 */
+        .item:hover img {
+            transform: scale(1.02);
         }
 
-        .img-info {
+        /* 캡션: 이미지 왼쪽 하단에 작게 배치 */
+        .caption {
             margin-top: 15px;
-            font-size: 11px; letter-spacing: 1px; color: #666;
-            text-align: left;
+            font-size: 10px;
+            letter-spacing: 0.05em;
+            color: #888;
+            text-transform: uppercase;
         }
 
         /* 4. 푸터 */
         footer {
-            padding: 100px 0; text-align: center;
-            font-size: 10px; color: #ccc; letter-spacing: 2px;
+            padding: 150px 50px 50px;
+            text-align: center;
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            color: #aaa;
         }
     </style>
 </head>
@@ -80,67 +94,78 @@
 
     <header>
         <div class="logo">LQVE</div>
-        <nav>
-            <span>COLLECTION</span>
-            <span>INFO</span>
-        </nav>
+        <div class="menu">INDEX / INFO</div>
     </header>
 
-    <main id="main-content">
-        <div class="img-box reveal">
-            <img src="https://picsum.photos/1200/1600?random=1" alt="Work 01">
-            <div class="img-info">PROJECT 01 / TOKYO</div>
+    <div class="content-wrapper">
+        <div class="item-container">
+            <div class="item js-reveal">
+                <img src="https://picsum.photos/1200/1500?random=10">
+                <div class="caption">Project 01 — Tokyo Sanctuary</div>
+            </div>
         </div>
 
-        <div class="img-box reveal">
-            <img src="https://picsum.photos/1200/1600?random=2" alt="Work 02">
-            <div class="img-info">PROJECT 02 / OSAKA</div>
+        <div class="item-container">
+            <div class="item js-reveal">
+                <img src="https://picsum.photos/1200/1500?random=20">
+                <div class="caption">Project 02 — Minimalist Flow</div>
+            </div>
         </div>
 
-        <div class="img-box reveal">
-            <img src="https://picsum.photos/1200/1600?random=3" alt="Work 03">
-            <div class="img-info">PROJECT 03 / SEOUL</div>
+        <div class="item-container">
+            <div class="item js-reveal">
+                <img src="https://picsum.photos/1200/1500?random=30">
+                <div class="caption">Project 03 — Urban Silence</div>
+            </div>
         </div>
 
-        <div class="img-box reveal">
-            <img src="https://picsum.photos/1200/1600?random=4" alt="Work 04">
-            <div class="img-info">PROJECT 04 / KYOTO</div>
+        <div class="item-container">
+            <div class="item js-reveal">
+                <img src="https://picsum.photos/1200/1500?random=40">
+                <div class="caption">Project 04 — Light & Shadow</div>
+            </div>
         </div>
-
-        <div class="img-box reveal">
-            <img src="https://picsum.photos/1200/1600?random=5" alt="Work 05">
-            <div class="img-info">PROJECT 05 / PARIS</div>
-        </div>
-        
-        </main>
+    </div>
 
     <footer>
-        <p>&copy; 2026 LQVE CLONE. ALL RIGHTS RESERVED.</p>
+        <p>&copy; 2026 LQVE. ALL RIGHTS RESERVED.</p>
     </footer>
 
     <script>
-        // 1. 스크롤 애니메이션 설정 (GSAP ScrollTrigger)
+        // 1. 스크롤 애니메이션 라이브러리 활성화
         gsap.registerPlugin(ScrollTrigger);
 
-        // 모든 .reveal 클래스를 가진 박스들에 대해 애니메이션 적용
-        gsap.utils.toArray(".reveal").forEach((item) => {
-            gsap.to(item, {
+        // 2. [원본 핵심] 이미지가 화면에 들어올 때 부드럽게 상승하며 나타나는 효과
+        const revealElements = document.querySelectorAll(".js-reveal");
+
+        revealElements.forEach((el) => {
+            gsap.to(el, {
                 scrollTrigger: {
-                    trigger: item,
-                    start: "top 85%", // 화면 하단에서 15% 정도 올라왔을 때 시작
-                    toggleActions: "play none none reverse", // 내릴 때 재생, 올릴 때 반대로
-                    // once: true // 한 번만 나타나게 하려면 이 주석을 해제하세요
+                    trigger: el,
+                    start: "top 90%", // 이미지 상단이 화면 하단 10% 지점에 올 때 시작
+                    end: "bottom 20%",
+                    toggleActions: "play none none reverse",
+                    // markers: true // 주석을 해제하면 애니메이션 시작 지점을 볼 수 있습니다.
                 },
                 opacity: 1,
-                y: 0, // 원래 위치(0)로 이동
-                duration: 1.5,
-                ease: "power2.out"
+                y: 0,
+                duration: 1.8,
+                ease: "power3.out" // 원본 특유의 묵직하고 부드러운 움직임
             });
         });
 
-        // 2. 부드러운 스크롤 느낌 (선택 사항: 원본의 묵직한 스크롤 느낌 재현)
-        // 실제 원본 사이트는 브라우저 기본 스크롤을 사용하지만, 
-        // 이미지가 올라오는 속도를 위 gsap duration(1.5)으로 조절하여 똑같은 느낌을 냈습니다.
+        // 3. [추가 디테일] 스크롤 속도에 따라 이미지가 살짝 느리게 따라오는 패럴랙스 효과
+        revealElements.forEach((el) => {
+            const img = el.querySelector("img");
+            gsap.to(img, {
+                scrollTrigger: {
+                    trigger: el,
+                    scrub: true, // 스크롤에 맞춰 실시간 움직임
+                },
+                y: -30, // 이미지가 스크롤 방향 반대로 살짝 움직여 입체감을 줌
+                ease: "none"
+            });
+        });
     </script>
 </body>
 </html>
