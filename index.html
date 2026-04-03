@@ -3,220 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LQVE — Perfect Clone</title>
+    <title>LQVE — Absolute Clone</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* 2. CSS 스타일링 (전체 레이아웃 및 여백 최적화) */
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #000000;
-            --sub-text: #888888;
-        }
-
+        /* 1. 스타일 초기화 및 기본 설정 */
         * {
             margin: 0; padding: 0; box-sizing: border-box;
-            -webkit-font-smoothing: antialiased; /* 폰트를 부드럽게 출력 */
+            -webkit-font-smoothing: antialiased;
+            cursor: none; /* 커스텀 마우스 포인터 사용을 위해 기본 커서 숨김 */
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #fff;
+            color: #000;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1;
+            line-height: 1.2;
         }
 
-        /* [핵심] 상단 고정 헤더 */
+        /* 2. 커스텀 마우스 포인터 (LQVE 스타일) */
+        #cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s ease;
+        }
+
+        /* 3. 헤더 (고정 레이아웃) */
         header {
-            position: fixed; top: 0; left: 0; width: 100%;
-            padding: 40px 50px;
-            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; width: 100%;
+            padding: 45px 50px;
+            display: flex; justify-content: space-between;
             z-index: 1000;
         }
 
         .logo {
-            font-size: 20px; font-weight: 700; letter-spacing: 0.3em;
-            text-decoration: none; color: inherit;
+            font-size: 22px; font-weight: 700; letter-spacing: 0.4em;
         }
 
-        .nav-links {
-            display: flex; gap: 40px;
-            font-size: 11px; font-weight: 400; letter-spacing: 0.15em;
+        .nav-right {
+            display: flex; gap: 50px;
+            font-size: 10px; font-weight: 400; letter-spacing: 0.2em;
         }
 
-        /* [핵심] 이미지 리스트 레이아웃 (LQVE 특유의 비대칭 배치) */
+        /* 4. 메인 콘텐츠 (비대칭 여백 및 이미지 그리드) */
         main {
-            padding: 250px 0 150px; /* 상단 여백 크게 */
+            padding-top: 300px;
+            padding-bottom: 200px;
         }
 
-        .item-wrapper {
+        .section-item {
             width: 100%;
-            padding: 0 5%;
-            margin-bottom: 25vw; /* 이미지 사이의 거대한 수직 여백 */
+            padding: 0 8%;
+            margin-bottom: 35vh; /* 원본의 깊은 여백 */
             display: flex;
             flex-direction: column;
         }
 
-        /* 홀수/짝수 이미지를 왼쪽/오른쪽으로 어긋나게 배치 */
-        .item-wrapper:nth-child(even) { align-items: flex-end; }
-        .item-wrapper:nth-child(odd) { align-items: flex-start; }
+        /* 지그재그 배치 */
+        .section-item:nth-child(even) { align-items: flex-end; }
+        .section-item:nth-child(odd) { align-items: flex-start; }
 
-        .item {
-            width: 55%; /* 이미지 너비 제한 */
-            position: relative;
-            overflow: hidden; /* 패럴랙스 효과를 위해 필요 */
-            opacity: 0;
-            transform: translateY(100px); /* 아래에서 대기 */
-        }
-
-        .img-container {
-            width: 100%;
-            height: 100%;
+        /* 이미지 컨테이너 (패럴랙스용) */
+        .img-mask {
+            width: 50vw; /* 이미지 가로 크기 */
+            height: 65vh; /* 이미지 세로 크기 */
             overflow: hidden;
             position: relative;
+            opacity: 0; /* 초기 숨김 */
+            transform: translateY(80px);
         }
 
-        .item img {
+        .img-mask img {
             width: 100%;
-            height: 120%; /* 패럴랙스 여유분을 위해 높이를 1.2배로 설정 */
+            height: 140%; /* 이미지 내부 패럴랙스 여유분 */
             object-fit: cover;
-            object-position: center;
-            transform: translateY(-10%); /* 초기 위치 조정 */
-            filter: grayscale(10%);
-            transition: filter 0.6s ease;
+            position: absolute;
+            top: -20%; /* 초기 위치 */
+            filter: grayscale(100%); /* 처음엔 흑백 */
+            transition: filter 1s ease;
         }
 
-        .item:hover img {
-            filter: grayscale(0%);
+        .img-mask:hover img {
+            filter: grayscale(0%); /* 마우스 올리면 컬러 */
         }
 
-        /* 캡션: 이미지 왼쪽 하단 텍스트 */
+        /* 글자 애니메이션 방식 (아래에서 위로 솟음) */
+        .caption-wrap {
+            margin-top: 25px;
+            overflow: hidden; /* 글자가 올라오는 통로 */
+        }
+
         .caption {
-            margin-top: 20px;
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            color: var(--sub-text);
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            color: #777;
             text-transform: uppercase;
+            transform: translateY(100%); /* 숨겨둠 */
         }
 
-        /* 하단 푸터 */
+        /* 5. 푸터 */
         footer {
-            padding: 100px 50px;
-            border-top: 1px solid #eee;
+            padding: 150px 50px;
             text-align: center;
             font-size: 9px;
-            letter-spacing: 0.2em;
-            color: #ccc;
-        }
-
-        /* 3. 로딩 애니메이션 (진입 시 부드러운 노출) */
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #fff; z-index: 2000;
-            display: flex; justify-content: center; align-items: center;
+            letter-spacing: 0.3em;
+            color: #bbb;
+            border-top: 1px solid #f0f0f0;
         }
     </style>
 </head>
 <body>
 
-    <div id="loader"></div>
+    <div id="cursor"></div>
 
     <header>
-        <a href="#" class="logo">LQVE</a>
-        <div class="nav-links">
-            <span>INDEX</span>
-            <span>INFO</span>
+        <div class="logo">LQVE</div>
+        <div class="nav-right">
+            <span>COLLECTION</span>
+            <span>INFORMATION</span>
         </div>
     </header>
 
-    <main id="main-content">
-        <div class="item-wrapper">
-            <div class="item reveal-item">
-                <div class="img-container">
-                    <img src="https://images.unsplash.com/photo-1515542706656-8e6ef17a1521?auto=format&fit=crop&w=1200&q=80" alt="Work 01" class="parallax-img">
-                </div>
-                <div class="caption">Project 01 / TOKYO</div>
+    <main>
+        <div class="section-item">
+            <div class="img-mask reveal">
+                <img src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=1500&q=80" class="parallax">
+            </div>
+            <div class="caption-wrap">
+                <p class="caption">01 — ESSENTIAL FLOW</p>
             </div>
         </div>
 
-        <div class="item-wrapper">
-            <div class="item reveal-item">
-                <div class="img-container">
-                    <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=1200&q=80" alt="Work 02" class="parallax-img">
-                </div>
-                <div class="caption">Project 02 / PARIS</div>
+        <div class="section-item">
+            <div class="img-mask reveal">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1500&q=80" class="parallax">
+            </div>
+            <div class="caption-wrap">
+                <p class="caption">02 — SILENCE OF SPACE</p>
             </div>
         </div>
 
-        <div class="item-wrapper">
-            <div class="item reveal-item">
-                <div class="img-container">
-                    <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1200&q=80" alt="Work 03" class="parallax-img">
-                </div>
-                <div class="caption">Project 03 / LONDON</div>
+        <div class="section-item">
+            <div class="img-mask reveal">
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1500&q=80" class="parallax">
             </div>
-        </div>
-
-        <div class="item-wrapper">
-            <div class="item reveal-item">
-                <div class="img-container">
-                    <img src="https://images.unsplash.com/photo-1493397212122-2b85edf59fd6?auto=format&fit=crop&w=1200&q=80" alt="Work 04" class="parallax-img">
-                </div>
-                <div class="caption">Project 04 / SEOUL</div>
+            <div class="caption-wrap">
+                <p class="caption">03 — STRUCTURE 2026</p>
             </div>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 LQVE. ALL RIGHTS RESERVED.</p>
+        <p>&copy; 2026 LQVE STUDIO. ALL RIGHTS RESERVED.</p>
     </footer>
 
     <script>
-        // 4. 자바스크립트 인터랙션 (전체 애니메이션 엔진)
         gsap.registerPlugin(ScrollTrigger);
 
-        // [로딩] 페이지 로드 시 부드러운 등장
-        window.addEventListener('load', () => {
-            gsap.to("#loader", {
-                opacity: 0,
-                duration: 1.2,
-                ease: "power2.inOut",
-                onComplete: () => document.getElementById("loader").remove()
+        // 1. 마우스 포인터 로직 (똑같이 따라오기)
+        const cursor = document.querySelector('#cursor');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.2,
+                ease: "power2.out"
             });
         });
 
-        // [핵심 1] 스크롤 시 이미지가 슥 올라오는 'Reveal' 효과
-        const items = document.querySelectorAll(".reveal-item");
-        items.forEach((item) => {
-            gsap.to(item, {
-                scrollTrigger: {
-                    trigger: item,
-                    start: "top 95%", // 화면 끝에 닿으면 시작
-                    end: "bottom 20%",
-                    toggleActions: "play none none reverse"
-                },
-                opacity: 1,
-                y: 0,
-                duration: 2, // 원본의 아주 느리고 우아한 속도
-                ease: "power3.out"
-            });
-        });
-
-        // [핵심 2] 이미지 내부 패럴랙스 효과 (스크롤 속도에 따라 이미지가 안에서 움직임)
-        const parallaxImgs = document.querySelectorAll(".parallax-img");
-        parallaxImgs.forEach((img) => {
+        // 2. [핵심] 스크롤 시 이미지 내부가 움직이는 패럴랙스
+        const parallaxImages = document.querySelectorAll(".parallax");
+        parallaxImages.forEach((img) => {
             gsap.to(img, {
                 scrollTrigger: {
                     trigger: img.parentElement,
-                    scrub: 1.5, // 끈적하게 따라오는 관성 효과
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1.5 // 끈적하게 따라오는 정도 조절
                 },
-                y: "15%", // 스크롤할 때 이미지 위치를 15%만큼 아래로 이동
+                y: "25%", // 이미지 내부 이동 범위
                 ease: "none"
             });
+        });
+
+        // 3. [핵심] 스크롤 시 이미지 상자 & 글자 애니메이션
+        const revealBoxes = document.querySelectorAll(".section-item");
+        revealBoxes.forEach((item) => {
+            const img = item.querySelector(".img-mask");
+            const txt = item.querySelector(".caption");
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 85%", // 화면 하단에 보이기 시작할 때
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            tl.to(img, {
+                opacity: 1,
+                y: 0,
+                duration: 1.8,
+                ease: "power4.out"
+            })
+            .to(txt, {
+                y: 0,
+                duration: 1.2,
+                ease: "power3.out"
+            }, "-=1.2"); // 이미지 올라올 때 글자도 같이 등장
+        });
+
+        // 마우스 호버 시 포인터 확대 효과
+        document.querySelectorAll('.img-mask').forEach(box => {
+            box.addEventListener('mouseenter', () => gsap.to(cursor, { scale: 6, alpha: 0.2 }));
+            box.addEventListener('mouseleave', () => gsap.to(cursor, { scale: 1, alpha: 1 }));
         });
     </script>
 </body>
