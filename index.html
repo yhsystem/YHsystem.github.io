@@ -1,1048 +1,240 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FACTORY AUTO | Automation Specialist</title>
-  <style>
-    /* ================================
-       EXACT RESET & BASE — lqve.jp MATCH
-    ================================= */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    html { 
-      scroll-behavior: smooth; 
-      font-size: 16px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    
-    body {
-      font-family: "Noto Sans KR", "Yu Gothic", "Malgun Gothic", sans-serif;
-      background: #ffffff;
-      color: #000000;
-      line-height: 1.6;
-      overflow-x: hidden;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-    }
-
-    a { text-decoration: none; color: inherit; opacity: 0.9; transition: opacity 0.15s; }
-    a:hover { opacity: 1; }
-    ul { list-style: none; }
-    img { max-width: 100%; display: block; }
-    button { 
-      font: inherit; 
-      background: none; 
-      border: none; 
-      cursor: pointer; 
-      color: inherit;
-      opacity: 0.9;
-      transition: opacity 0.15s;
-    }
-    button:hover { opacity: 1; }
-
-    /* ================================
-       TYPOGRAPHY — EXACT MATCH
-    ================================= */
-    h1, h2, h3, h4, h5, h6 {
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      color: #000;
-    }
-
-    /* 프로젝트 넘버링: # 01 / 13 — monospace, large */
-    .project-number {
-      font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
-      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-      font-weight: 400;
-      letter-spacing: 0;
-      margin: 0 0 0.75rem;
-      display: block;
-      color: #000;
-    }
-
-    /* 프로젝트 타이틀 */
-    .project-title {
-      font-size: clamp(1.4rem, 2.8vw, 2rem);
-      font-weight: 700;
-      margin: 0.25rem 0 0.5rem;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-
-    /* Client / Year 메타 */
-    .project-meta {
-      font-size: 0.95rem;
-      color: #333;
-      margin: 0.25rem 0 0.75rem;
-      font-weight: 500;
-      line-height: 1.5;
-    }
-
-    /* 프로젝트 설명 */
-    .project-desc {
-      font-size: 1rem;
-      color: #222;
-      max-width: 65ch;
-      line-height: 1.7;
-      margin: 0;
-    }
-
-    /* 브랜드 문구: 3 줄 대형 */
-    .brand-statement {
-      font-size: clamp(1.4rem, 3vw, 2.2rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-      margin: 3.5rem 0 2.5rem;
-      text-align: left;
-    }
-
-    .brand-statement span {
-      display: block;
-    }
-
-    /* Our Way: 수직 스택 타이틀 */
-    .way-title-stack {
-      display: flex;
-      flex-direction: column;
-      font-weight: 700;
-      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-      line-height: 1.15;
-      margin: 0 0 1rem;
-      letter-spacing: -0.02em;
-    }
-
-    .way-title-stack span {
-      display: block;
-    }
-
-    /* Our Way: 단계별 번호 */
-    .way-num {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin: 0 0 0.5rem;
-      display: block;
-    }
-
-    /* 서비스 카드 타이틀: ### 스타일 */
-    .capability-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin: 0.5rem 0 0.75rem;
-      line-height: 1.2;
-    }
-
-    .capability-title::before {
-      content: "### ";
-      font-weight: 400;
-      opacity: 0.7;
-    }
-
-    /* 괄호 헤딩 스타일 */
-    .paren-heading {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin: 0 0 1.5rem;
-      letter-spacing: -0.02em;
-    }
-
-    .paren-heading::before {
-      content: "(";
-    }
-    .paren-heading::after {
-      content: ")";
-    }
-
-    /* ================================
-       LAYOUT
-    ================================= */
-    .container {
-      width: min(94%, 1300px);
-      margin: 0 auto;
-      padding: 0;
-    }
-
-    .section {
-      padding: clamp(5rem, 14vw, 9rem) 0;
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .section:last-of-type {
-      border-bottom: none;
-    }
-
-    /* ================================
-       HEADER — EXACT lqve.jp STRUCTURE
-    ================================= */
-    header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      padding: 0.85rem 0;
-      background: rgba(255,255,255,0.97);
-      z-index: 1000;
-      border-bottom: 1px solid rgba(0,0,0,0.04);
-      font-size: 0.85rem;
-    }
-
-    .header-inner {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .header-left {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      font-weight: 500;
-    }
-
-    .header-left .next-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-family: monospace;
-      font-size: 0.9rem;
-    }
-
-    .header-left .home-link {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .header-center {
-      font-family: monospace;
-      font-size: 0.8rem;
-      color: #555;
-      text-align: center;
-      letter-spacing: 0;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 1.25rem;
-      font-size: 0.8rem;
-    }
-
-    .header-right .time {
-      font-family: monospace;
-      color: #444;
-    }
-
-    .music-player {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .music-player .label {
-      color: #555;
-    }
-
-    .music-player .song-marquee {
-      overflow: hidden;
-      white-space: nowrap;
-      width: 140px;
-      font-size: 0.75rem;
-      color: #333;
-    }
-
-    .music-player .song-text {
-      display: inline-block;
-      animation: marquee 12s linear infinite;
-      padding-left: 100%;
-    }
-
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-
-    .header-nav {
-      display: flex;
-      gap: 0.5rem;
-      font-family: monospace;
-      font-size: 0.75rem;
-      margin-top: 0.25rem;
-    }
-
-    .header-copyright {
-      font-family: monospace;
-      font-size: 0.7rem;
-      color: #666;
-      margin-top: 0.5rem;
-    }
-
-    @media (max-width: 768px) {
-      .header-inner {
-        grid-template-columns: 1fr auto;
-      }
-      .header-center { display: none; }
-      .header-right { 
-        display: none; 
-      }
-      .header-left { gap: 0.15rem; }
-    }
-
-    /* ================================
-       HERO / PROJECT LIST
-    ================================= */
-    .hero {
-      min-height: 85vh;
-      padding-top: 5rem;
-      display: flex;
-      align-items: flex-start;
-    }
-
-    .hero-content {
-      max-width: 900px;
-    }
-
-    .project-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .project-item {
-      padding: 2.5rem 0;
-      border-top: 1px solid rgba(0,0,0,0.09);
-      cursor: pointer;
-    }
-
-    .project-item:first-child {
-      padding-top: 0;
-    }
-
-    .project-item:hover {
-      background: rgba(0,0,0,0.015);
-    }
-
-    .project-item:last-child {
-      border-bottom: 1px solid rgba(0,0,0,0.09);
-    }
-
-    .view-projects-btn {
-      display: inline-block;
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 0.7rem 1.75rem;
-      border: 1px solid #000;
-      margin-top: 2rem;
-      transition: all 0.15s;
-      letter-spacing: 0.02em;
-    }
-
-    .view-projects-btn:hover {
-      background: #000;
-      color: #fff;
-    }
-
-    /* Corporate Illustration credit */
-    .corp-credit {
-      font-size: 0.9rem;
-      color: #444;
-      margin: 2rem 0 3rem;
-      line-height: 1.6;
-    }
-
-    .corp-credit strong {
-      font-weight: 600;
-    }
-
-    /* Project nav list */
-    .project-nav-list {
-      margin: 3rem 0;
-    }
-
-    .project-nav-list li {
-      padding: 0.6rem 0;
-      font-size: 1.05rem;
-      font-weight: 500;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
-
-    .project-nav-list li:last-child {
-      border-bottom: none;
-    }
-
-    /* ================================
-       OUR PURPOSE
-    ================================= */
-    .purpose-text {
-      font-size: 1.05rem;
-      line-height: 1.85;
-      max-width: 72ch;
-      color: #111;
-    }
-
-    .purpose-text br {
-      margin-bottom: 0.5rem;
-    }
-
-    /* ================================
-       OUR WAY
-    ================================= */
-    .our-way-header {
-      display: flex;
-      flex-direction: column;
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
-      margin: 0 0 3rem;
-    }
-
-    .our-way-header span {
-      display: block;
-    }
-
-    .way-step {
-      display: grid;
-      grid-template-columns: 70px 1fr;
-      gap: 1.25rem 2rem;
-      padding: 2.25rem 0;
-      border-top: 1px solid rgba(0,0,0,0.09);
-    }
-
-    .way-step:first-child {
-      padding-top: 0;
-    }
-
-    .way-desc {
-      font-size: 1rem;
-      color: #222;
-      line-height: 1.8;
-      max-width: 55ch;
-    }
-
-    .way-desc br {
-      display: block;
-      margin: 0.25rem 0;
-    }
-
-    @media (max-width: 768px) {
-      .way-step {
-        grid-template-columns: 1fr;
-      }
-      .way-num {
-        margin-bottom: 0.5rem;
-      }
-    }
-
-    /* ================================
-       AWARDS — NESTED LIST
-    ================================= */
-    .awards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2.5rem;
-      margin-top: 1.5rem;
-    }
-
-    .award-column h4 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin: 0 0 1rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 2px solid #000;
-      letter-spacing: -0.02em;
-    }
-
-    .award-column h5 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin: 1.25rem 0 0.6rem;
-      color: #222;
-    }
-
-    .award-item {
-      padding: 0.6rem 0;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
-
-    .award-item:last-child {
-      border-bottom: none;
-    }
-
-    .award-level {
-      font-weight: 600;
-      color: #000;
-      margin: 0.2rem 0 0.15rem;
-      font-size: 0.95rem;
-    }
-
-    .award-project {
-      color: #333;
-      font-size: 0.93rem;
-      margin: 0.1rem 0;
-    }
-
-    .award-year {
-      color: #666;
-      font-size: 0.88rem;
-      font-family: monospace;
-    }
-
-    /* ================================
-       SERVICES
-    ================================= */
-    .services-intro-en {
-      font-size: 1.05rem;
-      line-height: 1.75;
-      margin: 0 0 1.25rem;
-      color: #111;
-      max-width: 75ch;
-    }
-
-    .services-intro-kr {
-      font-size: 1.05rem;
-      line-height: 1.85;
-      margin: 0 0 2.5rem;
-      color: #222;
-      max-width: 75ch;
-    }
-
-    .capabilities-subheading {
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin: 2.5rem 0 1.5rem;
-      letter-spacing: 0.03em;
-    }
-
-    .capability-card {
-      padding: 1.75rem 0;
-      border-top: 1px solid rgba(0,0,0,0.09);
-      display: grid;
-      grid-template-columns: 65px 1fr;
-      gap: 1rem 1.75rem;
-    }
-
-    .capability-card:first-child {
-      padding-top: 0;
-    }
-
-    .capability-num {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 1.15rem;
-      font-weight: 700;
-      padding-top: 0.15rem;
-    }
-
-    .capability-list {
-      font-size: 0.95rem;
-      color: #333;
-      line-height: 1.9;
-    }
-
-    .capability-list li {
-      margin: 0.2rem 0;
-    }
-
-    .view-more-link {
-      display: inline-block;
-      margin-top: 2.25rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 0.7rem 1.75rem;
-      border: 1px solid #000;
-      transition: all 0.15s;
-      letter-spacing: 0.02em;
-    }
-
-    .view-more-link:hover {
-      background: #000;
-      color: #fff;
-    }
-
-    /* ================================
-       FOOTER — EXACT STRUCTURE
-    ================================= */
-    footer {
-      padding: 3.5rem 0 5rem;
-      text-align: center;
-      border-top: 1px solid rgba(0,0,0,0.09);
-    }
-
-    .footer-about-links {
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      margin: 1rem 0 1.5rem;
-    }
-
-    .footer-about-links a {
-      margin: 0 0.4rem;
-      opacity: 0.85;
-    }
-
-    .footer-about-links a:hover {
-      opacity: 1;
-    }
-
-    .footer-copyright {
-      font-size: 0.8rem;
-      color: #666;
-      font-family: monospace;
-      margin-top: 1.5rem;
-    }
-
-    /* ================================
-       ANIMATIONS & UTILS
-    ================================= */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.45s ease, transform 0.45s ease;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .spacer { height: 2.5rem; }
-    .muted { color: #555; }
-    .mono { font-family: "IBM Plex Mono", monospace; }
-    .uppercase { text-transform: uppercase; letter-spacing: 0.06em; }
-
-    @media (max-width: 768px) {
-      .hero-title { font-size: 1.9rem; }
-      .brand-statement { font-size: 1.4rem; }
-      .project-title { font-size: 1.3rem; }
-      .section { padding: 4rem 0; }
-    }
-  </style>
-  <!-- Google Fonts for monospace consistency -->
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yonghwa Systems | Precise Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+KR:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000000; /* 완전한 블랙 배경 */
+            --text: #ffffff; /* 순백색 텍스트 */
+            --sub-text: #888888; /* 흐린 회색 */
+            --point: #4CAF50; /* 명함의 초록색 포인트 */
+            --transition: 1s cubic-bezier(0.19, 1, 0.22, 1); /* 부드러운 애니메이션 */
+        }
+
+        /* 전체 초기화 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* 페이드인 애니메이션 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* --- 01. 네비게이션 --- */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
+            font-size: 13px;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        /* --- 02. 메인 헤더 (lqve.jp 스타일의 거대 텍스트) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .big-char {
+            font-size: clamp(60px, 12vw, 120px);
+            font-weight: 700;
+            line-height: 1;
+            color: var(--point);
+        }
+
+        .small-text-group {
+            display: flex;
+            flex-direction: column;
+            font-size: clamp(20px, 4vw, 40px);
+            font-weight: 500;
+            line-height: 1.1;
+            border-left: 2px solid var(--text);
+            padding-left: 15px;
+        }
+
+        .hero p {
+            font-size: clamp(14px, 2vw, 18px);
+            color: var(--sub-text);
+            letter-spacing: 5px;
+            margin-top: 20px;
+            font-weight: 300;
+        }
+
+        /* --- 03. 섹션 스타일 --- */
+        section {
+            padding: 150px 0;
+            border-top: 1px solid #222;
+        }
+
+        .section-label {
+            font-size: 12px;
+            color: var(--sub-text);
+            letter-spacing: 3px;
+            margin-bottom: 60px;
+            display: block;
+        }
+
+        .content-title {
+            font-size: clamp(30px, 5vw, 60px);
+            font-weight: 400;
+            margin-bottom: 40px;
+            line-height: 1.2;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+        }
+
+        .grid-item p {
+            font-size: 16px;
+            color: var(--sub-text);
+            margin-top: 20px;
+        }
+
+        /* --- 04. 푸터 / 연락처 (lqve.jp 하단 스타일) --- */
+        footer {
+            padding: 100px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 13px;
+            color: var(--sub-text);
+        }
+
+        .contact-big {
+            font-size: clamp(24px, 4vw, 48px);
+            color: var(--text);
+            text-decoration: none;
+            display: block;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .contact-big:hover {
+            color: var(--point);
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; gap: 40px; }
+            footer { flex-direction: column; align-items: flex-start; gap: 40px; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- HEADER — EXACT lqve.jp STRUCTURE -->
-  <header>
-    <div class="container header-inner">
-      <div class="header-left">
-        <a href="#projects" class="next-btn">▶ NEXT</a>
-        <a href="#" class="home-link">❤️‍🩹 HOME</a>
-      </div>
-      <div class="header-center mono">factory-auto.kr</div>
-      <div class="header-right">
-        <span class="time mono">13:42:01</span>
-        <div class="music-player">
-          <span class="label">Music:</span>
-          <button>Play</button>
-          <button>Stop</button>
-          <div class="song-marquee">
-            <span class="song-text">FACTORY AUTO Theme • FACTORY AUTO Theme • FACTORY AUTO Theme • </span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <nav>
+        <div>YONGHWA SYSTEMS</div>
+        <div>EST. 2026</div>
+    </nav>
+
     <div class="container">
-      <div class="header-nav mono">
-        <span>(Prev.)</span>
-        <span>(Next)</span>
-      </div>
-      <div class="header-copyright mono">(C) FACTORY AUTO</div>
+        <header class="hero reveal">
+            <div class="logo-wrap">
+                <span class="big-char">용</span>
+                <div class="small-text-group">
+                    <span>화시스</span>
+                </div>
+                <span class="big-char">템</span>
+            </div>
+            <p>ADVANCED PLC ARCHITECT</p>
+        </header>
+
+        <section class="reveal">
+            <span class="section-label">01 / CAPABILITIES</span>
+            <h2 class="content-title">Precision in every <br>logic and wire.</h2>
+            <div class="grid">
+                <div class="grid-item">
+                    <p>LS, Mitsubishi 등 다양한 PLC 환경을 위한 고신뢰성 제어 로직을 설계합니다. 우리는 단순한 동작을 넘어, 유지보수가 용이한 최적의 아키텍처를 지향합니다.</p>
+                </div>
+                <div class="grid-item">
+                    <p>현장의 환경을 고려한 제어반 제작과 직관적인 HMI 모니터링 시스템을 통해 관리 효율을 극대화합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal">
+            <span class="section-label">02 / INNOVATION</span>
+            <h2 class="content-title">Smart. Mobile. <br>Connected.</h2>
+            <div class="grid">
+                <div class="grid-item">
+                    <strong>Wireless Control</strong>
+                    <p>모바일 인터페이스를 통한 실시간 현장 제어 솔루션.</p>
+                </div>
+                <div class="grid-item">
+                    <strong>Visual Feedback</strong>
+                    <p>지능형 LED 가이드를 이용한 직관적인 상태 전달.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal">
+            <span class="section-label">03 / CONTACT</span>
+            <p>경남 창원시 마산회원구 내서읍 광려천남로 177</p>
+            <p style="margin-top: 10px;">태 용 섭 대표 | 010-4589-5271</p>
+            <a href="mailto:tys81@naver.com" class="contact-big">tys81@naver.com</a>
+        </section>
     </div>
-  </header>
 
-  <!-- HERO / PROJECT LIST SECTION -->
-  <section class="hero">
-    <div class="container hero-content">
-      
-      <!-- Project 01 -->
-      <div class="project-item fade-in">
-        <span class="project-number"># 01 / 08</span>
-        <h2 class="project-title">Smart Factory Data Platform</h2>
-        <p class="project-meta">Client: Automotive Parts Manufacturer | Year: 2024</p>
-        <p class="project-desc">Ignition SCADA + InfluxDB 기반 실시간 생산 데이터 수집 시스템.<br>
-        OPC UA 로 50+ 장비 연동, OEE/가동률 실시간 대시보드 구축.</p>
-      </div>
+    <footer>
+        <div>&copy; 2026 YONGHWA SYSTEMS</div>
+        <div>CRAFTING PRECISION IN AUTOMATION</div>
+    </footer>
 
-      <!-- Project 02 -->
-      <div class="project-item fade-in">
-        <span class="project-number"># 02 / 08</span>
-        <h2 class="project-title">Semiconductor Equipment Control Renewal</h2>
-        <p class="project-meta">Client: Semiconductor Manufacturing | Year: 2023</p>
-        <p class="project-desc">기존 Relay 제어를 Siemens S7-1500 PLC 기반 완전 자동화 시스템으로 교체.<br>
-        안전 인터록 강화, HMI 개선으로 운영 효율 40% 향상.</p>
-      </div>
+    <script>
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // 초기 실행
+        reveal();
+    </script>
 
-      <!-- Project 03 -->
-      <div class="project-item fade-in">
-        <span class="project-number"># 03 / 08</span>
-        <h2 class="project-title">Multi-Robot Synchronization Line</h2>
-        <p class="project-meta">Client: Auto Assembly Line | Year: 2022</p>
-        <p class="project-desc">EtherCAT 기반 6 축 로봇 4 대 동기화 제어.<br>
-        PLC-ST 로 정밀 포지셔닝 로직 구현, Cycle time 15% 단축.</p>
-      </div>
-
-      <!-- Project 04 -->
-      <div class="project-item fade-in">
-        <span class="project-number"># 04 / 08</span>
-        <h2 class="project-title">Remote Monitoring & Predictive Maintenance</h2>
-        <p class="project-meta">Client: Food & Beverage Plant | Year: 2021</p>
-        <p class="project-desc">Python + MQTT 기반 장비 상태 원격 수집 시스템.<br>
-        진동/온도 데이터 분석을 통한 예지보전 알람 로직 구현.</p>
-      </div>
-
-      <!-- Project 05 -->
-      <div class="project-item fade-in">
-        <span class="project-number"># 05 / 08</span>
-        <h2 class="project-title">Safety Circuit Redesign for CE Compliance</h2>
-        <p class="project-meta">Client: Export Machinery | Year: 2020</p>
-        <p class="project-desc">유럽 수출 장비의 안전 규정 (CE) 준수를 위한 제어반 리디자인.<br>
-        Safety Relay, Light Curtain, E-Stop 회로 최적화.</p>
-      </div>
-
-      <!-- Project 06 -->
-      <div class="project-item fade-in">
-        <span class="project-number"># 06 / 08</span>
-        <h2 class="project-title">PLC Standard Library Development</h2>
-        <p class="project-meta">Client: Internal R&D | Year: 2024</p>
-        <p class="project-desc">재사용 가능한 PLC 함수블록 라이브러리 구축.<br>
-        Structured Text 기반 모듈화 설계로 개발 시간 30% 단축.</p>
-      </div>
-
-      <!-- Project 07 -->
-      <div class="project-item fade-in">
-        <span class="project-number"># 07 / 08</span>
-        <h2 class="project-title">Web-based HMI Dashboard</h2>
-        <p class="project-meta">Client: Smart Factory Startup | Year: 2023</p>
-        <p class="project-desc">React + Node.js 기반 웹 HMI 개발.<br>
-        실시간 장비 상태 모니터링, 알람 푸시, 이력 조회 기능 구현.</p>
-      </div>
-
-      <!-- Project 08 -->
-      <div class="project-item fade-in">
-        <span class="project-number"># 08 / 08</span>
-        <h2 class="project-title">Energy Monitoring System Integration</h2>
-        <p class="project-meta">Client: Manufacturing Complex | Year: 2022</p>
-        <p class="project-desc">Modbus TCP 로 전력계측기 연동, Python 기반 데이터 수집 파이프라인 구축.<br>
-        피크컷 알람 및 에너지 리포트 자동 생성.</p>
-      </div>
-
-      <a href="#view-all" class="view-projects-btn">VIEW PROJECT</a>
-
-      <!-- Brand Statement -->
-      <div class="brand-statement fade-in">
-        <span>WE ARE MOST RELIABLE</span>
-        <span>AUTOMATION PARTNER</span>
-        <span>BASED IN KOREA</span>
-      </div>
-
-      <!-- Corporate Credit -->
-      <p class="corp-credit fade-in">
-        <strong>Corporate Illustration:</strong><br>
-        © FactoryAuto Engineering Team & Partners
-      </p>
-
-    </div>
-  </section>
-
-  <!-- OUR PURPOSE SECTION -->
-  <section class="section">
-    <div class="container">
-      <h3 class="paren-heading fade-in">Our purpose</h3>
-      <p class="purpose-text fade-in">
-        자동화를 사랑한다는 것. 그것은 단순히 기계를 움직이는 것을 넘어,<br>
-        사람의 시간을 해방하고, 가치를 창출하며, 지속 가능한 미래를 만드는 일입니다.<br><br>
-        우리는 신세대 자동화 파트너로서, 기업의 비전을 기술적 언어로 번역하고,<br>
-        <strong>"신뢰"</strong>와 <strong>"확장성"</strong>을 중심으로 영역을 넘어선 솔루션을 창조합니다.<br>
-        이 빠르게 변화하는 산업 현장에서, 함께 성장하기 위해.
-      </p>
-    </div>
-  </section>
-
-  <!-- PROJECT NAV LIST -->
-  <section class="section">
-    <div class="container">
-      <ul class="project-nav-list fade-in">
-        <li>Smart Factory Data Platform</li>
-        <li>Semiconductor Equipment Control Renewal</li>
-        <li>Multi-Robot Synchronization Line</li>
-        <li>Remote Monitoring & Predictive Maintenance</li>
-        <li>Safety Circuit Redesign for CE Compliance</li>
-        <li>PLC Standard Library Development</li>
-        <li>Web-based HMI Dashboard</li>
-        <li>Energy Monitoring System Integration</li>
-      </ul>
-      <a href="#projects" class="view-projects-btn">VIEW PROJECT</a>
-    </div>
-  </section>
-
-  <!-- OUR WAY SECTION -->
-  <section class="section">
-    <div class="container">
-      <div class="our-way-header fade-in">
-        <span>Our</span>
-        <span>Way</span>
-      </div>
-      
-      <div class="way-step fade-in">
-        <span class="way-num">01</span>
-        <div>
-          <div class="way-title-stack">
-            <span>Find</span>
-            <span>Core</span>
-            <span>Question</span>
-          </div>
-          <p class="way-desc">
-            현장의 진짜 문제는 무엇인가?<br>
-            요구사항을 기술적 언어로 해석하고,<br>
-            본질적인 해결 방향을 정의합니다.
-          </p>
-        </div>
-      </div>
-
-      <div class="way-step fade-in">
-        <span class="way-num">02</span>
-        <div>
-          <div class="way-title-stack">
-            <span>Make</span>
-            <span>Innovative</span>
-            <span>Idea</span>
-          </div>
-          <p class="way-desc">
-            용기 있게, 정직하게.<br>
-            브랜드를 전진시키기 위한,<br>
-            혁신적인 아이디어를 구축합니다.
-          </p>
-        </div>
-      </div>
-
-      <div class="way-step fade-in">
-        <span class="way-num">03</span>
-        <div>
-          <div class="way-title-stack">
-            <span>Lead</span>
-            <span>Bold</span>
-            <span>Creation</span>
-          </div>
-          <p class="way-desc">
-            전략에 기반한 프로세스와,<br>
-            놀라움으로 가득한 크리에이션으로,<br>
-            확실한 결과로 이끕니다.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- AWARDS SECTION -->
-  <section class="section">
-    <div class="container">
-      <h3 class="paren-heading fade-in">Awards</h3>
-      
-      <div class="awards-grid">
-        <div class="award-column">
-          <h4>스마트제조혁신대전</h4>
-          <h5>기술혁신 부문</h5>
-          <div class="award-item">
-            <div class="award-level">• 대상</div>
-            <div class="award-project">PLC 표준 라이브러리 개발</div>
-            <div class="award-year mono">2024</div>
-          </div>
-          <div class="award-item">
-            <div class="award-level">• 우수상</div>
-            <div class="award-project">에너지 모니터링 시스템</div>
-            <div class="award-year mono">2022</div>
-          </div>
-        </div>
-
-        <div class="award-column">
-          <h4>산업안전대상</h4>
-          <h5>안전설계 부문</h5>
-          <div class="award-item">
-            <div class="award-level">• 우수상</div>
-            <div class="award-project">CE 준수 안전회로 재설계</div>
-            <div class="award-year mono">2021</div>
-          </div>
-        </div>
-
-        <div class="award-column">
-          <h4>한국자동화학회</h4>
-          <h5>기술논문상</h5>
-          <div class="award-item">
-            <div class="award-level">• 금상</div>
-            <div class="award-project">다중 로봇 동기화 제어 알고리즘</div>
-            <div class="award-year mono">2023</div>
-          </div>
-        </div>
-
-        <div class="award-column">
-          <h4>IIoT Innovation Award</h4>
-          <h5>데이터 플랫폼</h5>
-          <div class="award-item">
-            <div class="award-level">• Bronze</div>
-            <div class="award-project">Smart Factory Data Platform</div>
-            <div class="award-year mono">2024</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- COLLABORATIONS (empty placeholder) -->
-  <section class="section">
-    <div class="container">
-      <h3 class="paren-heading fade-in">Collaborations</h3>
-      <!-- Collaborations content would go here -->
-    </div>
-  </section>
-
-  <!-- SERVICES SECTION -->
-  <section class="section">
-    <div class="container">
-      <h3 class="paren-heading fade-in">Service <span style="font-weight:400; margin-left:0.5rem;">What We Do</span></h3>
-      
-      <p class="services-intro-en fade-in">
-        We actively cross disciplines and generate new solutions.
-      </p>
-      <p class="services-intro-kr fade-in">
-        우리는 전략부터 컨셉트 메이크, 수단과 방법을 가리지 않는 아웃풋, 커뮤니케이션 플랜까지.<br>
-        더욱 견고한 커뮤니케이션이 필요한 지금의 시대에, 순도 높은 논의와 창작을 수행하고 있습니다.
-      </p>
-
-      <h4 class="capabilities-subheading fade-in">Capabilities</h4>
-
-      <div class="capability-card fade-in">
-        <span class="capability-num">01</span>
-        <div>
-          <h3 class="capability-title">Brand Core</h3>
-          <ul class="capability-list">
-            <li>Research</li>
-            <li>Brand Positioning</li>
-            <li>Vision / Mission</li>
-            <li>Naming</li>
-            <li>Brand Statement</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="capability-card fade-in">
-        <span class="capability-num">02</span>
-        <div>
-          <h3 class="capability-title">Strategy</h3>
-          <ul class="capability-list">
-            <li>Advertising / Campaign Ideas</li>
-            <li>Concept Design</li>
-            <li>Storytelling</li>
-            <li>Creative Direction</li>
-            <li>VI / CI</li>
-            <li>Content Planning</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="capability-card fade-in">
-        <span class="capability-num">03</span>
-        <div>
-          <h3 class="capability-title">Communication</h3>
-          <ul class="capability-list">
-            <li>Branded Content Planning</li>
-            <li>Ad/CM Promotion Planning</li>
-            <li>Campaign Concept</li>
-            <li>Copywriting</li>
-            <li>Storywriting</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="capability-card fade-in">
-        <span class="capability-num">04</span>
-        <div>
-          <h3 class="capability-title">Experience</h3>
-          <ul class="capability-list">
-            <li>CM & Promotional Films</li>
-            <li>Online & Signage Videos</li>
-            <li>Graphic Design</li>
-            <li>Product Design</li>
-            <li>Photo Direction & Stills</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="capability-card fade-in">
-        <span class="capability-num">05</span>
-        <div>
-          <h3 class="capability-title">Artist Collaboration</h3>
-          <ul class="capability-list">
-            <li>Talent Production</li>
-            <li>Music Production</li>
-            <li>Product & Service Development</li>
-          </ul>
-        </div>
-      </div>
-
-      <a href="#contact" class="view-more-link fade-in">VIEW MORE</a>
-    </div>
-  </section>
-
-  <!-- FOOTER — EXACT STRUCTURE -->
-  <footer>
-    <div class="container">
-      <div class="footer-about-links">
-        <a href="#about">ABOUT FACTORY AUTO</a>
-        <a href="#about">ABOUT FACTORY AUTO</a>
-      </div>
-      <p class="footer-copyright mono">
-        © 2026 FACTORY AUTO. All rights reserved.<br>
-        Exact structural clone of lqve.jp — Minimal Monochrome Portfolio
-      </p>
-    </div>
-  </footer>
-
-  <!-- SCROLL ANIMATION SCRIPT -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Fade-in on scroll
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      }, { threshold: 0.08, rootMargin: '0px 0px -15px 0px' });
-
-      document.querySelectorAll('.fade-in').forEach(el => {
-        observer.observe(el);
-      });
-
-      // Music player dummy interaction
-      const playBtn = document.querySelector('.music-player button:first-child');
-      const stopBtn = document.querySelector('.music-player button:last-child');
-      const songText = document.querySelector('.song-text');
-      let isPlaying = false;
-      
-      playBtn?.addEventListener('click', () => {
-        isPlaying = true;
-        playBtn.textContent = 'Playing';
-        stopBtn.textContent = 'Stop';
-        songText.style.animationPlayState = 'running';
-      });
-      
-      stopBtn?.addEventListener('click', () => {
-        isPlaying = false;
-        playBtn.textContent = 'Play';
-        stopBtn.textContent = 'Stop';
-        songText.style.animationPlayState = 'paused';
-      });
-
-      // Pause animation initially
-      if (songText) {
-        songText.style.animationPlayState = 'paused';
-      }
-    });
-  </script>
 </body>
 </html>
