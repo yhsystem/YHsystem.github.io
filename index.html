@@ -65,28 +65,45 @@
 
     footer { padding: 50px 8%; text-align: center; font-size: 10px; color: #555; background: var(--배경색_블랙); border-top: 1px solid #111; }
 
-    /* 휴대폰 사진 짤림 수정 부분 */
+    /* 반응형 모바일 수정 핵심 섹션 */
     @media (max-width: 768px) {
+      nav { padding: 20px 25px; }
       .hero-title { font-size: clamp(2.5rem, 15vw, 4.5rem); }
-      .img-frame-wrap { height: 70vh; } /* 모바일에서는 전체 높이를 살짝 줄여 가독성 확보 */
-      .img-mask { 
-        width: 90%; 
+      
+      .img-frame-wrap { 
         height: auto; 
-        aspect-ratio: 4 / 3; /* 모바일 사진 비율 고정 */
+        flex-direction: column; 
+        padding-top: 50px;
+        overflow: visible;
       }
-      .img-mask img {
-        object-fit: contain; /* 사진 전체가 다 나오도록 설정 (짤림 방지) */
-        background: #000;    /* 사진 여백 발생 시 배경을 검은색으로 처리 */
+      
+      .img-mask { 
+        width: 90% !important; 
+        height: auto !important; 
+        aspect-ratio: 16 / 10; 
+        margin-bottom: 20px;
       }
+      
       .caption { 
-        left: 5%; 
+        position: relative; 
+        left: 0; 
         bottom: 0; 
         width: 90%; 
-        padding: 20px; 
-        position: relative; /* 모바일에서 텍스트가 사진 아래로 자연스럽게 위치하도록 변경 */
-        transform: translateY(20px);
-        margin-top: -40px;
+        max-width: 100%;
+        margin: 0 auto;
+        opacity: 1; 
+        transform: none; 
+        pointer-events: auto;
+        padding: 20px;
+        background: #f8f8f8; /* 모바일에서 글자가 잘 보이도록 밝은 배경 처리 */
+        border-left: 4px solid var(--포인트색);
       }
+      
+      .caption h3 { color: var(--배경색_블랙); font-size: 20px; margin-bottom: 10px; }
+      .caption p { color: #333; font-size: 14px; line-height: 1.6; }
+      .tag { border-color: #ccc; color: #666; }
+      
+      .contact-info { flex-direction: column; gap: 30px; }
       #cursor, #trail-canvas { display: none; }
     }
   </style>
@@ -221,8 +238,6 @@
       });
       const mask = item.querySelector('.img-mask');
       const img = item.querySelector('img');
-      
-      // 모바일 여부에 따라 애니메이션 값 조절
       const isMobile = window.innerWidth <= 768;
 
       gsap.to(mask, {
