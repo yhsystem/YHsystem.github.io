@@ -32,7 +32,6 @@
       height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 8%; 
       background: var(--배경색_블랙); color: var(--글자색_화이트); position: relative; z-index: 10;
     }
-    /* 타이틀 컬러: 상단 화이트 / 하단 레드 */
     .hero-title { font-size: clamp(3rem, 12vw, 10rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.9; }
     .hero-title span { display: block; overflow: hidden; opacity: 0; transform: translateY(80px); }
     .hero-title span:nth-child(2) { color: var(--포인트색); }
@@ -44,19 +43,19 @@
     .img-mask { width: 60%; height: 80%; overflow: hidden; clip-path: inset(0% 0% 0% 0%); z-index: 1; }
     .img-mask img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transform: scale(1.3); transition: filter 0.8s; }
 
-    /* 글자 가독성 패널 수정 */
     .caption {
       position: absolute; bottom: 10%; left: 8%; z-index: 100;
       color: white; max-width: 600px;
-      padding: 20px; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
+      padding: 25px; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
       opacity: 0; transform: translateY(30px); pointer-events: none;
+      border-left: 4px solid var(--포인트색);
     }
     .project-item.active .caption { opacity: 1; transform: translateY(0); transition: all 1s ease-out; }
 
     .caption h3 { font-size: clamp(20px, 3vw, 32px); font-weight: 700; margin-bottom: 15px; text-transform: uppercase; color: var(--포인트색); }
-    .caption p { font-size: 15px; line-height: 1.6; color: #fff; word-break: keep-all; font-weight: 400; }
-    .tags { display: flex; gap: 8px; margin-top: 15px; }
-    .tag { padding: 4px 10px; border: 1px solid var(--포인트색); border-radius: 4px; font-size: 11px; color: #fff; background: rgba(255,0,0,0.1); }
+    .caption p { font-size: 15px; line-height: 1.7; color: #fff; word-break: keep-all; font-weight: 400; }
+    .tags { display: flex; gap: 8px; margin-top: 20px; }
+    .tag { padding: 4px 12px; border: 1px solid rgba(255,255,255,0.4); border-radius: 2px; font-size: 11px; color: #fff; text-transform: uppercase; }
 
     .contact { padding: 150px 8%; background: var(--배경색_블랙); color: var(--글자색_화이트); border-top: 1px solid #222; }
     .contact-title { font-size: 40px; font-weight: 700; margin-bottom: 30px; text-transform: uppercase; }
@@ -68,8 +67,8 @@
 
     @media (max-width: 768px) {
       .hero-title { font-size: clamp(2.5rem, 15vw, 4.5rem); }
-      .img-mask { width: 90%; height: 70%; }
-      .caption { left: 5%; bottom: 5%; width: 90%; }
+      .img-mask { width: 95%; height: 75%; }
+      .caption { left: 2.5%; bottom: 5%; width: 95%; padding: 20px; }
       #cursor, #trail-canvas { display: none; }
     }
   </style>
@@ -80,7 +79,7 @@
   <div id="cursor"></div>
   
   <nav>
-    <a href="#" class="logo">YONGWHA SYSTEM</a>
+    <a href="#" class="logo">용화 시스템</a>
     <div style="font-size: 10px; font-weight: 700;">ENGINEERING ARCHIVE 2026</div>
   </nav>
 
@@ -95,10 +94,10 @@
     <section class="project-list">
       <div class="project-item">
         <div class="img-frame-wrap">
-          <div class="img-mask"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500"></div>
+          <div class="img-mask"><img src="1.png"></div>
           <div class="caption">
             <h3>PLC Logic Optimization</h3>
-            <p>LS ELECTRIC 및 MITSUBISHI 하드웨어 기반의 고속 정밀 제어 아키텍처를 설계합니다. 복잡한 공정 시퀀스를 최적화하여 생산성을 보장합니다.</p>
+            <p>LS ELECTRIC 및 MITSUBISHI 시스템을 기반으로 정밀한 제어 아키텍처를 구축합니다. 공정의 특성을 반영한 로직 최적화를 통해 설비 가동 효율을 극대화합니다.</p>
             <div class="tags"><span class="tag">LS ELECTRIC</span><span class="tag">MITSUBISHI</span></div>
           </div>
         </div>
@@ -106,44 +105,44 @@
 
       <div class="project-item">
         <div class="img-frame-wrap">
-          <div class="img-mask"><img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?auto=format&fit=crop&w=1500"></div>
+          <div class="img-mask"><img src="2.png"></div>
           <div class="caption">
             <h3>Monitoring Interface</h3>
-            <p>Pro-face, LS, TOP등의 플랫폼을 활용한 맞춤형 UI,UX 솔루션을 제공합니다. 현장 데이터를 실시간으로 시각화하여 직관적인 운용 환경을 구축합니다.</p>
-            <div class="tags"><span class="tag">Pro-face</span><span class="tag">TOP</span></div>
+            <p>Pro-face, LS, TOP 등 다양한 인터페이스 환경을 구축하여 현장의 시각적 편의성을 제공합니다. 실시간 데이터 모니터링을 통해 조업 안정성을 확보합니다.</p>
+            <div class="tags"><span class="tag">Pro-face</span><span class="tag">LS</span><span class="tag">TOP</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
         <div class="img-frame-wrap">
-          <div class="img-mask"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500"></div>
+          <div class="img-mask"><img src="3.png"></div>
           <div class="caption">
-            <h3>Smart Device Connectivity</h3>
-            <p>PLC와 휴대폰 및 태블릿을 연동하여 설비의 상태를 편리하게 확인하고 컨트롤 할 수 있습니다.</p>
-            <div class="tags"><span class="tag">SBC Link</span><span class="tag">Mobile Control</span></div>
+            <h3>Remote Connectivity Solution</h3>
+            <p>현장의 제약 없이 휴대폰이나 태블릿을 활용하여 설비 조작이 가능한 환경을 제공합니다. 스마트 기기 연동을 통해 원격에서도 PLC 설비의 정밀 제어가 가능합니다.</p>
+            <div class="tags"><span class="tag">Mobile Control</span><span class="tag">Tablet Link</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
         <div class="img-frame-wrap">
-          <div class="img-mask"><img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500"></div>
+          <div class="img-mask"><img src="4.png"></div>
           <div class="caption">
-            <h3>Control Panel Engineering</h3>
-            <p>도면 설계부터 전장 판넬 제작, 현장 설치 및 시운전까지 아우르는 통합 엔지니어링 프로세스를 수행합니다.</p>
-            <div class="tags"><span class="tag">System Design</span><span class="tag">Site Installation</span></div>
+            <h3>Custom Control Panel</h3>
+            <p>설계부터 제작, 현장 설치 및 최종 시운전까지 전 과정을 엔지니어링합니다. 환경에 최적화된 하드웨어 구성을 통해 시스템의 신뢰도를 유지합니다.</p>
+            <div class="tags"><span class="tag">System Engineering</span><span class="tag">Fabrication</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
         <div class="img-frame-wrap">
-          <div class="img-mask"><img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1500"></div>
+          <div class="img-mask"><img src="5.png"></div>
           <div class="caption">
-            <h3>Visual Status LED System</h3>
-            <p>고휘도 LED 스트립을 사용하여 시각화 시스템을 통합합니다. 운전 및 알람 상태를 다채로운 색상 변화로 표현하며, 휴대폰과 태블릿으로 색상을 선택하여 확인 가능합니다.</p>
-            <div class="tags"><span class="tag">LED 스트립</span><span class="tag">Visual Alarm</span></div>
+            <h3>LED Strip Indicator System</h3>
+            <p>설비 제작 시 통합된 LED 스트립을 통해 알람 및 운전 상태를 색상 변화로 표현합니다. 휴대폰, 태블릿, 터치 패널과 연동하여 시각적인 상태 파악이 즉각적으로 가능합니다.</p>
+            <div class="tags"><span class="tag">LED 스트립</span><span class="tag">Visual Status</span></div>
           </div>
         </div>
       </div>
@@ -163,7 +162,6 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // 인트로 통통 튀게
     gsap.to('.hero-title span', {
       y: 0, opacity: 1, duration: 1.5, stagger: 0.25, ease: "elastic.out(1, 0.4)" 
     });
@@ -172,7 +170,6 @@
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
 
-    // 커서 잔상
     if (!('ontouchstart' in window)) {
       const trailCanvas = document.getElementById('trail-canvas');
       const trailCtx = trailCanvas.getContext('2d');
@@ -198,7 +195,6 @@
       drawTrail();
     }
 
-    // 스크롤 시 프레임 줌 & 글자 등장
     document.querySelectorAll('.project-item').forEach(item => {
       ScrollTrigger.create({
         trigger: item, start: "top 60%",
