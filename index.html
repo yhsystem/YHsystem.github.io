@@ -68,10 +68,16 @@
     /* 반응형 모바일 수정 핵심 섹션 */
     @media (max-width: 768px) {
       nav { padding: 20px 25px; }
-      /* 모바일 글자 짤림 및 줄바꿈 수정 */
+      
+      /* 메인 타이틀 짤림 수정 */
       .hero-title { 
-        font-size: clamp(2rem, 11.5vw, 4rem); 
-        white-space: nowrap; 
+        font-size: clamp(2.2rem, 10vw, 4rem); 
+        line-height: 1.1;
+      }
+      .hero-title span {
+        white-space: normal; /* 줄바꿈 허용 */
+        overflow: visible;
+        margin-bottom: 10px;
       }
       
       .img-frame-wrap { 
@@ -99,7 +105,7 @@
         transform: none; 
         pointer-events: auto;
         padding: 20px;
-        background: #f8f8f8; /* 모바일에서 글자가 잘 보이도록 밝은 배경 처리 */
+        background: #f8f8f8; 
         border-left: 4px solid var(--포인트색);
       }
       
