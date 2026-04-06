@@ -14,89 +14,63 @@
     :root {
       --배경색_화이트: #ffffff;
       --배경색_블랙: #000000;
-      --글자색_블랙: #000000;
       --글자색_화이트: #ffffff;
       --포인트색: #ff0000; 
-      --잔상선색: rgba(255, 0, 0, 0.25); 
-      
       --폰트: 'Inter', 'Noto Sans KR', sans-serif;
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    body { 
-      background: var(--배경색_화이트); color: var(--글자색_블랙); 
-      font-family: var(--폰트); line-height: 1.4; overflow-x: hidden;
-      cursor: none; 
-    }
+    body { background: var(--배경색_화이트); font-family: var(--폰트); overflow-x: hidden; cursor: none; }
 
     #trail-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10000; }
     #cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--포인트색); border-radius: 50%; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); }
 
-    nav { position: fixed; top: 0; width: 100%; padding: 40px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 500; mix-blend-mode: exclusion; color: white; }
+    nav { position: fixed; top: 0; width: 100%; padding: 40px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; mix-blend-mode: exclusion; color: white; }
     .logo { font-size: 18px; font-weight: 700; letter-spacing: 0.2em; text-decoration: none; color: inherit; }
-
-    .smooth-scroll { width: 100%; position: relative; }
 
     .hero { 
       height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 8%; 
-      background: var(--배경색_블랙); color: var(--글자색_화이트);
-      position: relative; z-index: 10;
+      background: var(--배경색_블랙); color: var(--글자색_화이트); position: relative; z-index: 10;
     }
-    
-    /* [수정] 타이틀 컬러 적용: 첫 줄 화이트, 둘째 줄 레드 */
-    .hero-title { font-size: clamp(3rem, 12vw, 10rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.9; color: var(--글자색_화이트); }
-    .hero-title span:nth-child(2) { color: var(--포인트색); }
+    /* 타이틀 컬러: 상단 화이트 / 하단 레드 */
+    .hero-title { font-size: clamp(3rem, 12vw, 10rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.9; }
     .hero-title span { display: block; overflow: hidden; opacity: 0; transform: translateY(80px); }
+    .hero-title span:nth-child(2) { color: var(--포인트색); }
 
-    .project-list { padding: 150px 0; }
+    .project-list { padding: 150px 0; background: var(--배경색_화이트); }
     .project-item { width: 100%; margin-bottom: 25vh; position: relative; }
     
-    .img-frame-wrap {
-      width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden;
-    }
+    .img-frame-wrap { width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+    .img-mask { width: 60%; height: 80%; overflow: hidden; clip-path: inset(0% 0% 0% 0%); z-index: 1; }
+    .img-mask img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transform: scale(1.3); transition: filter 0.8s; }
 
-    .img-mask {
-      width: 60%; height: 80%; overflow: hidden; background: #eee; clip-path: inset(0% 0% 0% 0%); will-change: width, height, clip-path;
-    }
-    .img-mask img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transition: filter 1s var(--ease-out); transform: scale(1.3); will-change: transform, filter; }
-    .img-mask:hover img { filter: grayscale(0.2); transform: scale(1.1); }
-
+    /* 글자 가독성 패널 수정 */
     .caption {
-      position: absolute; bottom: 50px; left: 8%;
-      color: white; z-index: 10; mix-blend-mode: exclusion;
-      opacity: 0; transform: translateY(30px);
+      position: absolute; bottom: 10%; left: 8%; z-index: 100;
+      color: white; max-width: 600px;
+      padding: 20px; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
+      opacity: 0; transform: translateY(30px); pointer-events: none;
     }
-    .project-item.active .caption { opacity: 1; transform: translateY(0); transition: all 1.2s var(--ease-out); }
+    .project-item.active .caption { opacity: 1; transform: translateY(0); transition: all 1s ease-out; }
 
-    .caption h3 { font-size: 28px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; }
-    .caption p { font-size: 13px; letter-spacing: 0.1em; color: rgba(255,255,255,0.7); }
+    .caption h3 { font-size: clamp(20px, 3vw, 32px); font-weight: 700; margin-bottom: 15px; text-transform: uppercase; color: var(--포인트색); }
+    .caption p { font-size: 15px; line-height: 1.6; color: #fff; word-break: keep-all; font-weight: 400; }
     .tags { display: flex; gap: 8px; margin-top: 15px; }
-    .tag { padding: 4px 10px; border: 1px solid rgba(255,255,255,0.3); border-radius: 30px; font-size: 10px; color: rgba(255,255,255,0.8); }
+    .tag { padding: 4px 10px; border: 1px solid var(--포인트색); border-radius: 4px; font-size: 11px; color: #fff; background: rgba(255,0,0,0.1); }
 
-    .contact { 
-      padding: 150px 8%; 
-      background: var(--배경색_블랙); color: var(--글자색_화이트);
-      border-top: 1px solid #222;
-    }
-    .contact-title { font-size: 40px; font-weight: 700; margin-bottom: 30px; text-transform: uppercase; color: #fff; }
-    .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
-    .contact-item h4 { font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.1em; }
-    .contact-item p, .contact-item a { font-size: 18px; color: #fff; text-decoration: none; font-weight: 600; }
+    .contact { padding: 150px 8%; background: var(--배경색_블랙); color: var(--글자색_화이트); border-top: 1px solid #222; }
+    .contact-title { font-size: 40px; font-weight: 700; margin-bottom: 30px; text-transform: uppercase; }
+    .contact-info { display: flex; gap: 50px; }
+    .contact-item h4 { font-size: 11px; color: #666; margin-bottom: 10px; text-transform: uppercase; }
+    .contact-item p { font-size: 18px; font-weight: 600; }
 
     footer { padding: 50px 8%; text-align: center; font-size: 10px; color: #555; background: var(--배경색_블랙); border-top: 1px solid #111; }
 
     @media (max-width: 768px) {
-      nav { padding: 25px 20px; }
-      .hero-title { font-size: clamp(2.8rem, 15vw, 4.5rem); }
-      .project-item { margin-bottom: 15vh; }
-      .img-frame-wrap { height: 70vh; } 
-      .img-mask { width: 100%; height: 100%; } 
-      .caption { bottom: 30px; left: 5%; }
-      .caption h3 { font-size: 22px; }
-      .contact-info { grid-template-columns: 1fr; gap: 30px; }
+      .hero-title { font-size: clamp(2.5rem, 15vw, 4.5rem); }
+      .img-mask { width: 90%; height: 70%; }
+      .caption { left: 5%; bottom: 5%; width: 90%; }
       #cursor, #trail-canvas { display: none; }
-      body { cursor: auto; }
     }
   </style>
 </head>
@@ -111,7 +85,7 @@
   </nav>
 
   <div class="smooth-scroll">
-    <section class="hero" id="hero-section">
+    <section class="hero">
       <h1 class="hero-title">
         <span>ENGINEERING</span>
         <span>THE FUTURE</span>
@@ -121,54 +95,56 @@
     <section class="project-list">
       <div class="project-item">
         <div class="img-frame-wrap">
-          <div class="img-mask"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500" alt="PLC"></div>
+          <div class="img-mask"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500"></div>
           <div class="caption">
             <h3>PLC Logic Optimization</h3>
-            <p>LS ELECTRIC 및 MITSUBISHI 플랫폼 기반의 고속 정밀 제어 아키텍처를 설계합니다. 복잡한 공정 시퀀스를 최적화하여 생산성을 극대화합니다.</p>
-            <div class="tags"><span class="tag">LS ELECTRIC</span><span class="tag">MITSUBISHI</span><span class="tag">Logic Design</span></div>
+            <p>LS ELECTRIC 및 MITSUBISHI 하드웨어 기반의 고속 정밀 제어 아키텍처를 설계합니다. 복잡한 공정 시퀀스를 최적화하여 무중단 생산성을 보장합니다.</p>
+            <div class="tags"><span class="tag">LS ELECTRIC</span><span class="tag">MITSUBISHI</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
         <div class="img-frame-wrap">
-          <div class="img-mask"><img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?auto=format&fit=crop&w=1500" alt="HMI"></div>
+          <div class="img-mask"><img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?auto=format&fit=crop&w=1500"></div>
           <div class="caption">
-            <h3>HMI / SCADA Interface</h3>
-            <p>Pro-face, LS, TOP 등 주요 인터페이스를 활용하여 가동 현황을 실시간 시각화합니다. 작업 효율을 높이는 직관적인 HMI 작화 솔루션을 제공합니다.</p>
-            <div class="tags"><span class="tag">Pro-face</span><span class="tag">SCADA</span><span class="tag">Visual Interface</span></div>
+            <h3>Monitoring Interface</h3>
+            <p>Pro-face, LS, TOP 등 주요 플랫폼을 활용한 맞춤형 작화 솔루션을 제공합니다. 현장 데이터를 실시간으로 시각화하여 직관적인 운용 환경을 구축합니다.</p>
+            <div class="tags"><span class="tag">Pro-face</span><span class="tag">TOP</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
         <div class="img-frame-wrap">
-          <div class="img-mask"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500" alt="SBC"></div>
+          <div class="img-mask"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500"></div>
           <div class="caption">
-            <h3>SBC Data Integration</h3>
-            <p>SBC 데이터 게이트웨이를 구축하여 필드 데이터를 상위 시스템으로 연동합니다. 휴대폰 및 태블릿을 통해 설비 상태를 원격으로 조작하고 관리할 수 있습니다.</p>
-            <div class="tags"><span class="tag">Embedded</span><span class="tag">IoT Gateway</span><span class="tag">Mobile Control</span></div>
+            <h3>Smart Device Connectivity</h3>
+            <p>데이터 게이트웨이 기술을 통해 상위 시스템과 현장 기기를 연동합니다. 휴대폰 및 태블릿을 활용하여 언제 어디서나 PLC 설비를 정밀하게 제어할 수 있습니다.</p>
+            <div class="tags"><span class="tag">SBC Link</span><span class="tag">Mobile Control</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
         <div class="img-frame-wrap">
-          <div class="img-mask"><img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500" alt="Panel"></div>
+          <div class="img-mask"><img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500"></div>
           <div class="caption">
-            <h3>Control Panel Solution</h3>
-            <p>표준화된 정밀 도면 설계부터 견고한 하드웨어 제작, 그리고 현장 설치 및 시운전까지 아우르는 통합 전장 엔지니어링 서비스를 제공합니다.</p>
-            <div class="tags"><span class="tag">System Design</span><span class="tag">Fabrication</span><span class="tag">On-site Setting</span></div>
+            <h3>Control Panel Engineering</h3>
+            <p>표준화된 정밀 도면 설계부터 견고한 전장 판넬 제작, 현장 설치 및 시운전까지 아우르는 통합 엔지니어링 프로세스를 수행합니다.</p>
+            <div class="tags"><span class="tag">System Design</span><span class="tag">Site Installation</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
-        <div class="img-mask"><img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1500" alt="LED Strip"></div>
-        <div class="caption">
-          <h3>Visual Status Indicator</h3>
-          <p>설비 제작 단계부터 통합된 고휘도 LED 스트립 시각 시스템을 구축합니다. 휴대폰과 태블릿을 통해 알람 및 운전 상태를 직관적인 색상 변화로 즉각 확인 가능합니다.</p>
-          <div class="tags"><span class="tag">Smart Indicator</span><span class="tag">Status LED</span><span class="tag">Visual Alarm</span></div>
+        <div class="img-frame-wrap">
+          <div class="img-mask"><img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1500"></div>
+          <div class="caption">
+            <h3>Visual Status LED System</h3>
+            <p>설비 제작 시 고휘도 LED 스트립 시각화 시스템을 통합합니다. 운전 및 알람 상태를 다채로운 색상 변화로 표현하며, 휴대폰과 태블릿으로 즉각 확인이 가능합니다.</p>
+            <div class="tags"><span class="tag">LED 스트립</span><span class="tag">Visual Alarm</span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -177,7 +153,7 @@
       <h2 class="contact-title">Let's Automate</h2>
       <div class="contact-info">
         <div class="contact-item"><h4>Base</h4><p>경상남도 창원시</p></div>
-        <div class="contact-item"><h4>Connect</h4><p><a href="mailto:hello@automation.com">hello@automation.com</a></p></div>
+        <div class="contact-item"><h4>Connect</h4><p>hello@automation.com</p></div>
       </div>
     </section>
   </div>
@@ -187,6 +163,7 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
+    // 인트로 통통 튀게
     gsap.to('.hero-title span', {
       y: 0, opacity: 1, duration: 1.5, stagger: 0.25, ease: "elastic.out(1, 0.4)" 
     });
@@ -194,18 +171,16 @@
     const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
-    lenis.on('scroll', ScrollTrigger.update);
 
+    // 커서 잔상
     if (!('ontouchstart' in window)) {
       const trailCanvas = document.getElementById('trail-canvas');
       const trailCtx = trailCanvas.getContext('2d');
       const cursorDot = document.getElementById('cursor');
       let m = { x: -100, y: -100 }, p = { x: 0, y: 0 }, pts = [];
-      
       function resize() { trailCanvas.width = window.innerWidth; trailCanvas.height = window.innerHeight; }
       window.addEventListener('resize', resize); resize();
       window.addEventListener('mousemove', e => { m.x = e.clientX; m.y = e.clientY; });
-
       function drawTrail() {
         p.x += (m.x - p.x) * 0.18; p.y += (m.y - p.y) * 0.18;
         cursorDot.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
@@ -223,7 +198,13 @@
       drawTrail();
     }
 
+    // 스크롤 시 프레임 줌 & 글자 등장
     document.querySelectorAll('.project-item').forEach(item => {
+      ScrollTrigger.create({
+        trigger: item, start: "top 60%",
+        onEnter: () => item.classList.add('active'),
+        onLeaveBack: () => item.classList.remove('active')
+      });
       const mask = item.querySelector('.img-mask');
       const img = item.querySelector('img');
       gsap.to(mask, {
@@ -232,7 +213,7 @@
       });
       gsap.to(img, {
         scrollTrigger: { trigger: item, scrub: 1.2, start: "top bottom" },
-        scale: 1.0, ease: "none"
+        scale: 1.0, filter: "grayscale(0)", ease: "none"
       });
     });
   </script>
