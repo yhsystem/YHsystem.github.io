@@ -69,13 +69,16 @@
     @media (max-width: 768px) {
       nav { padding: 20px 25px; }
       
+      /* 세트와 세트 사이의 여백 축소 */
+      .project-item { margin-bottom: 10vh; }
+      
       /* 메인 타이틀 짤림 수정 */
       .hero-title { 
         font-size: clamp(2.2rem, 10vw, 4rem); 
         line-height: 1.1;
       }
       .hero-title span {
-        white-space: normal; /* 줄바꿈 허용 */
+        white-space: normal; 
         overflow: visible;
         margin-bottom: 10px;
       }
