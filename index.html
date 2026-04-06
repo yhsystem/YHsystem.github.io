@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>YONGHWA SYSTEMS | FA Portfolio</title>
+  <title>YONGHWA SYSTEMS | Engineering Archive</title>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -11,82 +11,87 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet"/>
 
   <style>
+    /* 학교안심 돋보기 R 폰트 적용 (웹 폰트가 없을 경우 시스템 돋움체 우선) */
+    @font-face {
+      font-family: 'HakgyoansimDotbogiR';
+      src: local('학교안심 돋보기 R'), local('HakgyoansimDotbogiR'), sans-serif;
+    }
+
     :root {
       --배경색: #ffffff;
       --글자색: #000000;
       --포인트색: #ff0000; 
       --잔상선색: rgba(255, 0, 0, 0.25); 
-      --폰트: 'Inter', 'Noto Sans KR', sans-serif;
+      --일반폰트: 'Inter', 'Noto Sans KR', sans-serif;
+      --강조폰트: 'HakgyoansimDotbogiR', 'Inter', sans-serif;
+      
+      /* [수정 포인트] 로고 글씨 크기 조절 변수 */
+      --로고_크기: 24px; 
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
     
     html, body { 
       background: var(--배경색); color: var(--글자색); 
-      font-family: var(--폰트); overflow-x: hidden;
+      font-family: var(--일반폰트); overflow-x: hidden;
       cursor: none; 
       overscroll-behavior-y: auto;
     }
 
-    /* 마우스 커서 & 잔상 (PC 전용) */
+    /* 마우스 커서 & 잔상 */
     #trail-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10000; }
     #cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--포인트색); border-radius: 50%; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); }
 
     /* 네비게이션 */
     nav { position: fixed; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 500; mix-blend-mode: exclusion; color: white; }
-    .logo { font-size: 16px; font-weight: 900; letter-spacing: 0.1em; text-decoration: none; color: inherit; }
+    
+    /* 로고 폰트 및 크기 적용 */
+    .logo { 
+      font-family: var(--강조폰트); 
+      font-size: var(--로고_크기); 
+      font-weight: 700; 
+      text-decoration: none; 
+      color: inherit; 
+      letter-spacing: -0.02em;
+    }
 
     /* Hero 섹션 */
     .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 8%; }
-    .hero-title { font-size: clamp(2.5rem, 12vw, 8.5rem); font-weight: 900; letter-spacing: -0.06em; line-height: 0.85; }
+    .hero-title { font-family: var(--강조폰트); font-size: clamp(3rem, 12vw, 9rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; }
     .hero-title span { display: block; overflow: hidden; opacity: 0; transform: translateY(100px); }
-    .hero-sub { margin-top: 30px; font-size: 14px; letter-spacing: 0.4em; color: var(--포인트색); font-weight: 700; text-transform: uppercase; }
 
     /* 프로젝트 리스트 */
     .project-list { width: 100%; }
     .project-item { width: 100%; margin-bottom: 25vh; display: flex; flex-direction: column; align-items: center; padding: 0 5%; }
     
     .img-mask { 
-      width: 100%; max-width: 1200px; 
-      aspect-ratio: 16/9;
-      overflow: hidden; 
-      background: #f0f0f0; margin-bottom: 35px;
-      position: relative;
+      width: 100%; max-width: 1200px; aspect-ratio: 16/9; overflow: hidden; 
+      background: #f4f4f4; margin-bottom: 35px; position: relative;
     }
-    /* 프로젝트 번호 표시 (있어보이는 디테일) */
-    .img-mask::after {
-      content: attr(data-num);
-      position: absolute; top: 20px; left: 20px;
-      font-size: 12px; font-weight: 900; color: white; mix-blend-mode: difference;
-    }
-    .img-mask img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: all 1s ease; }
-    .project-item:hover .img-mask img { filter: grayscale(0%); transform: scale(1.03); }
+    .img-mask img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s ease; }
+    .project-item:hover .img-mask img { transform: scale(1.05); }
 
     .caption { width: 100%; max-width: 1200px; padding: 0 10px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; }
-    .caption-title h3 { font-size: clamp(24px, 4vw, 40px); font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; line-height: 1.1; }
+    .caption-title h3 { font-family: var(--강조폰트); font-size: clamp(24px, 4vw, 38px); font-weight: 900; line-height: 1.1; text-transform: uppercase; }
     .caption-desc { display: flex; flex-direction: column; justify-content: flex-start; }
-    .caption-desc p { font-size: 15px; line-height: 1.8; color: #555; word-break: keep-all; font-weight: 400; }
+    .caption-desc p { font-size: 15px; line-height: 1.8; color: #444; word-break: keep-all; }
     
-    .tags { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
-    .tag { padding: 4px 12px; border: 1px solid #ddd; border-radius: 2px; font-size: 10px; font-weight: 700; color: #000; text-transform: uppercase; }
+    .tags { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+    .tag { padding: 4px 10px; border: 1px solid #ddd; border-radius: 2px; font-size: 10px; font-weight: 700; color: #000; }
 
     /* Contact 섹션 */
-    .contact { padding: 180px 8%; background: #000; color: #fff; }
-    .contact-title { font-size: clamp(40px, 8vw, 100px); font-weight: 900; margin-bottom: 60px; text-transform: uppercase; letter-spacing: -0.04em; }
-    .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 50px; }
-    .contact-item h4 { font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.2em; }
-    .contact-item p, .contact-item a { font-size: 20px; color: #fff; text-decoration: none; font-weight: 600; transition: color 0.3s; }
-    .contact-item a:hover { color: var(--포인트색); }
+    .contact { padding: 150px 8%; background: #000; color: #fff; }
+    .contact-title { font-family: var(--강조폰트); font-size: clamp(40px, 8vw, 90px); font-weight: 900; margin-bottom: 50px; text-transform: uppercase; }
+    .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+    .contact-item h4 { font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.1em; }
+    .contact-item p, .contact-item a { font-size: 19px; color: #fff; text-decoration: none; font-weight: 600; }
 
-    footer { padding: 80px 8%; text-align: left; font-size: 10px; color: #999; letter-spacing: 0.1em; background: #000; border-top: 1px solid #222; }
+    footer { padding: 60px 8%; text-align: left; font-size: 10px; color: #999; background: #000; border-top: 1px solid #222; }
 
-    /* 모바일 전용 스타일 */
     @media (max-width: 768px) {
-      .hero-sub { font-size: 10px; }
-      .img-mask { aspect-ratio: 4/5; margin-bottom: 25px; }
+      .img-mask { aspect-ratio: 4/5; }
       .caption { grid-template-columns: 1fr; gap: 15px; }
       .project-item { margin-bottom: 15vh; }
-      .contact { padding: 100px 8%; }
     }
   </style>
 </head>
@@ -97,98 +102,87 @@
   
   <nav>
     <a href="#" class="logo">용화 시스템</a>
-    <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em;">© 2026 ARCHIVE</div>
+    <div style="font-size: 10px; font-weight: 700;">© 2026 ARCHIVE</div>
   </nav>
 
   <main>
     <section class="hero">
-      <div class="hero-sub">Specialist in Factory Automation</div>
       <h1 class="hero-title">
         <span>ENGINEERING</span>
-        <span>EXCELLENCE</span>
+        <span>THE FUTURE</span>
       </h1>
     </section>
 
     <section class="project-list">
       <div class="project-item">
-        <div class="img-mask" data-num="01"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500" alt="PLC"></div>
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500" alt="PLC"></div>
         <div class="caption">
-          <div class="caption-title"><h3>PLC SYSTEM<br>ARCHITECT</h3></div>
+          <div class="caption-title"><h3>PLC LOGIC<br>INTEGRATION</h3></div>
           <div class="caption-desc">
-            <p>미쓰비시 Q/R 시리즈 및 지멘스 S7-1500을 기반으로 단순 동작을 넘어 공정 전체의 다운타임을 최소화하는 최적화 로직을 설계합니다.</p>
-            <div class="tags"><span class="tag">System Optimization</span><span class="tag">Melsec-Q</span><span class="tag">Siemens</span></div>
+            <p>복잡한 생산 시퀀스를 데이터 기반의 정밀 로직으로 변환합니다. 미쓰비시, 지멘스 등 글로벌 표준을 준수하는 고신뢰성 제어 아키텍처를 구축합니다.</p>
+            <div class="tags"><span class="tag">Melsec-Q/R</span><span class="tag">Siemens S7</span><span class="tag">Optimization</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
-        <div class="img-mask" data-num="02"><img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?auto=format&fit=crop&w=1500" alt="HMI"></div>
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?auto=format&fit=crop&w=1500" alt="HMI"></div>
         <div class="caption">
-          <div class="caption-title"><h3>INTELLIGENT<br>INTERFACE</h3></div>
+          <div class="caption-title"><h3>ADVANCED<br>HMI / SCADA</h3></div>
           <div class="caption-desc">
-            <p>단순한 모니터링을 넘어 현장 작업자의 직관적인 조작과 실시간 데이터 분석이 결합된 진보된 HMI/SCADA 환경을 구축합니다.</p>
-            <div class="tags"><span class="tag">User Experience</span><span class="tag">SCADA</span><span class="tag">Real-time Data</span></div>
+            <p>현장 작업자의 직관성을 극대화하는 UX 설계를 통해 공정 가동률을 실시간 시각화하고, 비정상 상황에 대한 즉각적인 대응 체계를 마련합니다.</p>
+            <div class="tags"><span class="tag">Interface Design</span><span class="tag">Monitoring</span><span class="tag">Real-time Data</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
-        <div class="img-mask" data-num="03"><img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500" alt="Panel"></div>
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500" alt="SBC"></div>
         <div class="caption">
-          <div class="caption-title"><h3>HARDWARE<br>RELIABILITY</h3></div>
+          <div class="caption-title"><h3>EDGE<br>COMPUTING SBC</h3></div>
           <div class="caption-desc">
-            <p>EPLAN 기반의 표준화된 설계를 통해 고도의 신뢰성을 보장하며, 가혹한 산업 현장에서도 안정적으로 구동되는 전장 판넬을 제작합니다.</p>
-            <div class="tags"><span class="tag">EPLAN P8</span><span class="tag">Electrical Design</span><span class="tag">Hardening</span></div>
+            <p>SBC(라즈베리 파이 등)를 활용한 저비용 고효율 데이터 게이트웨이를 구현하여 현장 디바이스와 상위 MES 시스템 간의 유연한 연동을 실현합니다.</p>
+            <div class="tags"><span class="tag">Embedded</span><span class="tag">IoT Gateway</span><span class="tag">Linux</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
-        <div class="img-mask" data-num="04"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500" alt="SBC"></div>
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500" alt="Panel"></div>
         <div class="caption">
-          <div class="caption-title"><h3>EDGE<br>COMPUTING</h3></div>
+          <div class="caption-title"><h3>TOTAL PANEL<br>SOLUTION</h3></div>
           <div class="caption-desc">
-            <p>SBC와 IoT 기술을 융합하여 필드 데이터를 상위 MES 시스템으로 가공하여 전달하는 지능형 데이터 게이트웨이를 구현합니다.</p>
-            <div class="tags"><span class="tag">Embedded System</span><span class="tag">Python</span><span class="tag">MES Bridge</span></div>
+            <p>EPLAN 기반의 정밀 도면 설계부터 견고한 하드웨어 제작, 그리고 완벽한 현장 설치까지 이어지는 원스톱 컨트롤 판넬 엔지니어링을 제공합니다.</p>
+            <div class="tags"><span class="tag">EPLAN</span><span class="tag">Fabrication</span><span class="tag">Site Installation</span></div>
           </div>
         </div>
       </div>
 
       <div class="project-item">
-        <div class="img-mask" data-num="05"><img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1500" alt="Smart Factory"></div>
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1500" alt="LED Strip"></div>
         <div class="caption">
-          <div class="caption-title"><h3>FUTURE<br>AUTOMATION</h3></div>
+          <div class="caption-title"><h3>LUMINANCE<br>RETROFITTING</h3></div>
           <div class="caption-desc">
-            <p>디지털 트윈과 AI 비전 시스템을 결합하여 예측 가능한 유지보수와 완전 자동화를 향한 스마트 팩토리 솔루션을 제시합니다.</p>
-            <div class="tags"><span class="tag">Digital Twin</span><span class="tag">Vision AI</span><span class="tag">Next Gen</span></div>
+            <p>기존 자동화 설비의 노후된 형광등을 고휘도 LED 스트립으로 교체하여 유지보수 비용을 절감하고, 설비 내부의 시인성을 혁신적으로 개선합니다.</p>
+            <div class="tags"><span class="tag">LED Solution</span><span class="tag">Maintenance</span><span class="tag">Efficiency</span></div>
           </div>
         </div>
       </div>
     </section>
 
     <section class="contact">
-      <h2 class="contact-title">READY TO<br>AUTOMATE?</h2>
+      <h2 class="contact-title">WORK WITH<br>US</h2>
       <div class="contact-info">
-        <div class="contact-item">
-          <h4>Base</h4>
-          <p>경상남도 창원시</p>
-        </div>
-        <div class="contact-item">
-          <h4>Contact</h4>
-          <p><a href="mailto:hello@automation.com">hello@automation.com</a></p>
-          <p style="margin-top: 10px;">010-1234-5678</p>
-        </div>
-        <div class="contact-item">
-          <h4>Social</h4>
-          <p><a href="#">LinkedIn</a></p>
-        </div>
+        <div class="contact-item"><h4>Base</h4><p>경상남도 창원시</p></div>
+        <div class="contact-item"><h4>Email</h4><p><a href="mailto:hello@yonghwa.com">hello@yonghwa.com</a></p></div>
+        <div class="contact-item"><h4>Phone</h4><p>010-1234-5678</p></div>
       </div>
     </section>
   </main>
 
   <footer>
     <p>용화 시스템 | YONGHWA SYSTEMS</p>
-    <p style="margin-top: 10px;">COPYRIGHT 2026. ALL RIGHTS RESERVED.</p>
+    <p style="margin-top: 8px;">COPYRIGHT 2026. ALL RIGHTS RESERVED.</p>
   </footer>
 
   <script>
@@ -196,11 +190,7 @@
 
     // 1. 인트로 애니메이션
     gsap.to('.hero-title span', {
-      y: 0,
-      opacity: 1,
-      duration: 1.5,
-      stagger: 0.2,
-      ease: "elastic.out(1, 0.45)" 
+      y: 0, opacity: 1, duration: 1.5, stagger: 0.2, ease: "elastic.out(1, 0.45)" 
     });
 
     // 2. 스무스 스크롤
