@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>YONGHWA SYSTEMS | Professional Automation</title>
+  <title>YONGHWA SYSTEMS | Engineering Archive</title>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -11,78 +11,97 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet"/>
 
   <style>
+    /* ===== variables & Reset ===== */
     :root {
       --배경색: #ffffff;
       --글자색: #000000;
       --포인트색: #ff0000; 
       --잔상선색: rgba(255, 0, 0, 0.25); 
-      --기본폰트: 'Inter', 'Noto Sans KR', sans-serif;
       
-      /* [수정 포인트] 로고 글씨 크기 조절 */
-      --로고_크기: 24px; 
+      --폰트: 'Inter', 'Noto Sans KR', sans-serif;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    
-    html, body { 
+    body { 
       background: var(--배경색); color: var(--글자색); 
-      font-family: var(--기본폰트); overflow-x: hidden;
+      font-family: var(--폰트); line-height: 1.4; overflow-x: hidden;
       cursor: none; 
-      overscroll-behavior-y: auto;
     }
 
-    /* 마우스 커서 & 잔상 */
+    /* 마우스 커서 & 잔상 캔버스 */
     #trail-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10000; }
     #cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background: var(--포인트색); border-radius: 50%; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); }
 
     /* 네비게이션 */
-    nav { position: fixed; top: 0; width: 100%; padding: 30px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 500; mix-blend-mode: exclusion; color: white; }
-    .logo { 
-      font-size: var(--로고_크기); 
-      font-weight: 900; 
-      text-decoration: none; 
-      color: inherit; 
-      letter-spacing: -0.02em;
+    nav { position: fixed; top: 0; width: 100%; padding: 40px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 500; mix-blend-mode: exclusion; color: white; }
+    .logo { font-size: 18px; font-weight: 700; letter-spacing: 0.2em; text-decoration: none; color: inherit; }
+
+    /* Hero 섹션 (로고 그라데이션 적용) */
+    .hero { 
+      height: 100vh; display: flex; align-items: center; padding: 0 10%; 
+      position: relative; overflow: hidden; background: #000; /* 로고 강조를 위해 블랙 배경 */
+    }
+    
+    .hero-content { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; width: 100%; }
+    
+    .hero-title { color: #fff; font-size: clamp(3rem, 7.5vw, 6.5rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.95; opacity: 0; transform: translateX(-50px); }
+    .hero-title span { color: var(--포인트색); }
+
+    /* [핵심 수정] 로고 그라데이션 및 애니메이션 스타일 */
+    .hero-logo-wrap { position: relative; width: 100%; display: flex; justify-content: center; opacity: 0; transform: translateX(50px) scale(0.9); }
+    .hero-logo-wrap img { width: 100%; max-width: 500px; height: auto; display: block; filter: brightness(1.1); }
+    
+    /* 로고 위에 겹쳐지는 그라데이션 오버레이 (붉은 기운) */
+    .hero-logo-wrap::after {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(255,0,0,0) 20%, rgba(255,0,0,0.5) 50%, rgba(255,0,0,0) 80%);
+      mix-blend-mode: overlay; /* 블랙 메탈 위에 자연스럽게 스며듦 */
+      animation: logoGlow 4s infinite linear;
+      pointer-events: none;
     }
 
-    /* Hero 섹션 */
-    .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 8%; }
-    .hero-title { font-size: clamp(3rem, 12vw, 9rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.85; }
-    .hero-title span { display: block; overflow: hidden; opacity: 0; transform: translateY(100px); }
+    @keyframes logoGlow {
+      0% { background-position: -200% 0%; }
+      100% { background-position: 200% 0%; }
+    }
 
     /* 프로젝트 리스트 */
-    .project-list { width: 100%; }
+    .project-list { width: 100%; padding-top: 150px; }
     .project-item { width: 100%; margin-bottom: 25vh; display: flex; flex-direction: column; align-items: center; padding: 0 5%; }
     
     .img-mask { 
-      width: 100%; max-width: 1200px; aspect-ratio: 16/9; overflow: hidden; 
-      background: #f4f4f4; margin-bottom: 35px; position: relative;
+      width: 100%; max-width: 1100px; aspect-ratio: 16/9; overflow: hidden; 
+      border: 1px solid #f0f0f0; margin-bottom: 30px;
     }
-    .img-mask img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s ease; }
+    .img-mask img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
 
-    .caption { width: 100%; max-width: 1200px; padding: 0 10px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; }
-    .caption-title h3 { font-size: clamp(22px, 4vw, 34px); font-weight: 700; line-height: 1.2; text-transform: uppercase; }
-    .caption-desc { display: flex; flex-direction: column; justify-content: flex-start; }
-    .caption-desc p { font-size: 15px; line-height: 1.8; color: #444; word-break: keep-all; }
+    .caption { width: 100%; max-width: 1100px; padding: 0 10px; }
+    .caption h3 { font-size: clamp(22px, 4vw, 36px); font-weight: 700; margin-bottom: 12px; text-transform: uppercase; }
+    .caption p { font-size: 15px; line-height: 1.6; color: #444; max-width: 700px; word-break: keep-all; }
     
     .tags { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
-    .tag { padding: 4px 10px; border: 1px solid #ddd; border-radius: 2px; font-size: 10px; font-weight: 700; color: #000; }
+    .tag { padding: 5px 12px; border: 1px solid #ddd; border-radius: 40px; font-size: 11px; font-weight: 600; color: #777; }
 
     /* Contact 섹션 */
-    .contact { padding: 150px 8%; background: #000; color: #fff; }
-    .contact-title { font-size: clamp(35px, 8vw, 80px); font-weight: 900; margin-bottom: 50px; text-transform: uppercase; }
-    .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
-    .contact-item h4 { font-size: 11px; color: #666; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.1em; }
-    .contact-item p, .contact-item a { font-size: 18px; color: #fff; text-decoration: none; font-weight: 600; }
+    .contact { padding: 150px 10%; background: #fafafa; border-top: 1px solid #eee; }
+    .contact-title { font-size: clamp(30px, 5vw, 50px); font-weight: 700; margin-bottom: 40px; text-transform: uppercase; }
+    .contact-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
+    .contact-item h4 { font-size: 11px; color: #aaa; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.1em; }
+    .contact-item p, .contact-item a { font-size: 18px; color: #111; text-decoration: none; font-weight: 600; }
 
-    footer { padding: 60px 8%; text-align: left; font-size: 10px; color: #999; background: #000; border-top: 1px solid #222; }
+    footer { padding: 60px 10%; text-align: center; font-size: 10px; color: #bbb; letter-spacing: 0.2em; border-top: 1px solid #eee; }
 
+    /* 모바일 반응형 */
     @media (max-width: 768px) {
+      nav { padding: 25px 20px; }
+      .hero { padding: 100px 7% 0; align-items: flex-start; }
+      .hero-content { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+      .hero-title { transform: translateX(0); font-size: 2.8rem; }
+      .hero-logo-wrap { transform: translateX(0) scale(1); margin-bottom: 50px; }
       .img-mask { aspect-ratio: 4/5; }
-      .caption { grid-template-columns: 1fr; gap: 15px; }
-      .project-item { margin-bottom: 12vh; }
-      #cursor, #trail-canvas { display: none; }
-      body { cursor: auto; }
+      .project-item { margin-bottom: 15vh; }
+      .contact { padding: 100px 7%; }
     }
   </style>
 </head>
@@ -93,112 +112,107 @@
   
   <nav>
     <a href="#" class="logo">용화 시스템</a>
-    <div style="font-size: 10px; font-weight: 700;">SYSTEM ARCHIVE 2026</div>
+    <div style="font-size: 10px; font-weight: 700;">PORTFOLIO 2026</div>
   </nav>
 
   <main>
     <section class="hero">
-      <h1 class="hero-title">
-        <span>PRECISION</span>
-        <span>AUTOMATION</span>
-      </h1>
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span>PRECISION</span><br>
+          CONTROL<br>
+          DESIGN
+        </h1>
+        <div class="hero-logo-wrap">
+          <img src="logo.png" alt="Yonghwa Systems Logo">
+        </div>
+      </div>
     </section>
 
     <section class="project-list">
       <div class="project-item">
         <div class="img-mask"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1500" alt="PLC"></div>
         <div class="caption">
-          <div class="caption-title"><h3>PLC SYSTEM<br>OPTIMIZATION</h3></div>
-          <div class="caption-desc">
-            <p>LS ELECTRIC 및 MITSUBISHI 플랫폼을 기반으로 한 정밀 제어 시스템을 설계합니다. 고속 연산과 무중단 공정 유지를 위한 최적의 제어 로직을 통합합니다.</p>
-            <div class="tags"><span class="tag">LS ELECTRIC</span><span class="tag">MITSUBISHI</span><span class="tag">Logic Integration</span></div>
-          </div>
+          <h3>PLC Logic Optimization</h3>
+          <p>미쓰비시 Q/R 시리즈 및 지멘스 S7-1500 제어 로직 설계. 공정 사이클 타임을 단축하는 정밀 시퀀스를 구축합니다.</p>
+          <div class="tags"><span class="tag">MELSEC</span><span class="tag">Siemens</span><span class="tag">Sequence</span></div>
         </div>
       </div>
 
       <div class="project-item">
         <div class="img-mask"><img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?auto=format&fit=crop&w=1500" alt="HMI"></div>
         <div class="caption">
-          <div class="caption-title"><h3>INTERFACE<br>INNOVATION</h3></div>
-          <div class="caption-desc">
-            <p>Pro-face, LS, TOP 등 주요 인터페이스를 활용하여 현장 데이터를 시각화합니다. 작업 효율을 높이는 직관적인 모니터링 환경을 작화합니다.</p>
-            <div class="tags"><span class="tag">Pro-face</span><span class="tag">TOP</span><span class="tag">SCADA</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-item">
-        <div class="img-mask"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500" alt="Remote"></div>
-        <div class="caption">
-          <div class="caption-title"><h3>SMART DEVICE<br>CONNECTIVITY</h3></div>
-          <div class="caption-desc">
-            <p>SBC 데이터 게이트웨이를 통해 휴대폰 및 태블릿 기반의 원격 제어 환경을 구축합니다. 장소에 상관없이 실시간으로 PLC 설비를 조작하고 관리할 수 있습니다.</p>
-            <div class="tags"><span class="tag">Mobile Control</span><span class="tag">Tablet Link</span><span class="tag">Remote Access</span></div>
-          </div>
+          <h3>HMI / SCADA Interface</h3>
+          <p>사용자 중심의 직관적인 UI 설계로 현장 상황을 한눈에 파악하고 제어할 수 있는 모니터링 환경을 제공합니다.</p>
+          <div class="tags"><span class="tag">Pro-face</span><span class="tag">SCADA</span><span class="tag">UX/UI</span></div>
         </div>
       </div>
 
       <div class="project-item">
         <div class="img-mask"><img src="https://images.unsplash.com/photo-1597430154085-f538722b54bc?auto=format&fit=crop&w=1500" alt="Panel"></div>
         <div class="caption">
-          <div class="caption-title"><h3>CONTROL PANEL<br>ENGINEERING</h3></div>
-          <div class="caption-desc">
-            <p>정밀 도면 설계부터 견고한 하드웨어 조립, 현장 설치 및 시운전까지 원스톱 서비스를 제공하여 최상의 설비 성능을 보장합니다.</p>
-            <div class="tags"><span class="tag">System Design</span><span class="tag">Site Installation</span><span class="tag">Fabrication</span></div>
-          </div>
+          <h3>Electrical Control Panel</h3>
+          <p>EPLAN 기반 표준 도면 설계 및 노이즈 대책을 고려한 하드웨어 판넬 제작 솔루션을 제공합니다.</p>
+          <div class="tags"><span class="tag">EPLAN</span><span class="tag">AutoCAD</span><span class="tag">Fabrication</span></div>
         </div>
       </div>
 
       <div class="project-item">
-        <div class="img-mask"><img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1500" alt="Visual"></div>
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500" alt="SBC"></div>
         <div class="caption">
-          <div class="caption-title"><h3>VISUAL STATUS<br>MANAGEMENT</h3></div>
-          <div class="caption-desc">
-            <p>설계 단계부터 고려된 고유의 시각 시스템을 통해 설비 알람 및 운전 상태를 색상 변화로 즉각 전달합니다. 모바일과 터치를 통해 직관적인 컨디션 파악이 가능합니다.</p>
-            <div class="tags"><span class="tag">Status LED</span><span class="tag">Visual Alarm</span><span class="tag">Smart Indicator</span></div>
-          </div>
+          <h3>SBC & Edge Computing</h3>
+          <p>라즈베리 파이 및 엣지 장치를 활용하여 필드 데이터를 수집하고 상위 MES/ERP 시스템과의 연동 인터페이스를 개발합니다.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">IoT</span><span class="tag">Data Integrate</span></div>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="img-mask"><img src="https://images.unsplash.com/photo-1565515110173-973ed218e0d1?auto=format&fit=crop&w=1500" alt="LED"></div>
+        <div class="caption">
+          <h3>LED STRIP VISUAL INDICATOR</h3>
+          <p>기존 자동화 설비의 노후된 형광등을 고휘도 LED 스트립으로 Retrofitting하여 유지보수 비용을 절감하고 시인성을 혁신적으로 개선합니다.</p>
+          <div class="tags"><span class="tag">LED 스트립</span><span class="tag">Luminance</span><span class="tag">Retrofit</span></div>
         </div>
       </div>
     </section>
 
     <section class="contact">
-      <h2 class="contact-title">WORK WITH<br>YONGHWA</h2>
+      <h2 class="contact-title">Contact Us</h2>
       <div class="contact-info">
-        <div class="contact-item"><h4>Location</h4><p>경상남도 창원시</p></div>
-        <div class="contact-item"><h4>Connect</h4><p><a href="mailto:hello@yonghwa.com">hello@yonghwa.com</a></p></div>
+        <div class="contact-item">
+          <h4>Location</h4>
+          <p>경상남도 창원시</p>
+        </div>
+        <div class="contact-item">
+          <h4>Email</h4>
+          <p><a href="mailto:yonghwa@yonghwa.com">yonghwa@yonghwa.com</a></p>
+        </div>
+        <div class="contact-item">
+          <h4>Social</h4>
+          <p><a href="#">LinkedIn</a></p>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <p>용화 시스템 | YONGHWA SYSTEMS</p>
-    <p style="margin-top: 8px;">COPYRIGHT 2026. ALL RIGHTS RESERVED.</p>
-  </footer>
+  <footer>&copy; 2026 YONGHWA SYSTEMS. ALL RIGHTS RESERVED.</footer>
 
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    /* 1. 상시 동작 애니메이션 (스크롤 할 때마다 재실행) */
-    gsap.utils.toArray('.hero-title span').forEach((span) => {
-      gsap.to(span, {
-        scrollTrigger: {
-          trigger: ".hero",
-          start: "top 80%", // 화면의 80% 지점에 들어오면 실행
-          toggleActions: "restart none none none" // 다시 들어올 때마다(restart) 실행
-        },
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "elastic.out(1, 0.45)"
-      });
-    });
+    /* ===== [핵심 수정] Hero 인트로 애니메이션 ===== */
+    const tl = gsap.timeline({ delay: 0.5 });
+    
+    tl.to('.hero-title', { opacity: 1, x: 0, duration: 1.5, ease: "power4.out" });
+    tl.to('.hero-logo-wrap', { opacity: 1, x: 0, scale: 1, duration: 1.8, ease: "elastic.out(1, 0.5)" }, "-=1.2");
 
-    /* 2. 스무스 스크롤 */
-    const lenis = new Lenis({ lerp: 0.1 });
+    /* 스무스 스크롤 (Lenis) */
+    const lenis = new Lenis({ lerp: 0.1, duration: 1.2 });
     function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
+    lenis.on('scroll', ScrollTrigger.update);
 
-    /* 3. 마우스 커서 및 잔상 */
+    /* 마우스 커서 및 잔상 (PC 전용) */
     if (!('ontouchstart' in window)) {
       const trailCanvas = document.getElementById('trail-canvas');
       const trailCtx = trailCanvas.getContext('2d');
