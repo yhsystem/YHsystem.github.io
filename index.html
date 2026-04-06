@@ -65,10 +65,28 @@
 
     footer { padding: 50px 8%; text-align: center; font-size: 10px; color: #555; background: var(--배경색_블랙); border-top: 1px solid #111; }
 
+    /* 휴대폰 사진 짤림 수정 부분 */
     @media (max-width: 768px) {
       .hero-title { font-size: clamp(2.5rem, 15vw, 4.5rem); }
-      .img-mask { width: 95%; height: 75%; }
-      .caption { left: 2.5%; bottom: 5%; width: 95%; padding: 20px; }
+      .img-frame-wrap { height: 70vh; } /* 모바일에서는 전체 높이를 살짝 줄여 가독성 확보 */
+      .img-mask { 
+        width: 90%; 
+        height: auto; 
+        aspect-ratio: 4 / 3; /* 모바일 사진 비율 고정 */
+      }
+      .img-mask img {
+        object-fit: contain; /* 사진 전체가 다 나오도록 설정 (짤림 방지) */
+        background: #000;    /* 사진 여백 발생 시 배경을 검은색으로 처리 */
+      }
+      .caption { 
+        left: 5%; 
+        bottom: 0; 
+        width: 90%; 
+        padding: 20px; 
+        position: relative; /* 모바일에서 텍스트가 사진 아래로 자연스럽게 위치하도록 변경 */
+        transform: translateY(20px);
+        margin-top: -40px;
+      }
       #cursor, #trail-canvas { display: none; }
     }
   </style>
@@ -97,7 +115,7 @@
           <div class="img-mask"><img src="1.png" alt="PLC System"></div>
           <div class="caption">
             <h3>PLC Logic Optimization</h3>
-            <p>LS ELECTRIC 및 MITSUBISHI 시스템을 기반으로 정밀한 제어 아키텍처를 구축합니다. 공정의 특성을 반영한 로직 최적화를 통해 설비 가동 효율을 극대화합니다.</p>
+            <p>LS ELECTRIC 및 MITSUBISHI 시스템을 기반으로 정밀한 제어 아키텍처를 설계합니다. 엔지니어링 관점의 UI/UX 설계를 반영하여 복잡한 로직을 최적화하고, 현장의 조업 효율을 극대화하는 무중단 제어 환경을 구축합니다.</p>
             <div class="tags"><span class="tag">LS ELECTRIC</span><span class="tag">MITSUBISHI</span></div>
           </div>
         </div>
@@ -108,7 +126,7 @@
           <div class="img-mask"><img src="2.png" alt="HMI Design"></div>
           <div class="caption">
             <h3>Monitoring Interface</h3>
-            <p>Pro-face, LS, TOP 등 다양한 인터페이스 환경을 구축하여 현장의 시각적 편의성을 제공합니다. 실시간 데이터 모니터링을 통해 편의성을 극대화 합니다.</p>
+            <p>Pro-face, LS, TOP 등 다양한 디바이스 환경에 최적화된 모니터링 체계를 제공합니다. 데이터 가시성을 극대화한 UI/UX 설계를 통해 작업자가 설비 상태를 즉각 판단하고 대응할 수 있는 지능형 조업 환경을 완성합니다.</p>
             <div class="tags"><span class="tag">Pro-face</span><span class="tag">LS</span><span class="tag">TOP</span></div>
           </div>
         </div>
@@ -119,7 +137,7 @@
           <div class="img-mask"><img src="3.png" alt="Remote Control"></div>
           <div class="caption">
             <h3>Remote Connectivity Solution</h3>
-            <p>터치스크린 조작과 별도로 휴대폰이나 태블릿을 활용하여 설비 조작이 가능한 환경을 제공합니다. 스마트 기기 연동을 통해 원격에서도 PLC 설비의 정밀 제어가 가능합니다.</p>
+            <p>터치스크린의 조작 범위를 넘어 모바일과 태블릿으로 제어 영역을 확장합니다. 실시간 데이터 가독성을 고려한 UI/UX를 바탕으로 스마트 기기 연동을 통해 원격에서도 PLC 설비의 정밀 제어가 가능합니다.</p>
             <div class="tags"><span class="tag">Mobile Control</span><span class="tag">Tablet Link</span></div>
           </div>
         </div>
@@ -130,7 +148,7 @@
           <div class="img-mask"><img src="4.png" alt="Panel Engineering"></div>
           <div class="caption">
             <h3>Custom Control Panel</h3>
-            <p>설계부터 제작, 현장 설치 및 최종 시운전까지 전 과정을 엔지니어링합니다. 환경에 최적화된 하드웨어 구성을 통해 시스템의 신뢰도를 유지합니다.</p>
+            <p>설계부터 제작, 현장 설치 및 최종 시운전까지 전 과정을 엔지니어링합니다. UI/UX 최적화 기술을 결합하여 가혹한 산업 환경에서도 신뢰할 수 있는 안정적인 하드웨어 시스템을 보장합니다.</p>
             <div class="tags"><span class="tag">System Engineering</span><span class="tag">Fabrication</span></div>
           </div>
         </div>
@@ -141,7 +159,7 @@
           <div class="img-mask"><img src="5.png" alt="LED Strip Indicator"></div>
           <div class="caption">
             <h3>LED Strip Indicator System</h3>
-            <p>설비 제작 시 통합된 LED 스트립을 통해 알람 및 운전 상태를 색상 변화로 표현합니다. 휴대폰, 태블릿, 터치 패널과 연동하여 시각적인 상태 파악이 즉각적으로 가능합니다.</p>
+            <p>설비의 운전 상태와 알람을 LED 스트립 컬러로 시각화합니다. 스마트 기기와 연동된 UI 디자인을 통해 소음이 심한 현장에서도 즉각적인 상황 파악이 가능한 직관적인 작업 환경을 제공합니다.</p>
             <div class="tags"><span class="tag">LED 스트립</span><span class="tag">Visual Status</span></div>
           </div>
         </div>
@@ -203,9 +221,16 @@
       });
       const mask = item.querySelector('.img-mask');
       const img = item.querySelector('img');
+      
+      // 모바일 여부에 따라 애니메이션 값 조절
+      const isMobile = window.innerWidth <= 768;
+
       gsap.to(mask, {
         scrollTrigger: { trigger: item, start: "top bottom", end: "bottom center", scrub: 1.2 },
-        width: "100%", height: "100%", clipPath: "inset(0% 0% 0% 0%)", ease: "none"
+        width: isMobile ? "90%" : "100%", 
+        height: isMobile ? "auto" : "100%", 
+        clipPath: "inset(0% 0% 0% 0%)", 
+        ease: "none"
       });
       gsap.to(img, {
         scrollTrigger: { trigger: item, scrub: 1.2, start: "top bottom" },
