@@ -68,7 +68,11 @@
     /* 반응형 모바일 수정 핵심 섹션 */
     @media (max-width: 768px) {
       nav { padding: 20px 25px; }
-      .hero-title { font-size: clamp(2.5rem, 15vw, 4.5rem); }
+      /* 모바일 글자 짤림 및 줄바꿈 수정 */
+      .hero-title { 
+        font-size: clamp(2rem, 11.5vw, 4rem); 
+        white-space: nowrap; 
+      }
       
       .img-frame-wrap { 
         height: auto; 
